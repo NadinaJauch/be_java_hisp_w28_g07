@@ -13,10 +13,10 @@ public class BaseRepository<T extends Identifiable>{
         return entities.getLast();
     }
 
-    public T findById(int id) {
+    public T findById(Long id) {
         return entities
                 .stream()
-                .filter(entity -> entity.getId() == id)
+                .filter(entity -> entity.getId().equals(id))
                 .findFirst()
                 .orElse(null);
     }
