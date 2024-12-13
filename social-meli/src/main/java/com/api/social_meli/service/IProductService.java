@@ -1,4 +1,4 @@
 package com.api.social_meli.service;
 
-public class UserService {
+public interface IProductService {
 }
