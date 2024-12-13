@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-public class UserDto {
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+public class ExceptionDto {
+    private String message;
 }

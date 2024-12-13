@@ -1,5 +1,6 @@
 package com.api.social_meli.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,14 +11,20 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User implements Identifiable{
-    private long userId;
+    @JsonProperty("user_id")
+    private int userId;
+    @JsonProperty("user_name")
     private String name;
     private List<User> followed;
     private List<User> followers;
     private List<Post> posts;
 
     @Override
-    public Long getId() {
-        return null;
+    public int getId() {
+        return this.userId;
+    }
+
+    public boolean isSeller(){
+        return !posts.isEmpty();
     }
 }

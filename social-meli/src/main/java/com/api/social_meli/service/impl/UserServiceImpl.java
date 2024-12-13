@@ -26,7 +26,6 @@ public class UserServiceImpl implements IUserService {
     ObjectMapper mapper;
 
     public getFollowerCountDto getFollowerCount(int userId) {
-
         User user = userRepository.findById(userId);
         if(user == null) {
             throw new NotFoundException("Usuario no encontrado");
