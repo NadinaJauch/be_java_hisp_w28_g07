@@ -7,7 +7,7 @@ public class PostCategory implements Identifiable{
 
 
     @Override
-    public int getId() {
-        return this.postCategoryId;
+    public Long getId() {
+        return null;
     }
 }
