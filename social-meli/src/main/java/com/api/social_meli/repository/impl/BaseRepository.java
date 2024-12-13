@@ -1,12 +1,17 @@
 package com.api.social_meli.repository.impl;
 
 import com.api.social_meli.model.Identifiable;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.util.ResourceUtils;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BaseRepository<T extends Identifiable>{
-    private List<T> entities = new ArrayList<>();
+    protected List<T> entities = new ArrayList<>();
 
     public T create(T entity) {
         entities.add(entity);
@@ -28,4 +33,7 @@ public class BaseRepository<T extends Identifiable>{
     public void delete(T entity) {
         entities.remove(entity);
     }
+
+
+
 }
