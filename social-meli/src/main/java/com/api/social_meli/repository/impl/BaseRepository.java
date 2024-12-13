@@ -1,20 +1,18 @@
 package com.api.social_meli.repository.impl;
 
 import com.api.social_meli.model.Identifiable;
-import com.api.social_meli.repository.IBaseRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaseRepositoryImpl<T extends Identifiable> implements IBaseRepository<T> {
+public class BaseRepository<T extends Identifiable>{
     private List<T> entities = new ArrayList<>();
-    @Override
+
     public T create(T entity) {
         entities.add(entity);
         return entities.getLast();
     }
 
-    @Override
     public T findById(Long id) {
         return entities
                 .stream()
@@ -23,12 +21,10 @@ public class BaseRepositoryImpl<T extends Identifiable> implements IBaseReposito
                 .orElse(null);
     }
 
-    @Override
     public List<T> findAll() {
         return entities;
     }
 
-    @Override
     public void delete(T entity) {
         entities.remove(entity);
     }
