@@ -20,7 +20,7 @@ public class Post implements Identifiable{
     private double discount;
 
     @Override
-    public Long getId() {
-        return null;
+    public int getId() {
+        return this.postId;
     }
 }
