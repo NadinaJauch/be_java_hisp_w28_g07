@@ -7,5 +7,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ProductDto {
+public class ExceptionDto {
+    private String message;
 }

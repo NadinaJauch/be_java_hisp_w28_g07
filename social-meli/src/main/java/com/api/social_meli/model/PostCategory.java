@@ -1,13 +1,18 @@
 package com.api.social_meli.model;
 
-public class PostCategory implements Identifiable{
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+public class PostCategory implements Identifiable{
     private int postCategoryId;
     private String description;
 
-
     @Override
-    public Long getId() {
-        return null;
+    public int getId() {
+        return this.postCategoryId;
     }
 }
