@@ -10,14 +10,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User implements Identifiable{
-    private int userId;
+    private long userId;
     private String name;
     private List<User> followed;
     private List<User> followers;
     private List<Post> posts;
 
     @Override
-    public int getId() {
-        return this.userId;
+    public Long getId() {
+        return null;
     }
 }
