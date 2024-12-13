@@ -16,7 +16,7 @@ public class Product implements Identifiable{
     private String notes;
 
     @Override
-    public Long getId() {
-        return null;
+    public int getId() {
+        return this.productId;
     }
 }
