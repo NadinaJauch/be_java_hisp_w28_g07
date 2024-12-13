@@ -1,10 +1,13 @@
 package com.api.social_meli.dto;
 
-import com.api.social_meli.model.Post;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import java.util.List;
 
-public class SellerPostsDto {
+@AllArgsConstructor
+@Data
+public class FollowedSellerPostsDto {
     private int userId;
     private List<PostDto> posts;
 }
