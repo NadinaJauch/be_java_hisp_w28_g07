@@ -26,6 +26,7 @@ public class UserServiceImpl implements IUserService {
     ObjectMapper mapper;
 
     public getFollowerCountDto getFollowerCount(int userId) {
+
         User user = userRepository.findById(userId);
         if(user == null) {
             throw new NotFoundException("Usuario no encontrado");
@@ -40,10 +41,10 @@ public class UserServiceImpl implements IUserService {
         User user = userRepository.findById(userId);
         User userToUnfollow = userRepository.findById(userIdToUnfollow);
         if(user == null) {
-            throw new NotFoundException("Usuario" + userId + " no encontrado");
+            throw new NotFoundException("Usuario " + userId + " no encontrado");
         }
         else if (userToUnfollow == null) {
-            throw new NotFoundException("Usuario" + userIdToUnfollow + " no encontrado");
+            throw new NotFoundException("Usuario " + userIdToUnfollow + " no encontrado");
         }
         else if (!user.getFollowed().contains(userToUnfollow)) {
             throw new BadRequestException("El usuario: " + userId + " no sigue al usuario: " + userIdToUnfollow);
