@@ -1,140 +1,140 @@
 [
     {
-      "userId": 1,
-      "name": "Ana Martínez",
+      "user_id": 1,
+      "user_name": "Ana Martínez",
       "followed": [],
       "followers": [],
       "posts": []
     },
     {
-      "userId": 2,
-      "name": "Carlos Gómez",
+      "user_id": 2,
+      "user_name": "Carlos Gómez",
       "followed": [],
       "followers": [],
       "posts": []
     },
     {
-      "userId": 3,
-      "name": "María López",
+      "user_id": 3,
+      "user_name": "María López",
       "followed": [],
       "followers": [],
       "posts": []
     },
     {
-      "userId": 4,
-      "name": "Juan Pérez",
+      "user_id": 4,
+      "user_name": "Juan Pérez",
       "followed": [],
       "followers": [],
       "posts": []
     },
     {
-      "userId": 5,
-      "name": "Lucía Fernández",
+      "user_id": 5,
+      "user_name": "Lucía Fernández",
       "followed": [],
       "followers": [],
       "posts": []
     },
     {
-      "userId": 6,
-      "name": "Miguel Rodríguez",
+      "user_id": 6,
+      "user_name": "Miguel Rodríguez",
       "followed": [],
       "followers": [],
       "posts": []
     },
     {
-      "userId": 7,
-      "name": "Sofía González",
+      "user_id": 7,
+      "user_name": "Sofía González",
       "followed": [],
       "followers": [],
       "posts": []
     },
     {
-      "userId": 8,
-      "name": "Diego Sánchez",
+      "user_id": 8,
+      "user_name": "Diego Sánchez",
       "followed": [],
       "followers": [],
       "posts": []
     },
     {
-      "userId": 9,
-      "name": "Valentina Ramírez",
+      "user_id": 9,
+      "user_name": "Valentina Ramírez",
       "followed": [],
       "followers": [],
       "posts": []
     },
     {
-      "userId": 10,
-      "name": "Andrés Torres",
+      "user_id": 10,
+      "user_name": "Andrés Torres",
       "followed": [],
       "followers": [],
       "posts": []
     },
     {
-      "userId": 11,
-      "name": "Elena Navarro",
+      "user_id": 11,
+      "user_name": "Elena Navarro",
       "followed": [],
       "followers": [],
       "posts": []
     },
     {
-      "userId": 12,
-      "name": "Jorge Morales",
+      "user_id": 12,
+      "user_name": "Jorge Morales",
       "followed": [],
       "followers": [],
       "posts": []
     },
     {
-      "userId": 13,
-      "name": "Paula Vázquez",
+      "user_id": 13,
+      "user_name": "Paula Vázquez",
       "followed": [],
       "followers": [],
       "posts": []
     },
     {
-      "userId": 14,
-      "name": "Tomás Castro",
+      "user_id": 14,
+      "user_name": "Tomás Castro",
       "followed": [],
       "followers": [],
       "posts": []
     },
     {
-      "userId": 15,
-      "name": "Isabella Ortiz",
+      "user_id": 15,
+      "user_name": "Isabella Ortiz",
       "followed": [],
       "followers": [],
       "posts": []
     },
     {
-      "userId": 16,
-      "name": "Sebastián Herrera",
+      "user_id": 16,
+      "user_name": "Sebastián Herrera",
       "followed": [],
       "followers": [],
       "posts": []
     },
     {
-      "userId": 17,
-      "name": "Camila Reyes",
+      "user_id": 17,
+      "user_name": "Camila Reyes",
       "followed": [],
       "followers": [],
       "posts": []
     },
     {
-      "userId": 18,
-      "name": "Luis Díaz",
+      "user_id": 18,
+      "user_name": "Luis Díaz",
       "followed": [],
       "followers": [],
       "posts": []
     },
     {
-      "userId": 19,
-      "name": "Natalia Cruz",
+      "user_id": 19,
+      "user_name": "Natalia Cruz",
       "followed": [],
       "followers": [],
       "posts": []
     },
     {
-      "userId": 20,
-      "name": "Gabriel Molina",
+      "user_id": 20,
+      "user_name": "Gabriel Molina",
       "followed": [],
       "followers": [],
       "posts": []
