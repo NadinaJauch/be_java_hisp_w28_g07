@@ -1,5 +1,6 @@
 package com.api.social_meli.service.impl;
 
+import com.api.social_meli.dto.GetFollowedsByUserIdDto;
 import com.api.social_meli.dto.MessageDto;
 import com.api.social_meli.dto.UserDto;
 import com.api.social_meli.dto.getFollowerCountDto;
@@ -8,6 +9,7 @@ import com.api.social_meli.exception.NotFoundException;
 import com.api.social_meli.model.User;
 import com.api.social_meli.repository.IUserRepository;
 import com.api.social_meli.service.IUserService;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +36,19 @@ public class UserServiceImpl implements IUserService {
         return new getFollowerCountDto(user.getUserId(), user.getName(), followerCount);
     }
 
+    @Override
+    public List<GetFollowedsByUserIdDto> getFollowedsByUserId(int userId) {
+        User user = userRepository.findById(userId);
+        if(user == null) {
+            throw new NotFoundException("Usuario " + userId + " no encontrado");
+        }
+
+        List<User> listFolleweds = userRepository.getFollowedsByUserId(userId);
+        if (listFolleweds.isEmpty())
+            throw new NotFoundException("El usuario " + userId + " no sigue a ningún vendedor.");
+
+        return mapper.convertValue(listFolleweds, new TypeReference<List<GetFollowedsByUserIdDto>>() {});
+    }
 
     @Override
     public MessageDto unfollowUser(int userId, int userIdToUnfollow) {

@@ -9,7 +9,22 @@
     {
       "user_id": 2,
       "user_name": "Carlos Gómez",
-      "followed": [],
+      "followed": [
+        {
+          "user_id": 3,
+          "user_name": "María López",
+          "followed": [],
+          "followers": [],
+          "posts": []
+        },
+        {
+          "user_id": 4,
+          "user_name": "Juan Pérez",
+          "followed": [],
+          "followers": [],
+          "posts": []
+        }
+      ],
       "followers": [],
       "posts": []
     },
