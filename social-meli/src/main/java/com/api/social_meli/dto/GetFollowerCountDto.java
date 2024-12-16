@@ -1,20 +1,18 @@
 package com.api.social_meli.dto;
 
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class PostDto {
+public class GetFollowerCountDto {
     @JsonProperty("user_id")
     private int userId;
-    @JsonProperty("post_id")
-    private int postId;
-    private LocalDate date;
-    private ProductDto product;
+    @JsonProperty("user_name")
+    private String name;
+    private int followers_count;
 }

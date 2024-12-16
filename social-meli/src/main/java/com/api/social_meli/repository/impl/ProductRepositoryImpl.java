@@ -1,6 +1,8 @@
 package com.api.social_meli.repository.impl;
 
+import com.api.social_meli.model.Post;
 import com.api.social_meli.model.Product;
+import com.api.social_meli.model.User;
 import com.api.social_meli.repository.IProductRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,16 +15,19 @@ import java.util.List;
 
 @Repository
 public class ProductRepositoryImpl extends BaseRepository<Product> implements IProductRepository {
-    protected void loadDataBase() {
-        try {
-            File file;
-            ObjectMapper objectMapper = new ObjectMapper();
-            List<Product> objects;
-            file = ResourceUtils.getFile("classpath:products.json");
-            objects = objectMapper.readValue(file,new TypeReference<List<Product>>(){});
-            this.entities = objects;
-        }
-        catch(IOException ignored) {
-        }
+
+    public ProductRepositoryImpl() throws IOException {
+
+        loadDataBase();
+    }
+
+    private void loadDataBase() throws IOException {
+        File file;
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<Product> products ;
+
+        file= ResourceUtils.getFile("classpath:products.json");
+        products= objectMapper.readValue(file,new TypeReference<List<Product>>(){});
+        this.entities = products;
     }
 }
