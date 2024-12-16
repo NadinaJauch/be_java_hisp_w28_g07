@@ -22,7 +22,6 @@ public class BaseRepository<T extends Identifiable> {
         return entities.getLast();
     }
 
-
     public T findById(int id) {
         return entities
                 .stream()
