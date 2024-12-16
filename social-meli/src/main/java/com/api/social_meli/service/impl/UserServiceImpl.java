@@ -93,13 +93,6 @@ public class UserServiceImpl implements IUserService {
         return new FollowedSellerPostsDto(userId,posts);
     }
 
-    private List<User> getFollowedSellersByUserId(int userId){
-        List<User> asd = userRepository.findAll();
-        return userRepository.findAll()
-                .stream()
-                .filter(x -> x.getUserId() == userId && x.isSeller())
-                .toList();
-    }
     @Override
     public boolean followUser(int userId, int userIdToFollow) {
         User user = userRepository.findById(userId);
@@ -134,7 +127,7 @@ public class UserServiceImpl implements IUserService {
         }
         return userList.stream()
                 .map(v -> mapper.convertValue(v, UserDto.class))
-                .collect(Collectors.toList());
+                .toList();
     }
 
 
