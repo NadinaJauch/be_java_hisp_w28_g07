@@ -13,7 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class BaseRepository<T extends Identifiable>{
+public class BaseRepository<T extends Identifiable> {
+
     protected List<T> entities = new ArrayList<>();
 
     public T create(T entity) {
@@ -36,5 +37,9 @@ public class BaseRepository<T extends Identifiable>{
 
     public void delete(T entity) {
         entities.remove(entity);
+    }
+
+    public boolean exists(int id){
+        return entities.stream().anyMatch(x -> x.getId() == id);
     }
 }

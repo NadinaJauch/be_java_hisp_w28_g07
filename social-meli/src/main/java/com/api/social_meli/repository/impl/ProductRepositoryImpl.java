@@ -16,7 +16,9 @@ import java.util.List;
 @Repository
 public class ProductRepositoryImpl extends BaseRepository<Product> implements IProductRepository {
 
+
     public ProductRepositoryImpl() throws IOException {
+
         loadDataBase();
     }
 

@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class Product implements Identifiable{
-
     @JsonProperty("product_id")
     private int productId;
     private String name;
@@ -17,7 +16,6 @@ public class Product implements Identifiable{
     private String brand ;
     private String colour;
     private String notes;
-
     @Override
     public int getId() {
         return this.productId;

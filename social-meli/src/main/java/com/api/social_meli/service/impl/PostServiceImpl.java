@@ -1,16 +1,21 @@
 package com.api.social_meli.service.impl;
 
+
 import com.api.social_meli.dto.PromoPostDto;
 import com.api.social_meli.exception.NotFoundException;
 import com.api.social_meli.model.Post;
+import com.api.social_meli.dto.PostDto;
 import com.api.social_meli.repository.IPostRepository;
 import com.api.social_meli.service.IPostService;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 import java.util.stream.Collectors;
+
 
 @Service
 public class PostServiceImpl implements IPostService {
@@ -20,6 +25,7 @@ public class PostServiceImpl implements IPostService {
 
     @Autowired
     private ObjectMapper objectMapper;
+
 
 
     public PromoPostDto getPromoProductCount(Integer userId){
@@ -32,4 +38,8 @@ public class PostServiceImpl implements IPostService {
         return new PromoPostDto(userId,userName, postByUser.size());
     }
 
+    @Override
+    public List<PostDto> getPostsByUserId(int userId) {
+        return objectMapper.convertValue(postRepository.findByUserId(userId), new TypeReference<List<PostDto>>() {});
+    }
 }

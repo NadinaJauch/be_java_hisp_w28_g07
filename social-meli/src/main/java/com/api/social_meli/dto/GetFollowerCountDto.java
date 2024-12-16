@@ -5,11 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.io.Serializable;
-
-@Data
-@AllArgsConstructor
-public class GetFollowerCountDto implements Serializable {
+public class GetFollowerCountDto {
     @JsonProperty("user_id")
     private int userId;
     @JsonProperty("user_name")

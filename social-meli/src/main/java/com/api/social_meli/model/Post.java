@@ -16,6 +16,7 @@ import java.time.LocalDate;
 public class Post implements Identifiable{
     @JsonProperty("post_id")
     private int postId;
+    @JsonProperty("seller")
     private User seller;
     @JsonProperty("publish_date")
     private String publishDate;
@@ -23,7 +24,6 @@ public class Post implements Identifiable{
     @JsonProperty("category_id")
     private int categoryId;
     private double price;
-    @Getter
     @JsonProperty("has_promo")
     private boolean hasPromo;
     private double discount;
@@ -32,6 +32,4 @@ public class Post implements Identifiable{
     public int getId() {
         return this.postId;
     }
-
-
 }

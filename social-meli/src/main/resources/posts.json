@@ -42,7 +42,8 @@
     },
     "category_id": 3,
     "price": 199.99,
-    "has_promo": false,
+
+    "has_promo": true,
     "discount": 15.0
   },
   {
@@ -68,4 +69,6 @@
     "has_promo": true,
     "discount": 20.0
   }
+
 ]
+
