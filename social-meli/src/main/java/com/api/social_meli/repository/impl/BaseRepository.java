@@ -1,9 +1,12 @@
 package com.api.social_meli.repository.impl;
 
 import com.api.social_meli.model.Identifiable;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class BaseRepository<T extends Identifiable>{
     private List<T> entities = new ArrayList<>();
@@ -13,10 +16,10 @@ public class BaseRepository<T extends Identifiable>{
         return entities.getLast();
     }
 
-    public T findById(Long id) {
+    public T findById(int id) {
         return entities
                 .stream()
-                .filter(entity -> entity.getId().equals(id))
+                .filter(entity -> entity.getId() == id)
                 .findFirst()
                 .orElse(null);
     }
