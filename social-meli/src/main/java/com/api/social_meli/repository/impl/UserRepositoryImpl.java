@@ -35,4 +35,19 @@ public class UserRepositoryImpl extends BaseRepository<User> implements IUserRep
                 .filter(user -> user.getUserId() == userId)
                 .findFirst().get().getFollowed();
     }
+    @Override
+    public User create(User user) {
+        return super.create(user);
+    }
+
+    @Override
+    public User findById(int id) {
+        return super.findById(id);
+    }
+
+    @Override
+    public List<User> findAll() {
+        return super.findAll();
+    }
+
 }

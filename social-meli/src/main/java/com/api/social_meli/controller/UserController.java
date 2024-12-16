@@ -38,4 +38,16 @@ public class UserController {
     public ResponseEntity<?> getFollowedsByUserId(@PathVariable int userId){
         return new ResponseEntity<>(userService.getFollowedsByUserId(userId), HttpStatus.OK);
     }
+
+    @PostMapping("/{userId}/follow/{userIdToFollow}")
+    public ResponseEntity<?> followUser(
+            @PathVariable("userId") int userId,
+            @PathVariable("userIdToFollow") int userIdToFollow) {
+        return new ResponseEntity<>(userService.followUser(userId, userIdToFollow), HttpStatus.OK);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getUsers(){
+        return new ResponseEntity<>(userService.searchAllUsers(), HttpStatus.OK);
+    }
 }
