@@ -11,11 +11,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-
 @Repository
 public class UserRepositoryImpl extends BaseRepository<User> implements IUserRepository {
-
-    public UserRepositoryImpl() throws IOException {
+    public UserRepositoryImpl() throws IOException{
         loadDataBase();
     }
 
@@ -29,6 +27,11 @@ public class UserRepositoryImpl extends BaseRepository<User> implements IUserRep
         this.entities = users;
     }
 
+    public List<Integer> getFollowedsByUserId(int userId) {
+        return entities.stream()
+                .filter(user -> user.getUserId() == userId)
+                .findFirst().get().getFollowed();
+    }
     @Override
     public User create(User user) {
         return super.create(user);
