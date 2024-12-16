@@ -1,5 +1,6 @@
 package com.api.social_meli.model;
 
+import com.api.social_meli.dto.ProductDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,4 +20,13 @@ public class Product implements Identifiable{
     public int getId() {
         return this.productId;
     }
+
+    public Product(ProductDto dto){
+        this.name = dto.getProductName();
+        this.type = dto.getType();
+        this.brand = dto.getBrand();
+        this.colour = dto.getColor();
+        this.notes = dto.getNotes();
+    }
+
 }
