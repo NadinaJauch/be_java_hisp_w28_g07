@@ -91,7 +91,7 @@ public class UserServiceImpl implements IUserService {
         if(searchedUser == null){
             throw new NotFoundException("No existe un usuario con el id: " + userId );
         }
-        if(searchedUser.getPosts().isEmpty()){
+        if(!searchedUser.isSeller()){
             throw new BadRequestException("El usuario no es un vendedor y no puede tener seguidores");
         }
         /** Creo el objeto dtoFollowerList y le asigno el id y el nombre del usuario(vendedor) del que estoy buscando
