@@ -28,4 +28,9 @@ public class UserController {
     public ResponseEntity<FollowedSellerPostsDto> getFollowedSellersPosts(@PathVariable int userId) {
         return ResponseEntity.ok(userService.getFollowedSellersPosts(userId));
     }
+
+    @GetMapping("{userId}/followed/list")
+    public ResponseEntity<?> getFollowedsByUserId(@PathVariable int userId){
+        return new ResponseEntity<>(userService.getFollowedsByUserId(userId), HttpStatus.OK);
+    }
 }
