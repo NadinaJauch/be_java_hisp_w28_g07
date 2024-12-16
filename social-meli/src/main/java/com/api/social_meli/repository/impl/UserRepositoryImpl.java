@@ -42,5 +42,9 @@ public class UserRepositoryImpl extends BaseRepository<User> implements IUserRep
         return super.findById(id);
     }
 
+    @Override
+    public List<User> findAll() {
+        return super.findAll();
+    }
 
 }

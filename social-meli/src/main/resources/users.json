@@ -3,7 +3,7 @@
     {
       "user_id": 1,
       "user_name": "Ana Martínez",
-      "followed": [2,3,4,5],
+      "followed": [3,4,5],
       "followers": [],
       "posts": []
     },
@@ -11,7 +11,7 @@
       "user_id": 2,
       "user_name": "Carlos Gómez",
       "followed": [],
-      "followers": [1,6],
+      "followers": [6],
       "posts": [1]
     },
     {

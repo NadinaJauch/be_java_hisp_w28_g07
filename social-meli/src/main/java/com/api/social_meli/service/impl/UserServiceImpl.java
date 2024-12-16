@@ -1,10 +1,6 @@
 package com.api.social_meli.service.impl;
 
-import com.api.social_meli.dto.FollowedSellerPostsDto;
-import com.api.social_meli.dto.PostDto;
-import com.api.social_meli.dto.GetFollowedsByUserIdDto;
-import com.api.social_meli.dto.MessageDto;
-import com.api.social_meli.dto.GetFollowerCountDto;
+import com.api.social_meli.dto.*;
 import com.api.social_meli.exception.BadRequestException;
 import com.api.social_meli.exception.NotFoundException;
 import com.api.social_meli.model.User;
@@ -19,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -113,17 +110,30 @@ public class UserServiceImpl implements IUserService {
         if (!userToFollow.isSeller()) {
             throw new BadRequestException("El usuario a seguir no es vendedor");
         }
-        // Agrega el usuario vendedor a la lista del usuario seguidor
-        if (!user.getFollowed().contains(userIdToFollow)) {
-            user.getFollowed().add(userIdToFollow);
-            userRepository.create(user);
+        // Validar si el usuario ya está siguiendo al usuario objetivo
+        if (user.getFollowed().contains(userIdToFollow)) {
+            throw new BadRequestException("Ya estás siguiendo a este usuario");
         }
+        // Agrega el usuario vendedor a la lista del usuario seguidor
+        user.getFollowed().add(userIdToFollow);
+
         // Agrega el usuario seguidor a la lista del usuario vendedor
         if (!userToFollow.getFollowers().contains(userId)) {
             userToFollow.getFollowers().add(userId);
-            userRepository.create(userToFollow);
         }
         return true;
+    }
+
+    @Override
+    public List<UserDto> searchAllUsers() {
+        ObjectMapper mapper = new ObjectMapper();
+        List<User> userList = userRepository.findAll();
+        if(userList.isEmpty()){
+            throw new NotFoundException("No se encontró ningun usuario en el sistema.");
+        }
+        return userList.stream()
+                .map(v -> mapper.convertValue(v, UserDto.class))
+                .collect(Collectors.toList());
     }
 
 
