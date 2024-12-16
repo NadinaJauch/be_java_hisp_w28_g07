@@ -8,6 +8,6 @@ public interface IUserService {
 
     getFollowerCountDto getFollowerCount(int userId);
     MessageDto unfollowUser(int userId, int userIdToUnfollow);
-
+    boolean followUser(int userId, int userIdToFollow);
 
 }

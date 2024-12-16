@@ -29,5 +29,15 @@ public class UserRepositoryImpl extends BaseRepository<User> implements IUserRep
         this.entities = users;
     }
 
+    @Override
+    public User create(User user) {
+        return super.create(user);
+    }
+
+    @Override
+    public User findById(int id) {
+        return super.findById(id);
+    }
+
 
 }

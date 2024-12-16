@@ -15,9 +15,9 @@ public class User implements Identifiable{
     private int userId;
     @JsonProperty("user_name")
     private String name;
-    private List<User> followed;
-    private List<User> followers;
-    private List<Post> posts;
+    private List<Integer> followed;
+    private List<Integer> followers;
+    private List<Integer> posts;
 
     @Override
     public int getId() {
