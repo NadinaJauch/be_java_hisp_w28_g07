@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public class BaseRepository<T extends Identifiable>{
-    private List<T> entities = new ArrayList<>();
+    protected List<T> entities = new ArrayList<>();
 
     public T create(T entity) {
         entities.add(entity);
