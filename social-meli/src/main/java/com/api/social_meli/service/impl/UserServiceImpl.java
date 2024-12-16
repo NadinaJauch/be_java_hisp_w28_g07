@@ -38,16 +38,23 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public List<GetFollowedsByUserIdDto> getFollowedsByUserId(int userId) {
+        //Busco que el usuario exista
         User user = userRepository.findById(userId);
         if(user == null) {
             throw new NotFoundException("Usuario " + userId + " no encontrado");
         }
 
-        List<User> listFolleweds = userRepository.getFollowedsByUserId(userId);
+        //Traigo los id de los followeds
+        List<Integer> listFolleweds = userRepository.getFollowedsByUserId(userId);
         if (listFolleweds.isEmpty())
             throw new NotFoundException("El usuario " + userId + " no sigue a ningún vendedor.");
 
-        return mapper.convertValue(listFolleweds, new TypeReference<List<GetFollowedsByUserIdDto>>() {});
+        //Armo y mappeo la lista de followeds
+        List<User> listaUsuarios = new ArrayList<>();
+        for (int follower : listFolleweds)
+            listaUsuarios.add(userRepository.findById(follower));
+
+        return mapper.convertValue(listaUsuarios, new TypeReference<List<GetFollowedsByUserIdDto>>() {});
     }
 
     @Override
