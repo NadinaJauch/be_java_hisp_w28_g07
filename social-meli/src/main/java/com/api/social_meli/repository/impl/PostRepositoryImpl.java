@@ -36,10 +36,7 @@ public class PostRepositoryImpl extends BaseRepository<Post> implements IPostRep
     @Override
     public List<Post> findByUserId(int userId) {
         return entities.stream()
-                .filter(x -> x.getUser().getUserId() == userId)
+                .filter(x -> x.getSeller().getUserId() == userId)
                 .toList();
     }
-
-
-
 }
