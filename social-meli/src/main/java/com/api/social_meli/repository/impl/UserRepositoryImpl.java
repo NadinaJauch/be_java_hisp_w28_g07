@@ -11,11 +11,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-
 @Repository
 public class UserRepositoryImpl extends BaseRepository<User> implements IUserRepository {
-
-    public UserRepositoryImpl() throws IOException {
+    public UserRepositoryImpl() throws IOException{
         loadDataBase();
     }
 
@@ -28,6 +26,4 @@ public class UserRepositoryImpl extends BaseRepository<User> implements IUserRep
         users= objectMapper.readValue(file,new TypeReference<List<User>>(){});
         this.entities = users;
     }
-
-
 }
