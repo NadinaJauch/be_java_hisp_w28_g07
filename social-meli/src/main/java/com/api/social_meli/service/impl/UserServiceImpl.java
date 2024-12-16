@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -63,21 +62,37 @@ public class UserServiceImpl implements IUserService {
     public MessageDto unfollowUser(int userId, int userIdToUnfollow) {
         User user = userRepository.findById(userId);
         User userToUnfollow = userRepository.findById(userIdToUnfollow);
-        if(user == null) {
+        if(user == null)
             throw new NotFoundException("Usuario " + userId + " no encontrado");
-        }
-        else if (userToUnfollow == null) {
+
+        if (userToUnfollow == null)
             throw new NotFoundException("Usuario " + userIdToUnfollow + " no encontrado");
-        }
-        else if (!user.getFollowed().contains(userToUnfollow.getUserId())) {
+
+        if (!user.getFollowed().contains(userToUnfollow.getUserId()))
             throw new BadRequestException("El usuario: " + userId + " no sigue al usuario: " + userIdToUnfollow);
-        }
+
         user.getFollowed().remove(userToUnfollow.getUserId());
         userToUnfollow.getFollowers().remove(user.getUserId());
         return new MessageDto("El usuario se dejo de seguir exitosamente");
     }
 
     @Override
+    public FollowerListDto getFollowersList(int userId) {
+        User searchedUser = userRepository.findById(userId);
+
+        if(searchedUser == null)
+            throw new NotFoundException("No existe un usuario con el id: " + userId );
+
+        if(!searchedUser.isSeller())
+            throw new BadRequestException("El usuario no es un vendedor y no puede tener seguidores");
+
+        List<FollowerDto> followerDtos = searchedUser.getFollowers().stream()
+                .map(followerId -> mapper.convertValue(userRepository.findById(followerId), FollowerDto.class))
+                .toList();
+
+        return new FollowerListDto(searchedUser.getId(),searchedUser.getName(),followerDtos);
+    }
+
     public FollowedSellerPostsDto getFollowedSellersPosts(int userId) {
         if (!userRepository.exists(userId))
             throw new NotFoundException("No se encontró ningún usuario con ese ID.");
@@ -129,6 +144,4 @@ public class UserServiceImpl implements IUserService {
                 .map(v -> mapper.convertValue(v, UserDto.class))
                 .toList();
     }
-
-
 }
