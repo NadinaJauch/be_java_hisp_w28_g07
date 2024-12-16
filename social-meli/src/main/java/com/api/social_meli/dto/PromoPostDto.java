@@ -1,18 +1,21 @@
 package com.api.social_meli.dto;
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.io.Serializable;
 
+
 @Data
 @AllArgsConstructor
-public class GetFollowerCountDto implements Serializable {
+public class PromoPostDto  implements Serializable {
+
     @JsonProperty("user_id")
-    private int userId;
+    private Integer userId;
     @JsonProperty("user_name")
-    private String name;
-    private int followers_count;
+    private String userName;
+    @JsonProperty("promo_products_count")
+    private Integer promoProductCount;
+
 }
