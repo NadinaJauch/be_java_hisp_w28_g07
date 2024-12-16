@@ -7,9 +7,7 @@ import com.api.social_meli.dto.PromoPostDto;
 import java.util.List;
 
 public interface IPostService {
-    public List<PostDto> getPostsByUserId(int userId);
+    List<PostDto> getPostsByUserId(int userId);
     PromoPostCountDto getPromoProductCount(Integer userId);
-
-    public String createPromoPost(PromoPostDto dto);
-
+    String createPromoPost(PromoPostDto dto);
 }

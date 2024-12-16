@@ -8,16 +8,16 @@
       "followers": [1,6],
       "posts": [1]
     },
-    "publish_date": "2024-12-15",
+    "date": "2024-12-15",
     "product": {
       "product_id": 1,
-      "name": "Smartphone Galaxy S21",
+      "product_name": "Smartphone Galaxy S21",
       "type": "Electronics",
       "brand": "Samsung",
-      "colour": "Phantom Gray",
+      "color": "Phantom Gray",
       "notes": "Latest model, 128GB storage"
     },
-    "category_id": 1,
+    "category": 1,
     "price": 799.99,
     "has_promo": true,
     "discount": 10.0
@@ -31,18 +31,17 @@
       "followers": [1,6],
       "posts": [4,5]
     },
-    "publish_date": "2024-12-13",
+    "date": "2024-12-13",
     "product": {
       "product_id": 3,
-      "name": "Wireless Headphones",
+      "product_name": "Wireless Headphones",
       "type": "Accessories",
       "brand": "Sony",
-      "colour": "Black",
+      "color": "Black",
       "notes": "Noise cancellation, 30-hour battery"
     },
-    "category_id": 3,
+    "category": 3,
     "price": 199.99,
-
     "has_promo": true,
     "discount": 15.0
   },
@@ -55,19 +54,18 @@
       "followers": [1],
       "posts": [2]
     },
-    "publish_date": "2024-12-11",
+    "date": "2024-12-11",
     "product": {
       "product_id": 5,
-      "name": "4K Ultra HD TV",
+      "product_name": "4K Ultra HD TV",
       "type": "Electronics",
       "brand": "LG",
-      "colour": "Black",
+      "color": "Black",
       "notes": "55-inch, OLED, Dolby Vision"
     },
-    "category_id": 1,
+    "category": 1,
     "price": 1499.99,
     "has_promo": true,
     "discount": 20.0
   }
-
 ]

@@ -27,13 +27,13 @@ public class PromoPostDto {
     private boolean hasPromo;
     private double discount;
 
-    @JsonSetter("date")
-    public void setDateFromJSON(String date){
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            publishDate = LocalDate.parse(date, formatter);
-        }catch (NumberFormatException e){
-            this.publishDate = null;
-        }
-    }
+   @JsonSetter("date")
+   public void setDateFromJSON(String date){
+       try {
+           DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+           publishDate = LocalDate.parse(date, formatter);
+       }catch (NumberFormatException e){
+           this.publishDate = null;
+       }
+   }
 }

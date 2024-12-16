@@ -22,7 +22,6 @@ public class BaseRepository<T extends Identifiable> {
         return entities.get(entities.size()-1);
     }
 
-
     public T findById(int id) {
         return entities
                 .stream()
@@ -34,6 +33,7 @@ public class BaseRepository<T extends Identifiable> {
     public List<T> findAll() {
         return entities;
     }
+
 
     public void delete(T entity) {
         entities.remove(entity);

@@ -1,6 +1,5 @@
 package com.api.social_meli.service.impl;
 
-
 import com.api.social_meli.dto.PromoPostCountDto;
 import com.api.social_meli.dto.PromoPostDto;
 import com.api.social_meli.exception.BadRequestException;
@@ -8,17 +7,14 @@ import com.api.social_meli.exception.NotFoundException;
 import com.api.social_meli.model.Post;
 import com.api.social_meli.dto.PostDto;
 import com.api.social_meli.repository.IPostRepository;
-import com.api.social_meli.repository.IProductRepository;
 import com.api.social_meli.repository.IUserRepository;
 import com.api.social_meli.service.IPostService;
-import com.api.social_meli.service.IUserService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
 
 @Service
 public class PostServiceImpl implements IPostService {
@@ -31,8 +27,6 @@ public class PostServiceImpl implements IPostService {
 
     @Autowired
     private ObjectMapper objectMapper;
-
-
 
     public PromoPostCountDto getPromoProductCount(Integer userId){
         List<Post> postList = postRepository.findAll();
@@ -56,8 +50,6 @@ public class PostServiceImpl implements IPostService {
         throw new BadRequestException("No se ha podido realizar el post");
     }
 
-
-    ///
     private boolean validatePost(Post post){
         return post.getPublishDate() != null
                 && post.getProduct() != null
