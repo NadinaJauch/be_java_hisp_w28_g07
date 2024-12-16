@@ -13,8 +13,7 @@ import java.util.List;
 
 @Repository
 public class UserRepositoryImpl extends BaseRepository<User> implements IUserRepository {
-
-    public UserRepositoryImpl() throws IOException {
+    public UserRepositoryImpl() throws IOException{
         loadDataBase();
     }
 

@@ -1,11 +1,11 @@
 package com.api.social_meli.controller;
 
+import com.api.social_meli.dto.FollowedSellerPostsDto;
 import com.api.social_meli.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.api.social_meli.dto.FollowedSellerPostsDto;
 
 @RestController
 @RequestMapping("/users")
@@ -24,7 +24,7 @@ public class UserController {
         return new ResponseEntity<>(userService.unfollowUser(userId,userIdToUnfollow), HttpStatus.OK);
     }
 
-    @GetMapping("/users/followed/{userId}/list")
+    @GetMapping("/followed/{userId}/list")
     public ResponseEntity<FollowedSellerPostsDto> getFollowedSellersPosts(@PathVariable int userId) {
         return ResponseEntity.ok(userService.getFollowedSellersPosts(userId));
     }
