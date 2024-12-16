@@ -114,24 +114,17 @@ public class UserServiceImpl implements IUserService {
     }
 
     public FollowedSellerPostsDto getFollowedSellersPosts(int userId) {
-        if (userRepository.exists(userId))
+        if (!userRepository.exists(userId))
             throw new NotFoundException("No se encontró ningún usuario con ese ID.");
 
-        List<PostDto> posts = getFollowedSellersByUserId(userId)
+        List<PostDto> posts = userRepository.findAll()
                 .stream()
-                .flatMap(seller -> postService.getPostsByUserId(seller.getUserId()).stream())
-                .filter(post -> post.getDate() != null &&
-                        !post.getDate().isBefore(LocalDate.now().minusWeeks(2)))
+                .filter(x -> x.getFollowers().stream().anyMatch(followerId -> followerId.equals(userId)))
+                .flatMap(x -> postService.getPostsByUserId(x.getId()).stream())
+                .filter(post -> post.getPublishDate() != null &&
+                        !post.getPublishDate().isBefore(LocalDate.now().minusWeeks(2)))
                 .toList();
 
         return new FollowedSellerPostsDto(userId,posts);
-    }
-
-    private List<User> getFollowedSellersByUserId(int userId){
-        List<User> asd = userRepository.findAll();
-        return userRepository.findAll()
-                .stream()
-                .filter(x -> x.getUserId() == userId && x.isSeller())
-                .toList();
     }
 }

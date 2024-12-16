@@ -18,8 +18,9 @@ public class Post implements Identifiable{
     private int postId;
     @JsonProperty("seller")
     private User seller;
-    @JsonProperty("publish_date")
-    private String publishDate;
+    @JsonProperty("date")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate publishDate;
     private Product product;
     @JsonProperty("category_id")
     private int categoryId;

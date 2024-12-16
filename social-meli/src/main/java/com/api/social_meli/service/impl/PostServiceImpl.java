@@ -9,12 +9,12 @@ import com.api.social_meli.repository.IPostRepository;
 import com.api.social_meli.service.IPostService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import java.util.stream.Collectors;
 
 
 @Service
@@ -24,7 +24,7 @@ public class PostServiceImpl implements IPostService {
     IPostRepository postRepository;
 
     @Autowired
-    protected ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     public PromoPostDto getPromoProductCount(Integer userId){
         List<Post> postList = postRepository.findAll();
