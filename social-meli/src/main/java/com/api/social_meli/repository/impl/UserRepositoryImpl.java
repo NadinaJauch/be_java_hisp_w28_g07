@@ -15,18 +15,21 @@ import java.util.List;
 @Repository
 public class UserRepositoryImpl extends BaseRepository<User> implements IUserRepository {
 
-    public UserRepositoryImpl() throws IOException {
+    public UserRepositoryImpl() {
         loadDataBase();
     }
 
-    private void loadDataBase() throws IOException {
-        File file;
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<User> users ;
-
-        file= ResourceUtils.getFile("classpath:users.json");
-        users= objectMapper.readValue(file,new TypeReference<List<User>>(){});
-        this.entities = users;
+    protected void loadDataBase() {
+        try {
+            File file;
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<User> objects;
+            file = ResourceUtils.getFile("classpath:users.json");
+            objects = objectMapper.readValue(file,new TypeReference<List<User>>(){});
+            this.entities = objects;
+        }
+        catch(IOException ignored) {
+        }
     }
 
 

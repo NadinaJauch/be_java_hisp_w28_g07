@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class PostServiceImpl implements IPostService {
     @Autowired
-    private IPostRepository postRepository;
+    protected IPostRepository postRepository;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    protected ObjectMapper objectMapper;
 
 }
