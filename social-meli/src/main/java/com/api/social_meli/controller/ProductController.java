@@ -13,7 +13,6 @@ public class ProductController {
     @Autowired
     IPostService postService;
 
-
     @GetMapping("/promo-post/count")
     public ResponseEntity<?> getPromoProductCount(@RequestParam("user_id") Integer userId) {
         return new ResponseEntity<>(postService.getPromoProductCount(userId), HttpStatus.OK);
