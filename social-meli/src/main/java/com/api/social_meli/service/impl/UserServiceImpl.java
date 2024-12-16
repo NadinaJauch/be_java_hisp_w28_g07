@@ -110,7 +110,7 @@ public class UserServiceImpl implements IUserService {
         if (user == null || userToFollow == null) {
             throw new NotFoundException("Usuario o vendedor no encontrado");
         }
-        if (!user.isSeller()) {
+        if (!userToFollow.isSeller()) {
             throw new BadRequestException("El usuario a seguir no es vendedor");
         }
         // Agrega el usuario vendedor a la lista del usuario seguidor
