@@ -2,8 +2,9 @@ package com.api.social_meli.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-
-public class UserDto {
+@Data
+@AllArgsConstructor
+public class MessageDto {
+    private String message;
 }

@@ -24,3 +24,4 @@ public class Post implements Identifiable{
         return this.postId;
     }
 }
+
