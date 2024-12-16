@@ -16,7 +16,6 @@ public class Product implements Identifiable{
     private String brand ;
     private String colour;
     private String notes;
-
     @Override
     public int getId() {
         return this.productId;

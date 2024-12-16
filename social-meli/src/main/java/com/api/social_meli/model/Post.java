@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.cglib.core.Local;
 
@@ -16,8 +17,7 @@ public class Post implements Identifiable{
     @JsonProperty("post_id")
     private int postId;
     @JsonProperty("seller")
-    private User user;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    private User seller;
     @JsonProperty("publish_date")
     private String publishDate;
     private Product product;
@@ -32,8 +32,4 @@ public class Post implements Identifiable{
     public int getId() {
         return this.postId;
     }
-
-//    public LocalDate getPublishDate(){
-//        return LocalDate.parse(this.publishDate);
-//    }
 }

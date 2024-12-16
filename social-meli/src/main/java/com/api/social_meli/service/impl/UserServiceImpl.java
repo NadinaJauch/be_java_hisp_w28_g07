@@ -49,11 +49,11 @@ public class UserServiceImpl implements IUserService {
         else if (userToUnfollow == null) {
             throw new NotFoundException("Usuario " + userIdToUnfollow + " no encontrado");
         }
-        else if (!user.getFollowed().contains(userToUnfollow)) {
+        else if (!user.getFollowed().contains(userToUnfollow.getUserId())) {
             throw new BadRequestException("El usuario: " + userId + " no sigue al usuario: " + userIdToUnfollow);
         }
-        user.getFollowed().remove(userToUnfollow);
-        userToUnfollow.getFollowers().remove(user);
+        user.getFollowed().remove(userToUnfollow.getUserId());
+        userToUnfollow.getFollowers().remove(user.getUserId());
         return new MessageDto("El usuario se dejo de seguir exitosamente");
     }
 

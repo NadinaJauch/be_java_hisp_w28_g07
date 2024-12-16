@@ -1,6 +1,8 @@
 package com.api.social_meli.repository.impl;
 
+import com.api.social_meli.model.Post;
 import com.api.social_meli.model.Product;
+import com.api.social_meli.model.User;
 import com.api.social_meli.repository.IProductRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,7 +15,10 @@ import java.util.List;
 
 @Repository
 public class ProductRepositoryImpl extends BaseRepository<Product> implements IProductRepository {
-    public ProductRepositoryImpl() throws IOException{
+
+
+    public ProductRepositoryImpl() throws IOException {
+
         loadDataBase();
     }
 
