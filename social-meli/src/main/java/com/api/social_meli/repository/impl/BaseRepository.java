@@ -19,7 +19,7 @@ public class BaseRepository<T extends Identifiable> {
 
     public T create(T entity) {
         entities.add(entity);
-        return entities.getLast();
+        return entities.get(entities.size()-1);
     }
 
 
