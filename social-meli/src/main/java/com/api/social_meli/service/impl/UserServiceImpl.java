@@ -103,15 +103,8 @@ public class UserServiceImpl implements IUserService {
         /** Mapeo la lista usuarios seguidores a DtoFollower  */
 
         List<FollowerDto> followerDtos = searchedUser.getFollowers().stream()
-                .map(followerId -> {
-                    User follower = userRepository.findById(followerId);
-                    if(follower != null){
-                        return new FollowerDto(followerId, follower.getName());
-                    } else{
-                        throw new NotFoundException("No se encontró el follower con id: " + followerId);
-                    }
-                })
-                .collect(Collectors.toList());
+                .map(followerId -> mapper.convertValue(userRepository.findById(followerId), FollowerDto.class))
+                .toList();
 
         /** Seteo la lista de followers con los followersdto  */
 
