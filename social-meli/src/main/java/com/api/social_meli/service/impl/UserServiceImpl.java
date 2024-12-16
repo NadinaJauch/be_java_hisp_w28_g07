@@ -1,10 +1,12 @@
 package com.api.social_meli.service.impl;
 
+import com.api.social_meli.dto.*;
 import com.api.social_meli.dto.FollowedSellerPostsDto;
 import com.api.social_meli.dto.PostDto;
 import com.api.social_meli.dto.GetFollowedsByUserIdDto;
 import com.api.social_meli.dto.MessageDto;
 import com.api.social_meli.dto.GetFollowerCountDto;
+
 import com.api.social_meli.exception.BadRequestException;
 import com.api.social_meli.exception.NotFoundException;
 import com.api.social_meli.model.User;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -81,6 +84,35 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public FollowerListDto getFollowersList(int userId) {
+
+        User searchedUser = userRepository.findById(userId);
+
+        if(searchedUser == null){
+            throw new NotFoundException("No existe un usuario con el id: " + userId );
+        }
+        if(!searchedUser.isSeller()){
+            throw new BadRequestException("El usuario no es un vendedor y no puede tener seguidores");
+        }
+        /** Creo el objeto dtoFollowerList y le asigno el id y el nombre del usuario(vendedor) del que estoy buscando
+         * los seguidores*/
+        FollowerListDto followerListDto = new FollowerListDto();
+        followerListDto.setUserId(searchedUser.getUserId());
+        followerListDto.setUserName(searchedUser.getName());
+
+        /** Mapeo la lista usuarios seguidores a DtoFollower  */
+
+        List<FollowerDto> followerDtos = searchedUser.getFollowers().stream()
+                .map(followerId -> mapper.convertValue(userRepository.findById(followerId), FollowerDto.class))
+                .toList();
+
+        /** Seteo la lista de followers con los followersdto  */
+
+        followerListDto.setFollowers(followerDtos);
+
+        return followerListDto;
+    }
+
     public FollowedSellerPostsDto getFollowedSellersPosts(int userId) {
         if (!userRepository.exists(userId))
             throw new NotFoundException("No se encontró ningún usuario con ese ID.");

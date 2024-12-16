@@ -6,7 +6,6 @@ import com.api.social_meli.model.User;
 import com.api.social_meli.repository.IPostRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.stereotype.Repository;
@@ -14,7 +13,6 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.IOException;
-
 import java.text.SimpleDateFormat;
 import java.util.List;
 

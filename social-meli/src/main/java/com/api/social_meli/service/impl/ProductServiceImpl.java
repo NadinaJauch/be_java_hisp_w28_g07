@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductServiceImpl implements IProductService {
     @Autowired
-    private IProductRepository productRepository;
+    protected IProductRepository productRepository;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    protected ObjectMapper objectMapper;
 
     @Autowired
-    private IPostService postService;
+    protected IPostService postService;
 }

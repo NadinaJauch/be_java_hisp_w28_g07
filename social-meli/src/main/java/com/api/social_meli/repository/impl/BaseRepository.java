@@ -34,6 +34,7 @@ public class BaseRepository<T extends Identifiable> {
         return entities;
     }
 
+
     public void delete(T entity) {
         entities.remove(entity);
     }
