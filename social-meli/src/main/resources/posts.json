@@ -3,9 +3,9 @@
     "post_id": 1,
     "seller": {
       "user_id": 2,
-      "user_name": "Ana Martínez",
-      "followed": [2,3,4,5],
-      "followers": [1],
+      "user_name": "Carlos Gómez",
+      "followed": [],
+      "followers": [1,6],
       "posts": [1]
     },
     "publish_date": "2024-12-15",
@@ -42,6 +42,7 @@
     },
     "category_id": 3,
     "price": 199.99,
+
     "has_promo": true,
     "discount": 15.0
   },
@@ -67,74 +68,6 @@
     "price": 1499.99,
     "has_promo": true,
     "discount": 20.0
-  },
-  {
-    "post_id": 4,
-    "seller": {
-      "user_id": 7,
-      "user_name": "Sofía González",
-      "followed": [],
-      "followers": [],
-      "posts": [4]
-    },
-    "publish_date": "2024-12-09",
-    "product": {
-      "product_id": 7,
-      "name": "Gaming Mouse",
-      "type": "Accessories",
-      "brand": "Razer",
-      "colour": "Black",
-      "notes": "RGB lighting, 16,000 DPI sensor"
-    },
-    "category_id": 3,
-    "price": 59.99,
-    "has_promo": true,
-    "discount": 10.0
-  },
-  {
-    "post_id": 5,
-    "seller": {
-      "user_id": 9,
-      "user_name": "Valentina Ramírez",
-      "followed": [],
-      "followers": [],
-      "posts": [5]
-    },
-    "publish_date": "2024-12-07",
-    "product": {
-      "product_id": 9,
-      "name": "Instant Pot",
-      "type": "Home Appliances",
-      "brand": "Instant Pot",
-      "colour": "Stainless Steel",
-      "notes": "6-quart, 7-in-1 multifunctional cooker"
-    },
-    "category_id": 5,
-    "price": 89.99,
-    "has_promo": true,
-    "discount": 25.0
-  },
-  {
-    "post_id": 6,
-    "seller":     {
-      "user_id": 12,
-      "user_name": "Jorge Morales",
-      "followed": [],
-      "followers": [],
-      "posts": [6]
-    },
-    "publish_date": "2024-12-06",
-    "product": {
-      "product_id": 10,
-      "name": "Vacuum Cleaner",
-      "type": "Home Appliances",
-      "brand": "Dyson",
-      "colour": "Purple",
-      "notes": "Cordless, 60 minutes of runtime"
-    },
-    "category_id": 5,
-    "price": 399.99,
-    "has_promo": false,
-    "discount": 0.0
   }
+
 ]

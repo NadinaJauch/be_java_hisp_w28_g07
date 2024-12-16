@@ -11,25 +11,20 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-
 @Repository
 public class UserRepositoryImpl extends BaseRepository<User> implements IUserRepository {
-
-    public UserRepositoryImpl() throws IOException {
+    public UserRepositoryImpl() throws IOException{
         loadDataBase();
     }
 
-    protected void loadDataBase() {
-        try {
-            File file;
-            ObjectMapper objectMapper = new ObjectMapper();
-            List<User> objects;
-            file = ResourceUtils.getFile("classpath:users.json");
-            objects = objectMapper.readValue(file,new TypeReference<List<User>>(){});
-            this.entities = objects;
-        }
-        catch(IOException ignored) {
-        }
+    private void loadDataBase() throws IOException {
+        File file;
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<User> users ;
+
+        file= ResourceUtils.getFile("classpath:users.json");
+        users= objectMapper.readValue(file,new TypeReference<List<User>>(){});
+        this.entities = users;
     }
 
     public List<Integer> getFollowedsByUserId(int userId) {

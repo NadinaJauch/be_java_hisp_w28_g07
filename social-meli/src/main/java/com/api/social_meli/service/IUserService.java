@@ -1,16 +1,17 @@
 package com.api.social_meli.service;
 
+import com.api.social_meli.dto.FollowedSellerPostsDto;
 
 import com.api.social_meli.dto.GetFollowedsByUserIdDto;
 import com.api.social_meli.dto.MessageDto;
-import com.api.social_meli.dto.getFollowerCountDto;
-import com.api.social_meli.model.User;
+import com.api.social_meli.dto.GetFollowerCountDto;
 
 import java.util.List;
 
 public interface IUserService {
 
-    getFollowerCountDto getFollowerCount(int userId);
+    FollowedSellerPostsDto getFollowedSellersPosts(int userId);
+    GetFollowerCountDto getFollowerCount(int userId);
     MessageDto unfollowUser(int userId, int userIdToUnfollow);
     List<GetFollowedsByUserIdDto> getFollowedsByUserId(int userId);
 

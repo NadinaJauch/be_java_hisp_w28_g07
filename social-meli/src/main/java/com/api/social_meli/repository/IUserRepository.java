@@ -5,7 +5,8 @@ import com.api.social_meli.model.User;
 import java.util.List;
 
 public interface IUserRepository {
-    User create(User user);
+    List<User> findAll();
     User findById(int id);
+    boolean exists(int id);
     List<Integer> getFollowedsByUserId(int userId);
 }
