@@ -63,6 +63,36 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public List<GetFollowedsByUserIdDto> getFollowedsOrderedByName(int userId, String order){
+        //Busco que el usuario exista
+        User user = userRepository.findById(userId);
+        if(user == null) {
+            throw new NotFoundException("Usuario " + userId + " no encontrado");
+        }
+
+        //Traigo los id de los followeds
+        List<Integer> listFolleweds = userRepository.getFollowedsByUserId(userId);
+        if (listFolleweds.isEmpty())
+            throw new NotFoundException("El usuario " + userId + " no sigue a ningún vendedor.");
+
+        //Armo y mappeo la lista de followeds
+        List<User> listaUsuarios = new ArrayList<>();
+        for (int follower : listFolleweds)
+            listaUsuarios.add(userRepository.findById(follower));
+
+        switch (order) {
+            case "name_asc":
+                listaUsuarios.sort((user1, user2)-> user1.getName().compareTo(user2.getName()));
+                break;
+            case "name_desc":
+                listaUsuarios.sort((user1, user2)-> user2.getName().compareTo(user1.getName()));
+                break;
+        }
+
+        return mapper.convertValue(listaUsuarios, new TypeReference<List<GetFollowedsByUserIdDto>>() {});
+    }
+
+    @Override
     public MessageDto unfollowUser(int userId, int userIdToUnfollow) {
         User user = userRepository.findById(userId);
         User userToUnfollow = userRepository.findById(userIdToUnfollow);

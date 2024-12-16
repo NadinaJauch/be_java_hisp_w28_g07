@@ -14,5 +14,5 @@ public interface IUserService {
     GetFollowerCountDto getFollowerCount(int userId);
     MessageDto unfollowUser(int userId, int userIdToUnfollow);
     List<GetFollowedsByUserIdDto> getFollowedsByUserId(int userId);
-
+    List<GetFollowedsByUserIdDto> getFollowedsOrderedByName(int userId, String order);
 }

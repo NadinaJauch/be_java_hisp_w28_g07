@@ -1,5 +1,6 @@
 package com.api.social_meli.repository.impl;
 
+import com.api.social_meli.dto.GetFollowedsByUserIdDto;
 import com.api.social_meli.model.User;
 import com.api.social_meli.repository.IUserRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
