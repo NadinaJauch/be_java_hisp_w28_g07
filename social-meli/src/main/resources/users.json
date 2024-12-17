@@ -17,7 +17,7 @@
       "user_id": 3,
       "user_name": "María López",
       "followed": [],
-      "followers": [1,6],
+      "followers": [1,6,5],
       "posts": [4,5]
     },
     {

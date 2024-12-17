@@ -11,5 +11,5 @@ public interface IUserRepository {
     boolean exists(int id);
     List<Integer> getFollowedsByUserId(int userId);
     User create(User user);
-
+    List<Integer> getFollowersByUserId(int userId);
 }

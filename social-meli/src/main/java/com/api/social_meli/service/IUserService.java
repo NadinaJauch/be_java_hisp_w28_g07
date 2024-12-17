@@ -17,4 +17,5 @@ public interface IUserService {
     List<GetFollowedsByUserIdDto> getFollowedsOrderedByName(int userId, String order);
     boolean followUser(int userId, int userIdToFollow);
     List<UserDto> searchAllUsers();
+    List<FollowerDto> getFollowersOrderedByName (int userId, String order);
 }
