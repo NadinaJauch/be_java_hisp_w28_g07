@@ -5,10 +5,10 @@
       "user_id": 2,
       "user_name": "Carlos Gómez",
       "followed": [],
-      "followers": [1,6],
+      "followers": [1, 6],
       "posts": [1]
     },
-    "date": "2024-12-15",
+    "date": "15-12-2024",
     "product": {
       "product_id": 1,
       "product_name": "Smartphone Galaxy S21",
@@ -28,10 +28,10 @@
       "user_id": 3,
       "user_name": "María López",
       "followed": [],
-      "followers": [1,6],
-      "posts": [4,5]
+      "followers": [1, 6],
+      "posts": [4, 5]
     },
-    "date": "2024-12-13",
+    "date": "13-12-2024",
     "product": {
       "product_id": 3,
       "product_name": "Wireless Headphones",
@@ -54,7 +54,7 @@
       "followers": [1],
       "posts": [2]
     },
-    "date": "2024-12-11",
+    "date": "11-12-2024",
     "product": {
       "product_id": 5,
       "product_name": "4K Ultra HD TV",

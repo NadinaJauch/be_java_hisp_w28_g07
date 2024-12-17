@@ -16,13 +16,13 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Post implements Identifiable, Serializable {
+public class Post implements Identifiable {
     @JsonProperty("post_id")
     private int postId;
     @JsonProperty("seller")
     private User seller;
     @JsonProperty("date")
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate publishDate;
     private Product product;
     @JsonProperty("category")
@@ -31,16 +31,8 @@ public class Post implements Identifiable, Serializable {
     @JsonProperty("has_promo")
     private boolean hasPromo;
     private double discount;
-
     @Override
     public int getId() {
         return this.postId;
     }
-
-  //  public Post(PromoPostDto dto){
-  //      this.postId = dto.getPostId();
-  //      this
-  //  }
-//
-
 }

@@ -42,21 +42,21 @@ public class PostServiceImpl implements IPostService {
     public String createPromoPost(PromoPostDto dto) {
         Post toRegister = objectMapper.convertValue(dto, Post.class);
         toRegister.setSeller(userRepository.findById(dto.getSeller()));
-        if(validatePost(toRegister)){
-
-            postRepository.create(toRegister);
-            return "Post con promo realizado con exito";
-        }
-        throw new BadRequestException("No se ha podido realizar el post");
+        validatePost(toRegister);
+        postRepository.create(toRegister);
+        return "Post con promo realizado con exito";
     }
 
-    private boolean validatePost(Post post){
-        return post.getPublishDate() != null
+    private void validatePost(Post post){
+        if(!(post.getPublishDate() != null
                 && post.getProduct() != null
                 && post.getProduct().getType() != null
                 && post.getProduct().getColour() != null
                 && post.getProduct().getName() != null
-                && post.getProduct().getBrand() != null;
+                && post.getProduct().getBrand() != null
+        )){
+            throw new BadRequestException("No se ha podido realizar el post");
+        }
     }
 
     @Override
