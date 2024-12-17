@@ -1,16 +1,12 @@
 package com.api.social_meli.service.impl;
 
-import com.api.social_meli.dto.PromoPostCountDto;
+import com.api.social_meli.dto.*;
 
-import com.api.social_meli.dto.FollowedSellerPostsDto;
-import com.api.social_meli.dto.PromoPostDto;
 import com.api.social_meli.exception.BadRequestException;
 import com.api.social_meli.exception.NotFoundException;
 import com.api.social_meli.model.Post;
-import com.api.social_meli.dto.PostDto;
-import com.api.social_meli.repository.IPostRepository;
-import com.api.social_meli.repository.IProductRepository;
-import com.api.social_meli.repository.IUserRepository;
+import com.api.social_meli.model.PostCategory;
+import com.api.social_meli.repository.*;
 import com.api.social_meli.repository.IUserRepository;
 import com.api.social_meli.service.IPostService;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -23,6 +19,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PostServiceImpl implements IPostService {
@@ -32,6 +29,9 @@ public class PostServiceImpl implements IPostService {
 
     @Autowired
     private IProductRepository productRepository;
+
+    @Autowired
+    IPostCategoryRepository postCategoryRepository;
 
     @Autowired
     private IUserRepository userRepository;
@@ -113,5 +113,28 @@ public class PostServiceImpl implements IPostService {
                         ? Comparator.comparing(PostDto::getPublishDate).reversed()
                         : Comparator.comparing(PostDto::getPublishDate))
                 .toList();
+    }
+
+    @Override
+    public List<GetByCategoryDto> getPostByCategoryId(int categoryId, double price_min, double price_max) {
+        PostCategory postCategory = postCategoryRepository.findById(categoryId);
+
+        if (postCategory == null){
+            throw new NotFoundException("No hay post categoria con id: " + categoryId);
+        }
+
+        List<Post> postByCategory = postRepository.findAll().stream().filter(p -> p.getCategoryId() == categoryId && p.getPrice() <= price_max && p.getPrice() >= price_min).toList();
+
+        if (postByCategory.isEmpty()){
+            throw new NotFoundException("No se encontraron post con ese id o rango de precio");
+        }
+
+
+        return postByCategory.stream().map(p-> {
+            GetByCategoryDto dto = objectMapper.convertValue(p, GetByCategoryDto.class);
+            dto.setCategory_description(postCategory.getDescription());
+            dto.setUser_id(p.getSeller().getUserId());
+            return dto;
+        } ).toList();
     }
 }
