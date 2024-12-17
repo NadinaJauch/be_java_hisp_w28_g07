@@ -30,7 +30,7 @@
     {
       "user_id": 5,
       "user_name": "Lucía Fernández",
-      "followed": [],
+      "followed": [3],
       "followers": [1],
       "posts": [8,9]
     },
