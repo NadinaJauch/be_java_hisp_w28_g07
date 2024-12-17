@@ -31,7 +31,7 @@ public class PostServiceImpl implements IPostService {
     private IProductRepository productRepository;
 
     @Autowired
-    IPostCategoryRepository postCategoryRepository;
+    private IPostCategoryRepository postCategoryRepository;
 
     @Autowired
     private IUserRepository userRepository;
