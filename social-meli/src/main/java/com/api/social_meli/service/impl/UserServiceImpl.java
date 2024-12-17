@@ -131,8 +131,8 @@ public class UserServiceImpl implements IUserService {
         if (!user.getFollowed().contains(userToUnfollow.getUserId()))
             throw new BadRequestException("El usuario: " + userId + " no sigue al usuario: " + userIdToUnfollow);
 
-        user.getFollowed().remove(userToUnfollow.getUserId());
-        userToUnfollow.getFollowers().remove(user.getUserId());
+        user.getFollowed().remove(Integer.valueOf(userToUnfollow.getUserId()) );
+        userToUnfollow.getFollowers().remove(Integer.valueOf(user.getUserId()));
         return new MessageDto("El usuario se dejo de seguir exitosamente");
     }
 
