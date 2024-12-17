@@ -14,6 +14,8 @@ public interface IUserService {
     MessageDto unfollowUser(int userId, int userIdToUnfollow);
     FollowerListDto getFollowersList(int userId);
     List<GetFollowedsByUserIdDto> getFollowedsByUserId(int userId);
+    List<GetFollowedsByUserIdDto> getFollowedsOrderedByName(int userId, String order);
     boolean followUser(int userId, int userIdToFollow);
     List<UserDto> searchAllUsers();
+    List<FollowerDto> getFollowersOrderedByName (int userId, String order);
 }
