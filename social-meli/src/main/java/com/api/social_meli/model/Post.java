@@ -1,11 +1,11 @@
 package com.api.social_meli.model;
 
-import com.api.social_meli.dto.PostDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 
 @Data
@@ -32,4 +32,8 @@ public class Post implements Identifiable {
         return this.postId;
     }
 
+    @JsonProperty("user_id")
+    public int getUserId(){
+        return seller.getUserId();
+    }
 }
