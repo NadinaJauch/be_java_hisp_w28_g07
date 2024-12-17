@@ -12,7 +12,6 @@ public interface IPostService {
     List<PostDto> getPostsByUserId(int userId);
     PromoPostCountDto getPromoProductCount(Integer userId);
     String createPromoPost(PromoPostDto dto);
-    public String createPost(PostDto dto);
-    PromoPostDto getPromoProductCount(Integer userId);
+    String createPost(PostDto dto);
     FollowedSellerPostsDto getFollowedSellersPosts(int userId, String order);
 }
