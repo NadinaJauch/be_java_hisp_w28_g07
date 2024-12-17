@@ -64,6 +64,7 @@ public class PostServiceImpl implements IPostService {
 
     private void validatePost(Post post){
         if(!(post.getPublishDate() != null
+                && post.getSeller() != null
                 && post.getProduct() != null
                 && post.getProduct().getType() != null
                 && post.getProduct().getColour() != null
