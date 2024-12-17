@@ -19,7 +19,7 @@ public class BaseRepository<T extends Identifiable> {
 
     public T create(T entity) {
         entities.add(entity);
-        return entities.getLast();
+        return entities.get(entities.size()-1);
     }
 
     public T findById(int id) {
@@ -33,7 +33,6 @@ public class BaseRepository<T extends Identifiable> {
     public List<T> findAll() {
         return entities;
     }
-
 
     public void delete(T entity) {
         entities.remove(entity);

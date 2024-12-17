@@ -11,16 +11,16 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Post implements Identifiable{
+public class Post implements Identifiable {
     @JsonProperty("post_id")
     private int postId;
     @JsonProperty("seller")
     private User seller;
     @JsonProperty("date")
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate publishDate;
     private Product product;
-    @JsonProperty("category_id")
+    @JsonProperty("category")
     private int categoryId;
     private double price;
     @JsonProperty("has_promo")
