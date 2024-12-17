@@ -1,5 +1,6 @@
 package com.api.social_meli.repository.impl;
 
+import com.api.social_meli.dto.GetFollowedsByUserIdDto;
 import com.api.social_meli.model.User;
 import com.api.social_meli.repository.IUserRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -50,4 +51,10 @@ public class UserRepositoryImpl extends BaseRepository<User> implements IUserRep
         return super.findAll();
     }
 
+    @Override
+    public List<Integer> getFollowersByUserId(int userId) {
+        return entities.stream()
+                .filter(user -> user.getUserId() == userId)
+                .findFirst().get().getFollowers();
+    }
 }

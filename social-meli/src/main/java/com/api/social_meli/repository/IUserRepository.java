@@ -1,5 +1,6 @@
 package com.api.social_meli.repository;
 
+import com.api.social_meli.dto.GetFollowedsByUserIdDto;
 import com.api.social_meli.model.User;
 
 import java.util.List;
@@ -10,5 +11,5 @@ public interface IUserRepository {
     boolean exists(int id);
     List<Integer> getFollowedsByUserId(int userId);
     User create(User user);
-
+    List<Integer> getFollowersByUserId(int userId);
 }
