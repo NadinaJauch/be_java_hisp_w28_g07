@@ -5,17 +5,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class ProductDto {
     @JsonProperty("product_id")
     private int productId;
     @JsonProperty("product_name")
-    private String productName;
+    private String name;
     private String type;
-    private String brand;
-    private String color;
+    private String brand ;
+    @JsonProperty("color")
+    private String colour;
     private String notes;
 }

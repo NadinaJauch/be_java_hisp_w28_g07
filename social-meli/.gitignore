@@ -13,9 +13,7 @@ target/
 .springBeans
 .sts4-cache
 
-*.DS_Store
-
-### intelliJ IDEA ###
+### IntelliJ IDEA ###
 *.idea
 *.iws
 *.iml
@@ -34,5 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 
-
-
+*.DS_Store

@@ -2,7 +2,7 @@
     {
       "user_id": 1,
       "user_name": "Ana Martínez",
-      "followed": [],
+      "followed": [3,4,5],
       "followers": [],
       "posts": []
     },
@@ -10,34 +10,34 @@
       "user_id": 2,
       "user_name": "Carlos Gómez",
       "followed": [],
-      "followers": [],
-      "posts": []
+      "followers": [6],
+      "posts": [1]
     },
     {
       "user_id": 3,
       "user_name": "María López",
       "followed": [],
-      "followers": [],
-      "posts": []
+      "followers": [1,6],
+      "posts": [4,5]
     },
     {
       "user_id": 4,
       "user_name": "Juan Pérez",
       "followed": [],
-      "followers": [],
-      "posts": []
+      "followers": [1],
+      "posts": [6,7]
     },
     {
       "user_id": 5,
       "user_name": "Lucía Fernández",
       "followed": [],
-      "followers": [],
-      "posts": []
+      "followers": [1],
+      "posts": [8,9]
     },
     {
       "user_id": 6,
       "user_name": "Miguel Rodríguez",
-      "followed": [],
+      "followed": [2,3],
       "followers": [],
       "posts": []
     },
@@ -139,4 +139,4 @@
       "followers": [],
       "posts": []
     }
-  ]
+]

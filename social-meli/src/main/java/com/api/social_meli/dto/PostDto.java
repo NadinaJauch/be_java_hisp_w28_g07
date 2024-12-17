@@ -17,22 +17,13 @@ public class PostDto {
     @JsonProperty("post_id")
     private int postId;
     @JsonProperty("user_id")
-    private Integer seller;
+    private int userId;
     @JsonProperty("date")
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate publishDate;
     private ProductDto product;
     @JsonProperty("category")
     private int categoryId;
     private double price;
-
-    @JsonSetter("date")
-    public void setDateFromJSON(String date){
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            publishDate = LocalDate.parse(date, formatter);
-        }catch (NumberFormatException e){
-            this.publishDate = null;
-        }
-    }
 
 }
