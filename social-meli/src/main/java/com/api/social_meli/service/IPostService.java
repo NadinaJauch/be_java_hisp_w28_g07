@@ -9,7 +9,7 @@ public interface IPostService {
     List<PostDto> getPostsByUserId(int userId);
     PromoPostCountDto getPromoProductCount(Integer userId);
     String createPromoPost(PromoPostDto dto);
-    String createPost(PostDto dto);
+    MessageDto createPost(PostDto dto);
     FollowedSellerPostsDto getFollowedSellersPosts(int userId, String order);
     List<GetByCategoryDto> getPostByCategoryId(int categoryId, double price_min, double price_max);
 }
