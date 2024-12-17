@@ -26,9 +26,6 @@ public class UserController {
 
     @GetMapping("/{userId}/followers/list")
     public ResponseEntity<?> getFollowersList(@PathVariable int userId, @RequestParam (required = false) String order) {
-        if(order == null){
-            return new ResponseEntity<>(userService.getFollowersList(userId), HttpStatus.OK);
-        }
         return new ResponseEntity<>(userService.getFollowersOrderedByName(userId, order), HttpStatus.OK);
     }
 
@@ -39,9 +36,6 @@ public class UserController {
 
     @GetMapping("{userId}/followed/list")
     public ResponseEntity<?> getFollowedsByUserId(@PathVariable int userId, @RequestParam(required = false) String order){
-        if (order == null){
-            return new ResponseEntity<>(userService.getFollowedsByUserId(userId), HttpStatus.OK);
-        }
         return new ResponseEntity<>(userService.getFollowedsOrderedByName(userId, order), HttpStatus.OK);
     }
 

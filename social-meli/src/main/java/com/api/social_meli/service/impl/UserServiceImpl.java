@@ -39,9 +39,8 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public List<FollowerDto> getFollowersOrderedByName(int userId, String order) {
-        //Busco que el usuario exista
-        User user = userRepository.findById(userId);
-        if(user == null) {
+        //Verifica que el usuario exista
+        if(!userRepository.exists(userId)) {
             throw new NotFoundException("Usuario " + userId + " no encontrado");
         }
 
@@ -55,23 +54,23 @@ public class UserServiceImpl implements IUserService {
         for (int follower : listFollewers)
             listaUsuarios.add(userRepository.findById(follower));
 
-        switch (order) {
-            case "name_asc":
-                listaUsuarios.sort((user1, user2)-> user1.getName().compareTo(user2.getName()));
-                break;
-            case "name_desc":
-                listaUsuarios.sort((user1, user2)-> user2.getName().compareTo(user1.getName()));
-                break;
+        if (order != null){
+            switch (order) {
+                case "name_asc":
+                    listaUsuarios.sort((user1, user2)-> user1.getName().compareTo(user2.getName()));
+                    break;
+                case "name_desc":
+                    listaUsuarios.sort((user1, user2)-> user2.getName().compareTo(user1.getName()));
+                    break;
+            }
         }
-
         return mapper.convertValue(listaUsuarios, new TypeReference<List<FollowerDto>>() {});
     }
 
     @Override
     public List<GetFollowedsByUserIdDto> getFollowedsByUserId(int userId) {
-        //Busco que el usuario exista
-        User user = userRepository.findById(userId);
-        if(user == null) {
+        //Verifica que el usuario exista
+        if(userRepository.exists(userId)) {
             throw new NotFoundException("Usuario " + userId + " no encontrado");
         }
 
@@ -90,9 +89,8 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public List<GetFollowedsByUserIdDto> getFollowedsOrderedByName(int userId, String order){
-        //Busco que el usuario exista
-        User user = userRepository.findById(userId);
-        if(user == null) {
+        //Verifica que el usuario exista
+        if(!userRepository.exists(userId)) {
             throw new NotFoundException("Usuario " + userId + " no encontrado");
         }
 
@@ -106,13 +104,15 @@ public class UserServiceImpl implements IUserService {
         for (int follower : listFolleweds)
             listaUsuarios.add(userRepository.findById(follower));
 
-        switch (order) {
-            case "name_asc":
-                listaUsuarios.sort((user1, user2)-> user1.getName().compareTo(user2.getName()));
-                break;
-            case "name_desc":
-                listaUsuarios.sort((user1, user2)-> user2.getName().compareTo(user1.getName()));
-                break;
+        if (order != null){
+            switch (order) {
+                case "name_asc":
+                    listaUsuarios.sort((user1, user2)-> user1.getName().compareTo(user2.getName()));
+                    break;
+                case "name_desc":
+                    listaUsuarios.sort((user1, user2)-> user2.getName().compareTo(user1.getName()));
+                    break;
+            }
         }
 
         return mapper.convertValue(listaUsuarios, new TypeReference<List<GetFollowedsByUserIdDto>>() {});
@@ -139,8 +139,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public FollowerListDto getFollowersList(int userId) {
         User searchedUser = userRepository.findById(userId);
-
-        if(searchedUser == null)
+        if(userRepository.exists(userId))
             throw new NotFoundException("No existe un usuario con el id: " + userId );
 
         if(!searchedUser.isSeller())
