@@ -40,13 +40,16 @@ public class PostServiceImpl implements IPostService {
     ObjectMapper objectMapper;
 
     @Override
-    public String createPost(PostDto dto) {
+    public MessageDto createPost(PostDto dto) {
         Post toRegister = objectMapper.convertValue(dto, Post.class);
-        toRegister.setPostId(postRepository.findAll().size()+1);
+        if(!userRepository.exists(dto.getUserId())){
+            throw new BadRequestException("No existe usuario con este Id");
+        }
         toRegister.setSeller(userRepository.findById(dto.getUserId()));
+        toRegister.setPostId(postRepository.findAll().size()+1);
         validatePost(toRegister);
         postRepository.create(toRegister);
-        return "Post realizado con exito";
+        return new MessageDto("Post realizado con exito");
     }
 
     public PromoPostCountDto getPromoProductCount(Integer userId){
@@ -64,19 +67,22 @@ public class PostServiceImpl implements IPostService {
     @Override
     public String createPromoPost(PromoPostDto dto) {
         Post toRegister = objectMapper.convertValue(dto, Post.class);
+        if(userRepository.exists(dto.getSeller())){
+            throw new BadRequestException("No existe usuario con ese Id");
+        }
         toRegister.setSeller(userRepository.findById(dto.getSeller()));
+        toRegister.setPostId(postRepository.findAll().size()+1);
         validatePost(toRegister);
         postRepository.create(toRegister);
         return "Post con promo realizado con exito";
     }
 
     private void validatePost(Post post){
-        if (post.getPublishDate() == null &&
-                post.getSeller() == null &&
-                post.getProduct() == null &&
-                post.getProduct().getType() == null &&
-                post.getProduct().getColour() == null &&
-                post.getProduct().getName() == null &&
+        if (post.getPublishDate() == null ||
+                post.getProduct() == null ||
+                post.getProduct().getType() == null ||
+                post.getProduct().getColour() == null ||
+                post.getProduct().getName() == null ||
                 post.getProduct().getBrand() == null)
             throw new BadRequestException("No se ha podido realizar el post");
     }
