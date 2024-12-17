@@ -25,10 +25,7 @@ public class ProductController {
     public ResponseEntity<FollowedSellerPostsDto> getFollowedSellersPosts(@PathVariable int userId,
                                                                           @RequestParam (required = false)
                                                                                   String order) {
-        if(order == null){
-            return ResponseEntity.ok(postService.getFollowedSellersPosts(userId));
-        }
-        return new ResponseEntity<>(postService.getProductsSortedByDate(userId, order), HttpStatus.OK);
+        return new ResponseEntity<>(postService.getFollowedSellersPosts(userId, order), HttpStatus.OK);
     }
 
 }

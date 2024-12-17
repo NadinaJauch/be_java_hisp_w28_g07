@@ -8,7 +8,5 @@ import java.util.List;
 public interface IPostService {
     List<PostDto> getPostsByUserId(int userId);
     PromoPostDto getPromoProductCount(Integer userId);
-    FollowedSellerPostsDto getFollowedSellersPosts(int userId);
-    FollowedSellerPostsDto getProductsSortedByDate(int userId, String order);
-
+    FollowedSellerPostsDto getFollowedSellersPosts(int userId, String order);
 }

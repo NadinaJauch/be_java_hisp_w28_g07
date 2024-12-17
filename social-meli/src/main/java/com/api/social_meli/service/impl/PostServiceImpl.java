@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -32,7 +33,6 @@ public class PostServiceImpl implements IPostService {
     @Autowired
     ObjectMapper objectMapper;
 
-
     public PromoPostDto getPromoProductCount(Integer userId){
         List<Post> postList = postRepository.findAll();
         List<Post> postByUser = postList.stream().filter(p-> p.getSeller().getUserId() == userId && p.isHasPromo()).toList();
@@ -42,7 +42,8 @@ public class PostServiceImpl implements IPostService {
         String userName = postByUser.getFirst().getSeller().getName();
         return new PromoPostDto(userId,userName, postByUser.size());
     }
-    public FollowedSellerPostsDto getFollowedSellersPosts(int userId) {
+
+    public FollowedSellerPostsDto getFollowedSellersPosts(int userId, String order) {
         if (!userRepository.exists(userId))
             throw new NotFoundException("No se encontró ningún usuario con ese ID.");
 
@@ -54,36 +55,25 @@ public class PostServiceImpl implements IPostService {
                         !post.getPublishDate().isBefore(LocalDate.now().minusWeeks(2)))
                 .toList();
 
-        return new FollowedSellerPostsDto(userId,posts);
-    }
+        if(order == null)
+            return new FollowedSellerPostsDto(userId, posts);
 
-    @Override
-    public FollowedSellerPostsDto getProductsSortedByDate(int userId, String order) {
-        if(!userRepository.exists(userId)){
-            throw new NotFoundException("No se encontró un usuario con el ID: " + userId);
-        }
+        if(!order.equals("date_desc") && !order.equals("date_asc"))
+            throw new BadRequestException("Tipo de order no válido, ingrese date_asc o date_desc");
 
-        List<PostDto> posts = getFollowedSellersPosts(userId).getPosts();
-
-        List<PostDto> sortedPost;
-
-        if(order.equals("date_asc")){
-            sortedPost = posts.stream()
-                    .sorted(Comparator.comparing(PostDto::getPublishDate))
-                    .toList();
-        } else if(order.equals("date_desc")){
-            sortedPost = posts.stream()
-                    .sorted(Comparator.comparing(PostDto::getPublishDate).reversed())
-                    .toList();
-        } else {
-            throw new BadRequestException("Tipo de order no valida, ingresar date_asc o date_desc");
-        }
-
-        return new FollowedSellerPostsDto(userId,sortedPost);
+        return new FollowedSellerPostsDto(userId, getSortedPost(posts,order));
     }
 
     @Override
     public List<PostDto> getPostsByUserId(int userId) {
         return objectMapper.convertValue(postRepository.findByUserId(userId), new TypeReference<List<PostDto>>() {});
+    }
+
+    private List<PostDto> getSortedPost(List<PostDto> posts, String order){
+        return  posts.stream()
+                .sorted("date_desc".equals(order)
+                        ? Comparator.comparing(PostDto::getPublishDate).reversed()
+                        : Comparator.comparing(PostDto::getPublishDate))
+                .toList();
     }
 }
