@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 
@@ -32,5 +30,10 @@ public class Post implements Identifiable{
     @Override
     public int getId() {
         return this.postId;
+    }
+
+    @JsonProperty("user_id")
+    public int getUserId(){
+        return seller.getUserId();
     }
 }
