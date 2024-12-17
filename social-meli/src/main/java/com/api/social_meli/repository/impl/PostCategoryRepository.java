@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class PostCategoryRepository extends BaseRepository<PostCategory> implements IPostCategoryRepository {
+    public PostCategoryRepository() {
+        loadDataBase("postcategory");
+    }
 }
