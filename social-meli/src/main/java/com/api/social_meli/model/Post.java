@@ -33,4 +33,9 @@ public class Post implements Identifiable{
     public int getId() {
         return this.postId;
     }
+
+    @JsonProperty("user_id")
+    public int getUserId(){
+        return seller.getUserId();
+    }
 }
