@@ -8,7 +8,7 @@
       "followers": [1,6],
       "posts": [1]
     },
-    "publish_date": "2024-12-15",
+    "date": "2024-12-15",
     "product": {
       "product_id": 1,
       "name": "Smartphone Galaxy S21",
@@ -31,7 +31,7 @@
       "followers": [1,6],
       "posts": [4,5]
     },
-    "publish_date": "2024-12-13",
+    "date": "2024-12-13",
     "product": {
       "product_id": 3,
       "name": "Wireless Headphones",
@@ -42,7 +42,6 @@
     },
     "category_id": 3,
     "price": 199.99,
-
     "has_promo": true,
     "discount": 15.0
   },
@@ -55,7 +54,7 @@
       "followers": [1],
       "posts": [2]
     },
-    "publish_date": "2024-12-11",
+    "date": "2024-12-11",
     "product": {
       "product_id": 5,
       "name": "4K Ultra HD TV",
@@ -69,5 +68,4 @@
     "has_promo": true,
     "discount": 20.0
   }
-
 ]

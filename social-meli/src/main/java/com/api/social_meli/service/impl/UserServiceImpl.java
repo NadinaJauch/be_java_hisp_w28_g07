@@ -1,10 +1,6 @@
 package com.api.social_meli.service.impl;
 
-import com.api.social_meli.dto.FollowedSellerPostsDto;
-import com.api.social_meli.dto.PostDto;
-import com.api.social_meli.dto.GetFollowedsByUserIdDto;
-import com.api.social_meli.dto.MessageDto;
-import com.api.social_meli.dto.GetFollowerCountDto;
+import com.api.social_meli.dto.*;
 import com.api.social_meli.exception.BadRequestException;
 import com.api.social_meli.exception.NotFoundException;
 import com.api.social_meli.model.User;
@@ -96,40 +92,86 @@ public class UserServiceImpl implements IUserService {
     public MessageDto unfollowUser(int userId, int userIdToUnfollow) {
         User user = userRepository.findById(userId);
         User userToUnfollow = userRepository.findById(userIdToUnfollow);
-        if(user == null) {
+        if(user == null)
             throw new NotFoundException("Usuario " + userId + " no encontrado");
-        }
-        else if (userToUnfollow == null) {
+
+        if (userToUnfollow == null)
             throw new NotFoundException("Usuario " + userIdToUnfollow + " no encontrado");
-        }
-        else if (!user.getFollowed().contains(userToUnfollow.getUserId())) {
+
+        if (!user.getFollowed().contains(userToUnfollow.getUserId()))
             throw new BadRequestException("El usuario: " + userId + " no sigue al usuario: " + userIdToUnfollow);
-        }
+
         user.getFollowed().remove(userToUnfollow.getUserId());
         userToUnfollow.getFollowers().remove(user.getUserId());
         return new MessageDto("El usuario se dejo de seguir exitosamente");
     }
 
     @Override
+    public FollowerListDto getFollowersList(int userId) {
+        User searchedUser = userRepository.findById(userId);
+
+        if(searchedUser == null)
+            throw new NotFoundException("No existe un usuario con el id: " + userId );
+
+        if(!searchedUser.isSeller())
+            throw new BadRequestException("El usuario no es un vendedor y no puede tener seguidores");
+
+        List<FollowerDto> followerDtos = searchedUser.getFollowers().stream()
+                .map(followerId -> mapper.convertValue(userRepository.findById(followerId), FollowerDto.class))
+                .toList();
+
+        return new FollowerListDto(searchedUser.getId(),searchedUser.getName(),followerDtos);
+    }
+
     public FollowedSellerPostsDto getFollowedSellersPosts(int userId) {
-        if (userRepository.exists(userId))
+        if (!userRepository.exists(userId))
             throw new NotFoundException("No se encontró ningún usuario con ese ID.");
 
-        List<PostDto> posts = getFollowedSellersByUserId(userId)
+        List<PostDto> posts = userRepository.findAll()
                 .stream()
-                .flatMap(seller -> postService.getPostsByUserId(seller.getUserId()).stream())
-                .filter(post -> post.getDate() != null &&
-                        !post.getDate().isBefore(LocalDate.now().minusWeeks(2)))
+                .filter(x -> x.getFollowers().stream().anyMatch(followerId -> followerId.equals(userId)))
+                .flatMap(x -> postService.getPostsByUserId(x.getId()).stream())
+                .filter(post -> post.getPublishDate() != null &&
+                        !post.getPublishDate().isBefore(LocalDate.now().minusWeeks(2)))
                 .toList();
 
         return new FollowedSellerPostsDto(userId,posts);
     }
 
-    private List<User> getFollowedSellersByUserId(int userId){
-        List<User> asd = userRepository.findAll();
-        return userRepository.findAll()
-                .stream()
-                .filter(x -> x.getUserId() == userId && x.isSeller())
+    @Override
+    public boolean followUser(int userId, int userIdToFollow) {
+        User user = userRepository.findById(userId);
+        User userToFollow = userRepository.findById(userIdToFollow);
+
+        if (user == null || userToFollow == null) {
+            throw new NotFoundException("Usuario o vendedor no encontrado");
+        }
+        if (!userToFollow.isSeller()) {
+            throw new BadRequestException("El usuario a seguir no es vendedor");
+        }
+        // Validar si el usuario ya está siguiendo al usuario objetivo
+        if (user.getFollowed().contains(userIdToFollow)) {
+            throw new BadRequestException("Ya estás siguiendo a este usuario");
+        }
+        // Agrega el usuario vendedor a la lista del usuario seguidor
+        user.getFollowed().add(userIdToFollow);
+
+        // Agrega el usuario seguidor a la lista del usuario vendedor
+        if (!userToFollow.getFollowers().contains(userId)) {
+            userToFollow.getFollowers().add(userId);
+        }
+        return true;
+    }
+
+    @Override
+    public List<UserDto> searchAllUsers() {
+        ObjectMapper mapper = new ObjectMapper();
+        List<User> userList = userRepository.findAll();
+        if(userList.isEmpty()){
+            throw new NotFoundException("No se encontró ningun usuario en el sistema.");
+        }
+        return userList.stream()
+                .map(v -> mapper.convertValue(v, UserDto.class))
                 .toList();
     }
 }
