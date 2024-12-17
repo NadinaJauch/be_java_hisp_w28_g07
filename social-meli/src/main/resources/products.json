@@ -1,82 +1,82 @@
 [
   {
     "product_id": 1,
-    "name": "Smartphone Galaxy S21",
+    "product_name": "Smartphone Galaxy S21",
     "type": "Electronics",
     "brand": "Samsung",
-    "colour": "Phantom Gray",
+    "color": "Phantom Gray",
     "notes": "Latest model, 128GB storage"
   },
   {
     "product_id": 2,
-    "name": "Laptop MacBook Pro",
+    "product_name": "Laptop MacBook Pro",
     "type": "Electronics",
     "brand": "Apple",
-    "colour": "Space Gray",
+    "color": "Space Gray",
     "notes": "13-inch, M1 chip, 256GB SSD"
   },
   {
     "product_id": 3,
-    "name": "Wireless Headphones",
+    "product_name": "Wireless Headphones",
     "type": "Accessories",
     "brand": "Sony",
-    "colour": "Black",
+    "color": "Black",
     "notes": "Noise cancellation, 30-hour battery"
   },
   {
     "product_id": 4,
-    "name": "Smartwatch Series 7",
+    "product_name": "Smartwatch Series 7",
     "type": "Electronics",
     "brand": "Apple",
-    "colour": "Silver",
+    "color": "Silver",
     "notes": "42mm, GPS model"
   },
   {
     "product_id": 5,
-    "name": "4K Ultra HD TV",
+    "product_name": "4K Ultra HD TV",
     "type": "Electronics",
     "brand": "LG",
-    "colour": "Black",
+    "color": "Black",
     "notes": "55-inch, OLED, Dolby Vision"
   },
   {
     "product_id": 6,
-    "name": "Bluetooth Speaker",
+    "product_name": "Bluetooth Speaker",
     "type": "Accessories",
     "brand": "JBL",
-    "colour": "Blue",
+    "color": "Blue",
     "notes": "IPX7 waterproof, 12-hour battery"
   },
   {
     "product_id": 7,
-    "name": "Gaming Mouse",
+    "product_name": "Gaming Mouse",
     "type": "Accessories",
     "brand": "Razer",
-    "colour": "Black",
+    "color": "Black",
     "notes": "RGB lighting, 16,000 DPI sensor"
   },
   {
     "product_id": 8,
-    "name": "Electric Toothbrush",
+    "product_name": "Electric Toothbrush",
     "type": "Personal Care",
     "brand": "Oral-B",
-    "colour": "White",
+    "color": "White",
     "notes": "Rechargeable, 3 brushing modes"
   },
   {
     "product_id": 9,
-    "name": "Instant Pot",
+    "product_name": "Instant Pot",
     "type": "Home Appliances",
     "brand": "Instant Pot",
-    "colour": "Stainless Steel",
+    "color": "Stainless Steel",
     "notes": "6-quart, 7-in-1 multifunctional cooker"
   },
   {
     "product_id": 10,
-    "name": "Vacuum Cleaner",
+    "product_name": "Vacuum Cleaner",
     "type": "Home Appliances",
     "brand": "Dyson",
-    "colour": "Purple",
+    "color": "Purple",
     "notes": "Cordless, 60 minutes of runtime"
   }
 ]

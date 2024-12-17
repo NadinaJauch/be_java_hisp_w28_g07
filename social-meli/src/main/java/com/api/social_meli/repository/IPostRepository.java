@@ -7,4 +7,5 @@ import java.util.List;
 public interface IPostRepository {
     List<Post> findAll();
     List<Post> findByUserId(int userId);
+    Post create(Post entity);
 }
