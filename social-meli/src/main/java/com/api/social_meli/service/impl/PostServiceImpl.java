@@ -7,11 +7,13 @@ import com.api.social_meli.exception.NotFoundException;
 import com.api.social_meli.model.Post;
 import com.api.social_meli.dto.PostDto;
 import com.api.social_meli.repository.IPostRepository;
+import com.api.social_meli.repository.IProductRepository;
 import com.api.social_meli.repository.IUserRepository;
 import com.api.social_meli.service.IPostService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,10 +22,23 @@ import java.util.List;
 public class PostServiceImpl implements IPostService {
 
     @Autowired
-    IPostRepository postRepository;
+    private IPostRepository postRepository;
 
     @Autowired
-    IUserRepository userRepository;
+    private IProductRepository productRepository;
+
+    @Autowired
+    private IUserRepository userRepository;
+
+    @Override
+    public String createPost(PostDto dto) {
+        Post toRegister = objectMapper.convertValue(dto, Post.class);
+        toRegister.setPostId(postRepository.findAll().size()+1);
+        toRegister.setSeller(userRepository.findById(dto.getUserId()));
+        validatePost(toRegister);
+        postRepository.create(toRegister);
+        return "Post realizado con exito";
+    }
 
     @Autowired
     private ObjectMapper objectMapper;
