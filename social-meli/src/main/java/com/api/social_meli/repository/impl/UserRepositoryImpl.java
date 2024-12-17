@@ -19,6 +19,7 @@ public class UserRepositoryImpl extends BaseRepository<User> implements IUserRep
                 .findFirst().get().getFollowed();
     }
 
+
     @Override
     public List<Integer> getFollowersByUserId(int userId) {
         return entities.stream()
