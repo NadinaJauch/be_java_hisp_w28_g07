@@ -59,7 +59,7 @@ Se utilizó la clase `BaseRepository` como base para proporcionar métodos comun
 - 3. Obtener un listado de todos los usuarios que siguen a un determinado vendedor (¿Quién me sigue?) - (Pilar Innocenti)
 - 4. Obtener un listado de todos los vendedores a los cuales sigue un determinado usuario (¿A quién sigo?) - (Martin Daniel Simonetti)
 - 5. Dar de alta una nueva publicación. - (Martin Ignacio Romero)
-- 6. Obtener un listado de las publicaciones realizadas en las últimas dos semanas, por los vendedores que un usuario sigue (para esto tener en cuenta ordenamiento por fecha, publicaciones más recientes primero). - (Nadina Ambar Jauch)
+- 6. Obtener un listado de las publicaciones realizadas en las últimas dos semanas, por los vendedores que un usuario sigue (para esto tener en cuenta      ordenamiento por fecha, publicaciones más recientes primero). - (Nadina Ambar Jauch)
 - 7. Poder realizar la acción de “Unfollow” (dejar de seguir) a un determinado vendedor. - (Lisandro Giussani Alo)
 - 8. Alfabético Ascendente y Descendente de los seguidos y lo seguidores - (Martin Daniel Simonetti)
 - 9. Fecha Ascendente y Descendente de los posteos de los vendedores que sigue un usuario - (Pilar Innocenti)
@@ -76,4 +76,6 @@ Se utilizó la clase `BaseRepository` como base para proporcionar métodos comun
 - Martin Ignacio Romero
 - Lisandro Giussani Alo
 - Fernanda Agustina Castaldo
-- Pilar Innocenti 
+- Pilar Innocenti
+
+# Cierre 
