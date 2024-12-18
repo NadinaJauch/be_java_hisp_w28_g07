@@ -8,6 +8,7 @@ Mercado Libre sigue creciendo y para el año que viene  tiene como objetivo empe
 
 - **Java 21 (JDK 21)**
 - **Maven**
+- **Dependencias en pom.xml** 
 
 # Instrucciones para ejecutar el proyecto
 
@@ -31,15 +32,29 @@ Este proyecto maneja los datos del modelo a través de listas, que inicialmente 
 
 El método que se encarga de llenar inicialmente las listas está en el `BaseRepository`, y se ejecuta cada vez que se instancia un repositorio hijo, pasando por parámetro el nombre del archivo correspondiente a la entidad del repositorio.
 
+# Negocio
+
 Para este proyecto se decidieron diferentes cuestiones a tener en cuenta: 
 
-- Un usuario no puede seguir a otro usuario que no es vendedor
+- Un usuario no puede seguir a otro usuario que no es vendedor.
 - Se considera que un usuario es vendedor cuando tiene un posteo realizado o mas.
 - Se creo un método booleano isSeller que indica si un usuario es vendedor.
 
+# Modelo 
+
+Diagrama:
+
+![modelo](https://github.com/NadinaJauch/be_java_hisp_w28_g07/blob/dev/social-meli/src/main/resources/social-meli-model.png)
+
+El user tiene:
+- List<Integer> followedSellers: lista de Integer donde cada elemento representa un id de la entidad User.
+- List<Integer> followers: lista de Integer donde cada elemento representa un id de la entidad User.
+- List<Integer> posts: (publicaciones realizadas por el User), es una lista donde cada elemento representa un id de la entidad Post.
+- List<Integer> favourites: (publicaciones favoritas del usuario), es una lista donde cada elemento representa un id de la entidad Post.
+
 # Pruebas 
 
-Las pruebas para este proyecto se realizan desde Postman, la colección para realizar las mismas se encuentra en la carpeta de resources. 
+Las pruebas para este proyecto se realizan desde Postman, la colección para realizar las mismas se encuentra en la carpeta de resources `src/main/resources`. 
 
 ## Repositorios
 
@@ -55,20 +70,20 @@ Se utilizó la clase `BaseRepository` como base para proporcionar métodos comun
 
 # Endpoints y responsables de su programación 
 
-- 1. Poder realizar la acción de “Follow” (seguir) a un determinado usuario - (Fernanda Agustina Castaldo)
-- 2. Obtener el resultado de la cantidad de usuarios que siguen a un determinado vendedor - (Lisandro Giussani Alo)
-- 3. Obtener un listado de todos los usuarios que siguen a un determinado vendedor (¿Quién me sigue?) - (Pilar Innocenti)
-- 4. Obtener un listado de todos los vendedores a los cuales sigue un determinado usuario (¿A quién sigo?) - (Martin Daniel Simonetti)
-- 5. Dar de alta una nueva publicación. - (Martin Ignacio Romero)
-- 6. Obtener un listado de las publicaciones realizadas en las últimas dos semanas, por los vendedores que un usuario sigue (para esto tener en cuenta      ordenamiento por fecha, publicaciones más recientes primero). - (Nadina Ambar Jauch)
-- 7. Poder realizar la acción de “Unfollow” (dejar de seguir) a un determinado vendedor. - (Lisandro Giussani Alo)
-- 8. Alfabético Ascendente y Descendente de los seguidos y lo seguidores - (Martin Daniel Simonetti)
-- 9. Fecha Ascendente y Descendente de los posteos de los vendedores que sigue un usuario - (Pilar Innocenti)
-- 10. Llevar a cabo la publicación de un nuevo producto en promoción.- (Martin Ignacio Romero)
-- 11. Obtener la cantidad de productos en promoción de un determinado vendedor - (Lisandro Giussani Alo)
-- 12. (Bonus) Obtener posts por id de categoria y rango de precio - (Lisandro Giussani Alo)
-- 13. (Bonus) Marcar post como favorito, y obtener los favoritos de un usuario - (Nadina Ambar Jauch)
-- 14. (Bonus) Traer todos los usuarios - (Fernanda Agustina Castaldo) 
+1. Poder realizar la acción de “Follow” (seguir) a un determinado usuario - (Fernanda Agustina Castaldo)
+2. Obtener el resultado de la cantidad de usuarios que siguen a un determinado vendedor - (Lisandro Giussani Alo)
+3. Obtener un listado de todos los usuarios que siguen a un determinado vendedor (¿Quién me sigue?) - (Pilar Innocenti)
+4. Obtener un listado de todos los vendedores a los cuales sigue un determinado usuario (¿A quién sigo?) - (Martin Daniel Simonetti)
+5. Dar de alta una nueva publicación. - (Martin Ignacio Romero)
+6. Obtener un listado de las publicaciones realizadas en las últimas dos semanas, por los vendedores que un usuario sigue (para esto tener en cuenta      ordenamiento por fecha, publicaciones más recientes primero). - (Nadina Ambar Jauch)
+7. Poder realizar la acción de “Unfollow” (dejar de seguir) a un determinado vendedor. - (Lisandro Giussani Alo)
+8. Alfabético Ascendente y Descendente de los seguidos y lo seguidores - (Martin Daniel Simonetti)
+9. Fecha Ascendente y Descendente de los posteos de los vendedores que sigue un usuario - (Pilar Innocenti)
+10. Llevar a cabo la publicación de un nuevo producto en promoción.- (Martin Ignacio Romero)
+11. Obtener la cantidad de productos en promoción de un determinado vendedor - (Lisandro Giussani Alo)
+12. (Bonus) Obtener posts por id de categoria y rango de precio - (Lisandro Giussani Alo)
+13. (Bonus) Marcar post como favorito, y obtener los favoritos de un usuario - (Nadina Ambar Jauch)
+14. (Bonus) Traer todos los usuarios - (Fernanda Agustina Castaldo) 
 
 # Integrantes 
 
@@ -80,3 +95,5 @@ Se utilizó la clase `BaseRepository` como base para proporcionar métodos comun
 - Pilar Innocenti
 
 # Cierre 
+
+Muchas gracias por interesarse 
