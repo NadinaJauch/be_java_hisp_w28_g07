@@ -1,6 +1,6 @@
 # Este proyecto fue creado en el marco del Bootcamp de JAVA de la Wave 28 de MERCADO LIBRE. API SOCIAL MELI 
 
-- ** Descripción **
+- **Descripción**
   
 Mercado Libre sigue creciendo y para el año que viene  tiene como objetivo empezar a implementar una serie de herramientas que permitan a los compradores y vendedores tener una experiencia totalmente innovadora, en donde el lazo que los una sea mucho más cercano. Es necesaria la presentación de una versión Beta de lo que va a ser conocido como “SocialMeli”, en donde los compradores van a poder seguir a sus vendedores favoritos y enterarse de todas las novedades que los mismos posteen.
 
@@ -54,7 +54,7 @@ Se utilizó la clase `BaseRepository` como base para proporcionar métodos comun
 - 4. Obtener un listado de todos los vendedores a los cuales sigue un determinado usuario (¿A quién sigo?) - (Martin Daniel Simonetti)
 - 5. Dar de alta una nueva publicación. - (Martin Ignacio Romero)
 - 6. Obtener un listado de las publicaciones realizadas en las últimas dos semanas, por los vendedores que un usuario sigue (para esto tener en cuenta ordenamiento por fecha, publicaciones más recientes primero). - (Nadina Ambar Jauch)
-- 7.Poder realizar la acción de “Unfollow” (dejar de seguir) a un determinado vendedor. - (Lisandro Giussani Alo)
+- 7. Poder realizar la acción de “Unfollow” (dejar de seguir) a un determinado vendedor. - (Lisandro Giussani Alo)
 - 8. Alfabético Ascendente y Descendente de los seguidos y lo seguidores - (Martin Daniel Simonetti)
 - 9. Fecha Ascendente y Descendente de los posteos de los vendedores que sigue un usuario - (Pilar Innocenti)
 - 10. Llevar a cabo la publicación de un nuevo producto en promoción.- (Martin Ignacio Romero)
