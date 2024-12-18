@@ -36,10 +36,11 @@ public class PostServiceImpl implements IPostService {
     @Override
     public MessageDto createPost(PostDto dto) {
         Post toRegister = objectMapper.convertValue(dto, Post.class);
-        if(
-                !userRepository.exists(dto.getUserId())
-                || postCategoryRepository.findById(dto.getCategoryId()) == null ){
-            throw new BadRequestException("No se ha podido realizar el post");
+        if(!userRepository.exists(dto.getUserId())){
+            throw new BadRequestException("Este usuario no existe");
+        }
+        if(!postCategoryRepository.exists(dto.getCategoryId())){
+            throw new BadRequestException("Esta categoria no existe");
         }
         toRegister.setSeller(userRepository.findById(dto.getUserId()));
         toRegister.setPostId(postRepository.findAll().size()+1);
@@ -63,8 +64,11 @@ public class PostServiceImpl implements IPostService {
     @Override
     public MessageDto createPromoPost(PromoPostDto dto) {
         Post toRegister = objectMapper.convertValue(dto, Post.class);
-        if(!userRepository.exists(dto.getSeller()) || postCategoryRepository.findById(dto.getCategoryId()) == null ){
-            throw new BadRequestException("No se ha podido realizar el post");
+        if(!userRepository.exists(dto.getSeller())){
+            throw new BadRequestException("Este usuario no existe");
+        }
+        if(!postCategoryRepository.exists(dto.getCategoryId())){
+            throw new BadRequestException("Esta categoria no existe");
         }
         toRegister.setSeller(userRepository.findById(dto.getSeller()));
         toRegister.setPostId(postRepository.findAll().size()+1);

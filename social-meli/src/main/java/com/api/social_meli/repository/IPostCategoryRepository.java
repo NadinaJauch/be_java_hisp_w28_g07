@@ -8,4 +8,5 @@ import java.util.List;
 public interface IPostCategoryRepository {
     List<PostCategory> findAll();
     PostCategory findById(int id);
+    boolean exists(int id);
 }

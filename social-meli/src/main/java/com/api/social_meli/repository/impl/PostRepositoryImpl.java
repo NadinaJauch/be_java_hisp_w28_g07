@@ -9,6 +9,7 @@ import java.util.List;
 @Repository
 public class PostRepositoryImpl extends BaseRepository<Post> implements IPostRepository {
 
+
     public PostRepositoryImpl() {
         loadDataBase("posts");
     }
@@ -19,4 +20,5 @@ public class PostRepositoryImpl extends BaseRepository<Post> implements IPostRep
                 .filter(x -> x.getSeller().getUserId() == userId)
                 .toList();
     }
+
 }
