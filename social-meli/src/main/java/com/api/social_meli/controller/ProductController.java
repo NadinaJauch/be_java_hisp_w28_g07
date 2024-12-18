@@ -5,12 +5,9 @@ import com.api.social_meli.dto.PromoPostDto;
 import com.api.social_meli.dto.FollowedSellerPostsDto;
 import com.api.social_meli.service.IPostService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/products")

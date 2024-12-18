@@ -18,4 +18,6 @@ public interface IUserService {
     boolean followUser(int userId, int userIdToFollow);
     List<UserDto> searchAllUsers();
     List<FollowerDto> getFollowersOrderedByName (int userId, String order);
+    MessageDto favouritePost(FavouritePostRequestDto dto);
+    GetFavouritePostsResponseDto getFavouritePosts(int userId);
 }

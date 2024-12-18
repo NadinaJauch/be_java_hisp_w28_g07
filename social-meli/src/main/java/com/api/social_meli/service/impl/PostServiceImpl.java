@@ -12,23 +12,17 @@ import com.api.social_meli.service.IPostService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class PostServiceImpl implements IPostService {
 
     @Autowired
     private IPostRepository postRepository;
-
-    @Autowired
-    private IProductRepository productRepository;
 
     @Autowired
     private IPostCategoryRepository postCategoryRepository;

@@ -4,15 +4,14 @@ import com.api.social_meli.dto.*;
 import com.api.social_meli.exception.BadRequestException;
 import com.api.social_meli.exception.NotFoundException;
 import com.api.social_meli.model.User;
+import com.api.social_meli.repository.IPostRepository;
 import com.api.social_meli.repository.IUserRepository;
-import com.api.social_meli.service.IPostService;
 import com.api.social_meli.service.IUserService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,16 +22,18 @@ public class UserServiceImpl implements IUserService {
     IUserRepository userRepository;
 
     @Autowired
-    IPostService postService;
+    IPostRepository postRepository;
 
     @Autowired
     ObjectMapper mapper;
+    @Autowired
+    private PostServiceImpl postServiceImpl;
 
     public GetFollowerCountDto getFollowerCount(int userId) {
         User user = userRepository.findById(userId);
-        if(user == null) {
+        if(user == null)
             throw new NotFoundException("Usuario no encontrado");
-        }
+
         int followerCount = user.getFollowers().size();
         return new GetFollowerCountDto(user.getUserId(), user.getName(), followerCount);
     }
@@ -40,14 +41,13 @@ public class UserServiceImpl implements IUserService {
     @Override
     public List<FollowerDto> getFollowersOrderedByName(int userId, String order) {
         //Verifica que el usuario exista
-        if(!userRepository.exists(userId)) {
-            throw new NotFoundException("Usuario " + userId + " no encontrado");
-        }
+        if(!userRepository.exists(userId))
+            throw new NotFoundException("Usuario no encontrado");
 
         //Traigo los id de los followeds
         List<Integer> listFollewers = userRepository.getFollowersByUserId(userId);
         if (listFollewers.isEmpty())
-            throw new NotFoundException("El usuario " + userId + " no sigue a ningún vendedor.");
+            throw new NotFoundException("El usuario no sigue a ningún vendedor.");
 
         //Armo y mappeo la lista de followeds
         List<User> listaUsuarios = new ArrayList<>();
@@ -70,14 +70,13 @@ public class UserServiceImpl implements IUserService {
     @Override
     public List<GetFollowedsByUserIdDto> getFollowedsByUserId(int userId) {
         //Verifica que el usuario exista
-        if(userRepository.exists(userId)) {
-            throw new NotFoundException("Usuario " + userId + " no encontrado");
-        }
+        if(userRepository.exists(userId))
+            throw new NotFoundException("Usuario no encontrado");
 
         //Traigo los id de los followeds
         List<Integer> listFolleweds = userRepository.getFollowedsByUserId(userId);
         if (listFolleweds.isEmpty())
-            throw new NotFoundException("El usuario " + userId + " no sigue a ningún vendedor.");
+            throw new NotFoundException("El usuario no sigue a ningún vendedor.");
 
         //Armo y mappeo la lista de followeds
         List<User> listaUsuarios = new ArrayList<>();
@@ -90,18 +89,17 @@ public class UserServiceImpl implements IUserService {
     @Override
     public List<GetFollowedsByUserIdDto> getFollowedsOrderedByName(int userId, String order){
         //Verifica que el usuario exista
-        if(!userRepository.exists(userId)) {
+        if(!userRepository.exists(userId))
             throw new NotFoundException("Usuario " + userId + " no encontrado");
-        }
 
         //Traigo los id de los followeds
-        List<Integer> listFolleweds = userRepository.getFollowedsByUserId(userId);
-        if (listFolleweds.isEmpty())
+        List<Integer> followeds = userRepository.getFollowedsByUserId(userId);
+        if (followeds.isEmpty())
             throw new NotFoundException("El usuario " + userId + " no sigue a ningún vendedor.");
 
         //Armo y mappeo la lista de followeds
         List<User> listaUsuarios = new ArrayList<>();
-        for (int follower : listFolleweds)
+        for (int follower : followeds)
             listaUsuarios.add(userRepository.findById(follower));
 
         if (order != null){
@@ -123,13 +121,13 @@ public class UserServiceImpl implements IUserService {
         User user = userRepository.findById(userId);
         User userToUnfollow = userRepository.findById(userIdToUnfollow);
         if(user == null)
-            throw new NotFoundException("Usuario " + userId + " no encontrado");
+            throw new NotFoundException("Usuario no encontrado");
 
         if (userToUnfollow == null)
-            throw new NotFoundException("Usuario " + userIdToUnfollow + " no encontrado");
+            throw new NotFoundException("Usuario a seguir no encontrado");
 
         if (!user.getFollowed().contains(userToUnfollow.getUserId()))
-            throw new BadRequestException("El usuario: " + userId + " no sigue al usuario: " + userIdToUnfollow);
+            throw new BadRequestException("Actualmente no sigue a ese usuario");
 
         user.getFollowed().remove(Integer.valueOf(userToUnfollow.getUserId()) );
         userToUnfollow.getFollowers().remove(Integer.valueOf(user.getUserId()));
@@ -158,23 +156,23 @@ public class UserServiceImpl implements IUserService {
         User user = userRepository.findById(userId);
         User userToFollow = userRepository.findById(userIdToFollow);
 
-        if (user == null || userToFollow == null) {
+        if (user == null || userToFollow == null)
             throw new NotFoundException("Usuario o vendedor no encontrado");
-        }
-        if (!userToFollow.isSeller()) {
+
+        if (!userToFollow.isSeller())
             throw new BadRequestException("El usuario a seguir no es vendedor");
-        }
+
         // Validar si el usuario ya está siguiendo al usuario objetivo
-        if (user.getFollowed().contains(userIdToFollow)) {
+        if (user.getFollowed().contains(userIdToFollow))
             throw new BadRequestException("Ya estás siguiendo a este usuario");
-        }
+
         // Agrega el usuario vendedor a la lista del usuario seguidor
         user.getFollowed().add(userIdToFollow);
 
         // Agrega el usuario seguidor a la lista del usuario vendedor
-        if (!userToFollow.getFollowers().contains(userId)) {
+        if (!userToFollow.getFollowers().contains(userId))
             userToFollow.getFollowers().add(userId);
-        }
+
         return true;
     }
 
@@ -182,11 +180,32 @@ public class UserServiceImpl implements IUserService {
     public List<UserDto> searchAllUsers() {
         ObjectMapper mapper = new ObjectMapper();
         List<User> userList = userRepository.findAll();
-        if(userList.isEmpty()){
+        if(userList.isEmpty())
             throw new NotFoundException("No se encontró ningun usuario en el sistema.");
-        }
+
         return userList.stream()
                 .map(v -> mapper.convertValue(v, UserDto.class))
                 .toList();
+    }
+
+    @Override
+    public MessageDto favouritePost(FavouritePostRequestDto dto) {
+        if (!postRepository.exists(dto.getPostId()))
+            throw new NotFoundException("No se encontró ningún post con ese ID.");
+
+        User user = userRepository.findById(dto.getUserId());
+        if (user == null)
+            throw new NotFoundException("No se encontró ningún usuario con ese ID.");
+
+        user.getFavourites().add(dto.getPostId());
+        return new MessageDto("Publicación agregada a favoritos exitosamente");
+    }
+
+    @Override
+    public GetFavouritePostsResponseDto getFavouritePosts(int userId) {
+        if (!userRepository.exists(userId))
+            throw new NotFoundException("No se encontró ningún usuario con ese ID.");
+
+        return new GetFavouritePostsResponseDto(userId, postServiceImpl.getPostsByUserId(userId));
     }
 }
