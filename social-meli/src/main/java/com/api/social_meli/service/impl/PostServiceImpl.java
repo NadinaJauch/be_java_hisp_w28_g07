@@ -42,8 +42,10 @@ public class PostServiceImpl implements IPostService {
     @Override
     public MessageDto createPost(PostDto dto) {
         Post toRegister = objectMapper.convertValue(dto, Post.class);
-        if(!userRepository.exists(dto.getUserId())){
-            throw new BadRequestException("No existe usuario con este Id");
+        if(
+                !userRepository.exists(dto.getUserId())
+                || postCategoryRepository.findById(dto.getCategoryId()) == null ){
+            throw new BadRequestException("No se ha podido realizar el post");
         }
         toRegister.setSeller(userRepository.findById(dto.getUserId()));
         toRegister.setPostId(postRepository.findAll().size()+1);
@@ -65,16 +67,16 @@ public class PostServiceImpl implements IPostService {
     }
 
     @Override
-    public String createPromoPost(PromoPostDto dto) {
+    public MessageDto createPromoPost(PromoPostDto dto) {
         Post toRegister = objectMapper.convertValue(dto, Post.class);
-        if(userRepository.exists(dto.getSeller())){
-            throw new BadRequestException("No existe usuario con ese Id");
+        if(!userRepository.exists(dto.getSeller()) || postCategoryRepository.findById(dto.getCategoryId()) == null ){
+            throw new BadRequestException("No se ha podido realizar el post");
         }
         toRegister.setSeller(userRepository.findById(dto.getSeller()));
         toRegister.setPostId(postRepository.findAll().size()+1);
         validatePost(toRegister);
         postRepository.create(toRegister);
-        return "Post con promo realizado con exito";
+        return new MessageDto("Post con promo realizado con exito");
     }
 
     private void validatePost(Post post){
