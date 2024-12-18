@@ -96,4 +96,4 @@ Se utilizó la clase `BaseRepository` como base para proporcionar métodos comun
 
 # Cierre 
 
-Muchas gracias por interesarse 
+¡Muchas gracias por tomarse el tiempo de ver nuesrto proyecto!  El mismo ha sido un viaje de aprendizaje en equipo. Este proyecto no solo ha mejorado nuestras habilidades técnicas, sino que también nos ha enseñado valores fundamentales de colaboración y comunicación en un entorno de trabajo.
