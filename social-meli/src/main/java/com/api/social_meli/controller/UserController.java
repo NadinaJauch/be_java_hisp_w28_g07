@@ -57,4 +57,10 @@ public class UserController {
     public ResponseEntity<GetFavouritePostsResponseDto> getFavouritePosts(@PathVariable("userId") int userId) {
         return ResponseEntity.ok(userService.getFavouritePosts(userId));
     }
+
+
+    @DeleteMapping("/favourites")
+    public ResponseEntity<?> unfavouritePost(@RequestBody FavouritePostRequestDto request) {
+        return new ResponseEntity<>(userService.unfavouritePost(request), HttpStatus.NO_CONTENT);
+    }
 }
