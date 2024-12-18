@@ -59,8 +59,8 @@ public class UserController {
     }
 
 
-    @DeleteMapping("/favourites")
+    @PostMapping("/unfavourite")
     public ResponseEntity<?> unfavouritePost(@RequestBody FavouritePostRequestDto request) {
-        return new ResponseEntity<>(userService.unfavouritePost(request), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(userService.unfavouritePost(request), HttpStatus.OK);
     }
 }

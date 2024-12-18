@@ -154,7 +154,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public Boolean unfavouritePost(FavouritePostRequestDto dto) {
+    public MessageDto unfavouritePost(FavouritePostRequestDto dto) {
         if (!postRepository.exists(dto.getPostId()))
             throw new NotFoundException("No se encontro el post");
 
@@ -169,7 +169,7 @@ public class UserServiceImpl implements IUserService {
         }
 
         user.getFavourites().remove(Integer.valueOf(dto.getPostId()));
-        return true;
+        return new MessageDto("Post sacado de favoritos correctamente");
 
     }
 
