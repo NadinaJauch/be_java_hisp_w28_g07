@@ -85,9 +85,11 @@ Se utilizó la clase `BaseRepository` como base para proporcionar métodos comun
 9. Fecha Ascendente y Descendente de los posteos de los vendedores que sigue un usuario - (Pilar Innocenti)
 10. Llevar a cabo la publicación de un nuevo producto en promoción.- (Martin Ignacio Romero)
 11. Obtener la cantidad de productos en promoción de un determinado vendedor - (Lisandro Giussani Alo)
-12. (Bonus) Obtener posts por id de categoria y rango de precio - (Lisandro Giussani Alo)
-13. (Bonus) Marcar post como favorito, y obtener los favoritos de un usuario - (Nadina Ambar Jauch)
-14. (Bonus) Traer todos los usuarios - (Fernanda Agustina Castaldo) 
+12. (Bonus) Obtener un listado de productos filtrado por una categoría y rango de precio - (Lisandro Giussani Alo)
+13. (Bonus) Marcar un post de un vendedor como favoritoobtener los favoritos de un usuario - (Nadina Ambar Jauch)
+14. (Bonus) Obtener una lista de los post favoritos de un usuario - (Nadina Ambar Jauch)
+15. (Bonus) Sacar (eliminar) un post de los favoritos de un usuario - (Lisandro Giussani Alo)
+16. (Bonus) Traer todos los usuarios - (Fernanda Agustina Castaldo) 
 
 # Integrantes 
 
