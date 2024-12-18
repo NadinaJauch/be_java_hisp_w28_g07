@@ -114,6 +114,11 @@ public class PostServiceImpl implements IPostService {
     }
 
     @Override
+    public List<PostDto> getPosts() {
+        return objectMapper.convertValue(postRepository.findAll(), new TypeReference<List<PostDto>>() {});
+    }
+
+    @Override
     public List<PostDto> getPostsByUserId(int userId) {
         return objectMapper.convertValue(postRepository.findByUserId(userId), new TypeReference<List<PostDto>>() {});
     }

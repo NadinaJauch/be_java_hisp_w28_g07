@@ -26,14 +26,14 @@ public class Post implements Identifiable {
     @JsonProperty("has_promo")
     private boolean hasPromo;
     private double discount;
+    @JsonProperty("user_id")
+    public int getUserId() { return seller.getUserId(); }
 
     @Override
     public int getId() {
         return this.postId;
     }
 
-    @JsonProperty("user_id")
-    public int getUserId(){
-        return seller.getUserId();
-    }
+    @Override
+    public void setId(int id) { this.postId = id; }
 }

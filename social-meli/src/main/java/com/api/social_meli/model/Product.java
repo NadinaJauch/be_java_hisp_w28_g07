@@ -23,4 +23,7 @@ public class Product implements Identifiable{
     public int getId() {
         return this.productId;
     }
+
+    @Override
+    public void setId(int id) { this.productId = id; }
 }

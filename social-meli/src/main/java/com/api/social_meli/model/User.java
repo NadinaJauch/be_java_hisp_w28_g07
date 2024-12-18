@@ -21,11 +21,10 @@ public class User implements Identifiable{
     private List<Integer> favourites;
 
     @Override
-    public int getId() {
-        return this.userId;
-    }
+    public int getId() { return this.userId; }
 
-    public boolean isSeller(){
-        return !posts.isEmpty();
-    }
+    @Override
+    public void setId(int id) { this.userId = id; }
+
+    public boolean isSeller() { return !posts.isEmpty(); }
 }

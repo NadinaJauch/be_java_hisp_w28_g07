@@ -17,4 +17,7 @@ public class PostCategory implements Identifiable{
     public int getId() {
         return this.postCategoryId;
     }
+
+    @Override
+    public void setId(int id) { this.postCategoryId = id; }
 }
