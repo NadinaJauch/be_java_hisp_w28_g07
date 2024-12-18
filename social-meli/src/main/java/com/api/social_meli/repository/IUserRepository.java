@@ -1,6 +1,5 @@
 package com.api.social_meli.repository;
 
-import com.api.social_meli.dto.GetFollowedsByUserIdDto;
 import com.api.social_meli.model.User;
 
 import java.util.List;
