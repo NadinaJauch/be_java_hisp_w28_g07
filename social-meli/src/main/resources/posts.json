@@ -67,5 +67,51 @@
     "price": 1499.99,
     "has_promo": true,
     "discount": 20.0
+  },
+  {
+    "post_id": 4,
+    "seller": {
+      "user_id": 3,
+      "user_name": "María López",
+      "followed": [],
+      "followers": [1, 6],
+      "posts": [4, 5]
+    },
+    "date": "17-12-2024",
+    "product": {
+      "product_id": 6,
+      "product_name": "Laptop HP Envy",
+      "type": "Electronics",
+      "brand": "HP",
+      "color": "Silver",
+      "notes": "Intel Core i7, 16GB RAM, 512GB SSD"
+    },
+    "category": 1,
+    "price": 1199.99,
+    "has_promo": true,
+    "discount": 12.0
+  },
+  {
+    "post_id": 5,
+    "seller": {
+      "user_id": 3,
+      "user_name": "María López",
+      "followed": [],
+      "followers": [1, 6],
+      "posts": [4, 5]
+    },
+    "date": "01-12-2024",
+    "product": {
+      "product_id": 7,
+      "product_name": "Bluetooth Speaker JBL",
+      "type": "Accessories",
+      "brand": "JBL",
+      "color": "Red",
+      "notes": "Portable, Waterproof, 12-hour battery"
+    },
+    "category": 3,
+    "price": 89.99,
+    "has_promo": false,
+    "discount": 10.0
   }
 ]

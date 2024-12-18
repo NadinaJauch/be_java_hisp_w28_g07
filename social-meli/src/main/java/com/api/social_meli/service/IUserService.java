@@ -11,10 +11,10 @@ public interface IUserService {
 
     GetFollowerCountDto getFollowerCount(int userId);
     MessageDto unfollowUser(int userId, int userIdToUnfollow);
+    FollowerListDto getFollowersOrderedByName(int userId, String order);
     FollowedListDto getFollowedsOrderedByName(int userId, String order);
     boolean followUser(int userId, int userIdToFollow);
     List<UserDto> searchAllUsers();
-    List<FollowerDto> getFollowersOrderedByName (int userId, String order);
     MessageDto favouritePost(FavouritePostRequestDto dto);
     GetFavouritePostsResponseDto getFavouritePosts(int userId);
 }

@@ -54,7 +54,7 @@ public class PostServiceImpl implements IPostService {
                 .filter(p-> p.getSeller().getUserId() == userId && p.isHasPromo())
                 .toList();
         if (postByUser.isEmpty())
-            throw new NotFoundException("No se encontraron publicaciones con productos promocionados para el usuario: " + userId);
+            throw new NotFoundException("El usuario no tiene publicaciones con productos promocionados");
 
         String userName = postByUser.get(0).getSeller().getName();
         return new PromoPostCountDto(userId,userName, postByUser.size());
@@ -123,25 +123,22 @@ public class PostServiceImpl implements IPostService {
     }
 
     @Override
-    public List<GetByCategoryDto> getPostByCategoryId(int categoryId, double price_min, double price_max) {
+    public GetByCategoryResponseDto getPostByCategoryId(int categoryId, double price_min, double price_max) {
         PostCategory postCategory = postCategoryRepository.findById(categoryId);
 
-        if (postCategory == null){
-            throw new NotFoundException("No hay post categoria con id: " + categoryId);
-        }
+        if (postCategory == null)
+            throw new NotFoundException("Categoría invalida");
 
-        List<Post> postByCategory = postRepository.findAll().stream().filter(p -> p.getCategoryId() == categoryId && p.getPrice() <= price_max && p.getPrice() >= price_min).toList();
+        List<Post> postByCategory = postRepository.findAll()
+                .stream()
+                .filter(p -> p.getCategoryId() == categoryId &&
+                        p.getPrice() <= price_max && p.getPrice() >= price_min)
+                .toList();
 
-        if (postByCategory.isEmpty()){
+        if (postByCategory.isEmpty())
             throw new NotFoundException("No se encontraron post con ese id o rango de precio");
-        }
 
-
-        return postByCategory.stream().map(p-> {
-            GetByCategoryDto dto = objectMapper.convertValue(p, GetByCategoryDto.class);
-            dto.setCategory_description(postCategory.getDescription());
-            dto.setUser_id(p.getSeller().getUserId());
-            return dto;
-        } ).toList();
+        List<PostDto> posts = objectMapper.convertValue(postByCategory,new TypeReference<List<PostDto>>(){});
+        return new GetByCategoryResponseDto(postCategory.getDescription(), posts);
     }
 }
