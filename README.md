@@ -1,4 +1,4 @@
-# Este proyecto fue creado en el marco del Bootcamp de JAVA de la Wave 28 de MERCADO LIBRE. API SOCIAL MELI 
+# Este proyecto fue creado en el marco del Bootcamp de JAVA de la Wave 28 de MERCADO LIBRE. - API SOCIAL MELI 
 
 # Descripción
   
