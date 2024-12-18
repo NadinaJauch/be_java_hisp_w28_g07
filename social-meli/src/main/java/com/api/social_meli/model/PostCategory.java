@@ -1,5 +1,6 @@
 package com.api.social_meli.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class PostCategory implements Identifiable{
+    @JsonProperty("post_category_id")
     private int postCategoryId;
     private String description;
 

@@ -1,6 +1,7 @@
 package com.api.social_meli.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.api.social_meli.dto.ProductDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,13 +12,17 @@ import lombok.NoArgsConstructor;
 public class Product implements Identifiable{
     @JsonProperty("product_id")
     private int productId;
+    @JsonProperty("product_name")
     private String name;
     private String type;
     private String brand ;
+    @JsonProperty("color")
     private String colour;
     private String notes;
     @Override
     public int getId() {
         return this.productId;
     }
+
+
 }
