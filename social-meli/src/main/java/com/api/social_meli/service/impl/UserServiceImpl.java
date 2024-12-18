@@ -7,7 +7,6 @@ import com.api.social_meli.model.User;
 import com.api.social_meli.repository.IUserRepository;
 import com.api.social_meli.service.IPostService;
 import com.api.social_meli.service.IUserService;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,84 +37,46 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public List<FollowerDto> getFollowersOrderedByName(int userId, String order) {
+    public FollowerListDto getFollowersOrderedByName(int userId, String order) {
         //Verifica que el usuario exista
-        if(!userRepository.exists(userId)) {
-            throw new NotFoundException("Usuario " + userId + " no encontrado");
-        }
+        User searchedUser = userRepository.findById(userId);
+        if(!userRepository.exists(userId))
+            throw new NotFoundException("No se encontró el usuario.");
 
-        //Traigo los id de los followeds
-        List<Integer> listFollewers = userRepository.getFollowersByUserId(userId);
-        if (listFollewers.isEmpty())
-            throw new NotFoundException("El usuario " + userId + " no sigue a ningún vendedor.");
+        //Verifica si el usuario es un vendedor
+        if(!searchedUser.isSeller())
+            throw new BadRequestException("El usuario no es un vendedor y no puede tener seguidores.");
 
-        //Armo y mappeo la lista de followeds
-        List<User> listaUsuarios = new ArrayList<>();
-        for (int follower : listFollewers)
-            listaUsuarios.add(userRepository.findById(follower));
+        List<FollowDto> followerDtos = searchedUser.getFollowers().stream()
+                .map(followerId -> mapper.convertValue(userRepository.findById(followerId), FollowDto.class))
+                .toList();
 
         if (order != null){
-            switch (order) {
-                case "name_asc":
-                    listaUsuarios.sort((user1, user2)-> user1.getName().compareTo(user2.getName()));
-                    break;
-                case "name_desc":
-                    listaUsuarios.sort((user1, user2)-> user2.getName().compareTo(user1.getName()));
-                    break;
-            }
+            followerDtos = sortList(followerDtos, order);
         }
-        return mapper.convertValue(listaUsuarios, new TypeReference<List<FollowerDto>>() {});
+
+        return new FollowerListDto(searchedUser.getId(),searchedUser.getName(), followerDtos);
     }
 
     @Override
-    public List<GetFollowedsByUserIdDto> getFollowedsByUserId(int userId) {
+    public FollowedListDto getFollowedsOrderedByName(int userId, String order){
         //Verifica que el usuario exista
-        if(userRepository.exists(userId)) {
-            throw new NotFoundException("Usuario " + userId + " no encontrado");
-        }
+        User searchedUser = userRepository.findById(userId);
+        if(!userRepository.exists(userId))
+            throw new NotFoundException("No se encontró el usuario.");
 
-        //Traigo los id de los followeds
-        List<Integer> listFolleweds = userRepository.getFollowedsByUserId(userId);
-        if (listFolleweds.isEmpty())
-            throw new NotFoundException("El usuario " + userId + " no sigue a ningún vendedor.");
-
-        //Armo y mappeo la lista de followeds
-        List<User> listaUsuarios = new ArrayList<>();
-        for (int followed : listFolleweds)
-            listaUsuarios.add(userRepository.findById(followed));
-
-        return mapper.convertValue(listaUsuarios, new TypeReference<List<GetFollowedsByUserIdDto>>() {});
-    }
-
-    @Override
-    public List<GetFollowedsByUserIdDto> getFollowedsOrderedByName(int userId, String order){
-        //Verifica que el usuario exista
-        if(!userRepository.exists(userId)) {
-            throw new NotFoundException("Usuario " + userId + " no encontrado");
-        }
-
-        //Traigo los id de los followeds
-        List<Integer> listFolleweds = userRepository.getFollowedsByUserId(userId);
-        if (listFolleweds.isEmpty())
-            throw new NotFoundException("El usuario " + userId + " no sigue a ningún vendedor.");
-
-        //Armo y mappeo la lista de followeds
-        List<User> listaUsuarios = new ArrayList<>();
-        for (int follower : listFolleweds)
-            listaUsuarios.add(userRepository.findById(follower));
+        List<FollowDto> followedDtos = searchedUser.getFollowed().stream()
+                .map(followedId -> mapper.convertValue(userRepository.findById(followedId), FollowDto.class))
+                .toList();
 
         if (order != null){
-            switch (order) {
-                case "name_asc":
-                    listaUsuarios.sort((user1, user2)-> user1.getName().compareTo(user2.getName()));
-                    break;
-                case "name_desc":
-                    listaUsuarios.sort((user1, user2)-> user2.getName().compareTo(user1.getName()));
-                    break;
-            }
+            followedDtos = sortList(followedDtos, order);
         }
 
-        return mapper.convertValue(listaUsuarios, new TypeReference<List<GetFollowedsByUserIdDto>>() {});
+        if (followedDtos.isEmpty())
+            throw new NotFoundException("El usuario, no sigue a ningún vendedor.");
+
+        return new FollowedListDto(searchedUser.getId(),searchedUser.getName(), followedDtos);
     }
 
     @Override
@@ -135,23 +96,6 @@ public class UserServiceImpl implements IUserService {
         userToUnfollow.getFollowers().remove(Integer.valueOf(user.getUserId()));
         return new MessageDto("El usuario se dejo de seguir exitosamente");
     }
-
-    @Override
-    public FollowerListDto getFollowersList(int userId) {
-        User searchedUser = userRepository.findById(userId);
-        if(userRepository.exists(userId))
-            throw new NotFoundException("No existe un usuario con el id: " + userId );
-
-        if(!searchedUser.isSeller())
-            throw new BadRequestException("El usuario no es un vendedor y no puede tener seguidores");
-
-        List<FollowerDto> followerDtos = searchedUser.getFollowers().stream()
-                .map(followerId -> mapper.convertValue(userRepository.findById(followerId), FollowerDto.class))
-                .toList();
-
-        return new FollowerListDto(searchedUser.getId(),searchedUser.getName(),followerDtos);
-    }
-
 
     @Override
     public boolean followUser(int userId, int userIdToFollow) {
@@ -188,5 +132,18 @@ public class UserServiceImpl implements IUserService {
         return userList.stream()
                 .map(v -> mapper.convertValue(v, UserDto.class))
                 .toList();
+    }
+
+    private List<FollowDto> sortList (List<FollowDto> list, String order){
+        List<FollowDto> sortList = new ArrayList<>(list);
+        switch (order) {
+            case "name_asc":
+                sortList.sort((followed1, followed2) -> followed1.getName().compareTo(followed2.getName()));
+                break;
+            case "name_desc":
+                sortList.sort((followed1, followed2) -> followed2.getName().compareTo(followed1.getName()));
+                break;
+        }
+        return sortList;
     }
 }
