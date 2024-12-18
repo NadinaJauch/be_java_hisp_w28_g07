@@ -51,6 +51,7 @@ Se utilizó la clase `BaseRepository` como base para proporcionar métodos comun
 - **Datos devueltos**: snake_case
 - **Métodos y variables**: camelCase
 - **Nombres de clases**: PascalCase
+- **Fechas**: dd-MM-yyyy (si o si con dos digitos)
 
 # Endpoints y responsables de su programación 
 
