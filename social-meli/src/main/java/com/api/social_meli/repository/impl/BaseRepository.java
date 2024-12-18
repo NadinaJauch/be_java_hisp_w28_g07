@@ -2,6 +2,7 @@ package com.api.social_meli.repository.impl;
 
 import com.api.social_meli.model.Identifiable;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ResourceUtils;
@@ -16,10 +17,13 @@ import java.util.List;
 public class BaseRepository<T extends Identifiable> {
 
     protected List<T> entities = new ArrayList<>();
+    private int counter;
 
     public T create(T entity) {
+        entity.setId(counter);
         entities.add(entity);
-        return entities.get(entities.size()-1);
+        counter++;
+        return entities.getLast();
     }
 
     public T findById(int id) {
@@ -48,9 +52,18 @@ public class BaseRepository<T extends Identifiable> {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.registerModule(new JavaTimeModule()); // para que tome los DateTime
 
-            Class<T> entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]; // una reflexion para obtener el tipo generico de esta clase base
-            file = ResourceUtils.getFile("classpath:" + fileName + ".json");
-            this.entities = objectMapper.readValue(file, objectMapper.getTypeFactory().constructCollectionType(List.class, entityClass));
+            file = ResourceUtils.getFile("classpath:" + fileName + ".json"); // obtencion de archivo
+
+            // una reflexion para obtener el tipo generico de esta clase base
+            Class<T> entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+            CollectionType type = objectMapper.getTypeFactory().constructCollectionType(List.class, entityClass);
+
+            this.entities = objectMapper.readValue(file, type);
+
+            this.counter = entities.stream()
+                    .mapToInt(Identifiable::getId)
+                    .max()
+                    .orElse(0) + 1;
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
