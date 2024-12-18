@@ -99,7 +99,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public boolean followUser(int userId, int userIdToFollow) {
+    public MessageDto followUser(int userId, int userIdToFollow) {
         User user = userRepository.findById(userId);
         User userToFollow = userRepository.findById(userIdToFollow);
 
@@ -122,7 +122,7 @@ public class UserServiceImpl implements IUserService {
         if (!userToFollow.getFollowers().contains(userId))
             userToFollow.getFollowers().add(userId);
 
-        return true;
+        return new MessageDto("El usuario se comenzo a seguir exitosamente");
     }
 
     @Override
