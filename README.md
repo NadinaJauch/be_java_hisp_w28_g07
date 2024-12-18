@@ -56,6 +56,10 @@ El user tiene:
 
 Las pruebas para este proyecto se realizan desde Postman, la colección para realizar las mismas se encuentra en la carpeta de resources `src/main/resources`. 
 
+# Documentacióon 
+
+La documentación del proyecto en donde se encuentan los endpoint y la respuesta de cada uno se encuentra en`src/main/resources`. 
+
 ## Repositorios
 
 Se utilizó la clase `BaseRepository` como base para proporcionar métodos comunes a los repositorios hijos, de forma que estos puedan definir una interfaz con los métodos comunes sin tener que implementar nuevamente los mismos, ya que se encuentran implementados en la clase padre (`Base`).
