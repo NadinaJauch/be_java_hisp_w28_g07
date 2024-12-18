@@ -48,12 +48,12 @@ public class UserController {
         return new ResponseEntity<>(userService.searchAllUsers(), HttpStatus.OK);
     }
 
-    @PostMapping("/users/favourites")
-    public ResponseEntity<MessageDto> favouritePost(FavouritePostRequestDto request) {
+    @PostMapping("/favourites")
+    public ResponseEntity<MessageDto> favouritePost(@RequestBody FavouritePostRequestDto request) {
         return ResponseEntity.ok(userService.favouritePost(request));
     }
 
-    @GetMapping("/users/{userId}/favourites")
+    @GetMapping("/{userId}/favourites")
     public ResponseEntity<GetFavouritePostsResponseDto> getFavouritePosts(@PathVariable("userId") int userId) {
         return ResponseEntity.ok(userService.getFavouritePosts(userId));
     }

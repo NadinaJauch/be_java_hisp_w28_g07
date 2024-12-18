@@ -8,4 +8,5 @@ public interface IPostRepository {
     List<Post> findByUserId(int userId);
     Post create(Post entity);
     boolean exists(int id);
+    Post findById(int id);
 }

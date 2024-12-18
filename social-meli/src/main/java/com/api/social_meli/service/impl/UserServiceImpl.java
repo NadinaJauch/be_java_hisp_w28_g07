@@ -2,6 +2,7 @@ package com.api.social_meli.service.impl;
 
 import com.api.social_meli.dto.*;
 import com.api.social_meli.exception.BadRequestException;
+import com.api.social_meli.exception.ConflictException;
 import com.api.social_meli.exception.NotFoundException;
 import com.api.social_meli.model.User;
 import com.api.social_meli.repository.IPostRepository;
@@ -197,15 +198,23 @@ public class UserServiceImpl implements IUserService {
         if (user == null)
             throw new NotFoundException("No se encontró ningún usuario con ese ID.");
 
+        if (user.getFavourites().stream().anyMatch(x -> x == dto.getPostId()))
+            throw new ConflictException("El post ya está en favoritos");
+
         user.getFavourites().add(dto.getPostId());
         return new MessageDto("Publicación agregada a favoritos exitosamente");
     }
 
     @Override
     public GetFavouritePostsResponseDto getFavouritePosts(int userId) {
-        if (!userRepository.exists(userId))
+        User user = userRepository.findById(userId);
+        if (user == null)
             throw new NotFoundException("No se encontró ningún usuario con ese ID.");
 
-        return new GetFavouritePostsResponseDto(userId, postServiceImpl.getPostsByUserId(userId));
+        List<PostDto> posts = user.getFavourites()
+                .stream()
+                .map(x -> postServiceImpl.getPostById(x))
+                .toList();
+        return new GetFavouritePostsResponseDto(userId, posts);
     }
 }
