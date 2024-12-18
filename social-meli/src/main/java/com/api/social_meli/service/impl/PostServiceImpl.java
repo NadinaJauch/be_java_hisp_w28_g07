@@ -45,10 +45,11 @@ public class PostServiceImpl implements IPostService {
         if(!userRepository.exists(dto.getUserId())){
             throw new BadRequestException("Este usuario no existe");
         }
-        if(postCategoryRepository.findById(dto.getCategoryId()) == null ){
+        if(!postCategoryRepository.exists(dto.getCategoryId())){
             throw new BadRequestException("Esta categoria no existe");
         }
         toRegister.setSeller(userRepository.findById(dto.getUserId()));
+        toRegister.setPostId(postRepository.findAll().size()+1);
         validatePost(toRegister);
         postRepository.create(toRegister);
         return new MessageDto("Post realizado con exito");
@@ -72,10 +73,11 @@ public class PostServiceImpl implements IPostService {
         if(!userRepository.exists(dto.getSeller())){
             throw new BadRequestException("Este usuario no existe");
         }
-        if(postCategoryRepository.findById(dto.getCategoryId()) == null ){
+        if(!postCategoryRepository.exists(dto.getCategoryId())){
             throw new BadRequestException("Esta categoria no existe");
         }
         toRegister.setSeller(userRepository.findById(dto.getSeller()));
+        toRegister.setPostId(postRepository.findAll().size()+1);
         validatePost(toRegister);
         postRepository.create(toRegister);
         return new MessageDto("Post con promo realizado con exito");
