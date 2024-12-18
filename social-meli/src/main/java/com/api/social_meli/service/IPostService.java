@@ -7,6 +7,7 @@ import org.apache.logging.log4j.message.Message;
 import java.util.List;
 
 public interface IPostService {
+    PostDto getPostById(int postId);
     List<PostDto> getPostsByUserId(int userId);
     PromoPostCountDto getPromoProductCount(Integer userId);
     MessageDto createPromoPost(PromoPostDto dto);

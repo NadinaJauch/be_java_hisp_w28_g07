@@ -1,7 +1,6 @@
 package com.api.social_meli.service;
 
 import com.api.social_meli.dto.*;
-import com.api.social_meli.dto.FollowedSellerPostsDto;
 import com.api.social_meli.dto.FollowedListDto;
 import com.api.social_meli.dto.MessageDto;
 import com.api.social_meli.dto.GetFollowerCountDto;
@@ -15,5 +14,7 @@ public interface IUserService {
     FollowedListDto getFollowedsOrderedByName(int userId, String order);
     boolean followUser(int userId, int userIdToFollow);
     List<UserDto> searchAllUsers();
-    FollowerListDto getFollowersOrderedByName (int userId, String order);
+    List<FollowerDto> getFollowersOrderedByName (int userId, String order);
+    MessageDto favouritePost(FavouritePostRequestDto dto);
+    GetFavouritePostsResponseDto getFavouritePosts(int userId);
 }

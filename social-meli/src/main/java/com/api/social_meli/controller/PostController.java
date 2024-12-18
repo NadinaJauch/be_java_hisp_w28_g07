@@ -19,7 +19,5 @@ public class PostController {
     @GetMapping("{categoryId}/category/list/{price_min}/{price_max}")
     public ResponseEntity<?> getCategoryList(@PathVariable int categoryId, @PathVariable double price_min, @PathVariable double price_max) {
             return new ResponseEntity<>(postService.getPostByCategoryId(categoryId, price_min,price_max),HttpStatus.OK);
-
     }
-
 }

@@ -1,6 +1,8 @@
 package com.api.social_meli.controller;
 
-import com.api.social_meli.dto.FollowedSellerPostsDto;
+import com.api.social_meli.dto.FavouritePostRequestDto;
+import com.api.social_meli.dto.GetFavouritePostsResponseDto;
+import com.api.social_meli.dto.MessageDto;
 import com.api.social_meli.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,5 +46,15 @@ public class UserController {
     @GetMapping("/all")
     public ResponseEntity<?> getUsers(){
         return new ResponseEntity<>(userService.searchAllUsers(), HttpStatus.OK);
+    }
+
+    @PostMapping("/favourites")
+    public ResponseEntity<MessageDto> favouritePost(@RequestBody FavouritePostRequestDto request) {
+        return ResponseEntity.ok(userService.favouritePost(request));
+    }
+
+    @GetMapping("/{userId}/favourites")
+    public ResponseEntity<GetFavouritePostsResponseDto> getFavouritePosts(@PathVariable("userId") int userId) {
+        return ResponseEntity.ok(userService.getFavouritePosts(userId));
     }
 }

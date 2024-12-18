@@ -18,6 +18,7 @@ public class User implements Identifiable{
     private List<Integer> followed;
     private List<Integer> followers;
     private List<Integer> posts;
+    private List<Integer> favourites;
 
     @Override
     public int getId() {
