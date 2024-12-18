@@ -102,4 +102,5 @@ Se utilizó la clase `BaseRepository` como base para proporcionar métodos comun
 
 # Cierre 
 
-¡Muchas gracias por tomarse el tiempo de ver nuesrto proyecto!  El mismo ha sido un viaje de aprendizaje en equipo. Este proyecto no solo ha mejorado nuestras habilidades técnicas, sino que también nos ha enseñado valores fundamentales de colaboración y comunicación en un entorno de trabajo.
+Gracias por tomarse el tiempo de ver nuestro proyecto! Fue un viaje de aprendizaje en equipo. Este proyecto no solo  mejoró nuestras habilidades técnicas, sino que también nos enseñó valores fundamentales de colaboración y comunicación en un entorno de trabajo. También nos enseño a combinar el conocimiento individual con la fuerza del trabajo en conjunto para alcanzar metas comunes, a enfrentar desafíos juntos y a adaptarnos a diferentes perspectivas.
+Esperamos que les guste 
