@@ -31,6 +31,12 @@ Este proyecto maneja los datos del modelo a través de listas, que inicialmente 
 
 El método que se encarga de llenar inicialmente las listas está en el `BaseRepository`, y se ejecuta cada vez que se instancia un repositorio hijo, pasando por parámetro el nombre del archivo correspondiente a la entidad del repositorio.
 
+Para este proyecto se decidieron diferentes cuestiones a tener en cuenta: 
+
+- Un usuario no puede seguir a otro usuario que no es vendedor
+- Se considera que un usuario es vendedor cuando tiene un posteo realizado o mas.
+- Se creo un método booleano isSeller que indica si un usuario es vendedor.
+
 # Pruebas 
 
 Las pruebas para este proyecto se realizan desde Postman, la colección para realizar las mismas se encuentra en la carpeta de resources. 
