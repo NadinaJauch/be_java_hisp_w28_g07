@@ -4,6 +4,10 @@
     "description": "Electronics"
   },
   {
+    "post_category_id": 2,
+    "description": "Clothing"
+  },
+  {
     "post_category_id": 3,
     "description": "Accessories"
   }

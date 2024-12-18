@@ -1,3 +1,5 @@
+# Este proyecto fue creado en el marco del Bootcamp de JAVA de la Wave 28 de MERCADO LIBRE.
+
 # Requisitos
 
 - **Java 21 (JDK 21)**
