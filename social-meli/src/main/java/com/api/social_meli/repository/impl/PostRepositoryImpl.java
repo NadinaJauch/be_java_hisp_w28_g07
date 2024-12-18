@@ -9,6 +9,7 @@ import java.util.List;
 @Repository
 public class PostRepositoryImpl extends BaseRepository<Post> implements IPostRepository {
 
+    private static int lastPostId = -1;
     public PostRepositoryImpl() {
         loadDataBase("posts");
     }
@@ -18,5 +19,16 @@ public class PostRepositoryImpl extends BaseRepository<Post> implements IPostRep
         return entities.stream()
                 .filter(x -> x.getSeller().getUserId() == userId)
                 .toList();
+    }
+
+    @Override
+    public Post create(Post entity) {
+        if(lastPostId < 0){
+            lastPostId = findAll().size()+1;
+        }
+        entity.setPostId(lastPostId);
+        lastPostId++;
+        entities.add(entity);
+        return entities.get(entities.size()-1);
     }
 }
