@@ -154,6 +154,26 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public MessageDto unfavouritePost(FavouritePostRequestDto dto) {
+        if (!postRepository.exists(dto.getPostId()))
+            throw new NotFoundException("No se encontro el post");
+
+        User user = userRepository.findById(dto.getUserId());
+
+        if (user == null){
+            throw new NotFoundException("No se encontro el usuario");
+        }
+
+        if(user.getFavourites().stream().noneMatch(x -> x == dto.getPostId())){
+            throw new BadRequestException("El post no esta en favoritos");
+        }
+
+        user.getFavourites().remove(Integer.valueOf(dto.getPostId()));
+        return new MessageDto("Post sacado de favoritos correctamente");
+
+    }
+
+    @Override
     public GetFavouritePostsResponseDto getFavouritePosts(int userId) {
         User user = userRepository.findById(userId);
         if (user == null)
@@ -178,4 +198,6 @@ public class UserServiceImpl implements IUserService {
         }
         return sortList;
     }
+
+
 }

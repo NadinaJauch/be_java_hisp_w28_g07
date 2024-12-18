@@ -16,5 +16,6 @@ public interface IUserService {
     MessageDto followUser(int userId, int userIdToFollow);
     List<UserDto> searchAllUsers();
     MessageDto favouritePost(FavouritePostRequestDto dto);
+    MessageDto unfavouritePost(FavouritePostRequestDto dto);
     GetFavouritePostsResponseDto getFavouritePosts(int userId);
 }
