@@ -75,7 +75,7 @@ public class MockFactoryUtils {
     }
 
     //region USER CREATION
-    public User createUserWithOnlyFollowersAndFolloweds(int userId, List<Integer> followed, List<Integer> followers) {
+    public static User createUserWithOnlyFollowersAndFolloweds(int userId, List<Integer> followed, List<Integer> followers) {
 
         return new User(userId,"test",followed,followers,new ArrayList<>(),new ArrayList<>());
 
