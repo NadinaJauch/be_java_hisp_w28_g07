@@ -80,5 +80,20 @@ public class MockFactoryUtils {
         return new User(userId,"test",followed,followers,new ArrayList<>(),new ArrayList<>());
 
     }
+
+    public static User createUserWithIdAndFollowed(int userId){
+        User user = new User();
+        user.setId(userId);
+        user.setFollowed(new ArrayList<>());
+        return user;
+    }
+
+    public static User createUserWithFollowersAndPost(int userId){
+        User user = new User();
+        user.setId(userId);
+        user.setFollowers(new ArrayList<>());
+        user.setPosts(new ArrayList<>(List.of(1)));
+        return user;
+    }
     //endregion
 }

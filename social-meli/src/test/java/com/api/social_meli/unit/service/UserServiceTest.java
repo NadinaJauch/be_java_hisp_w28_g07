@@ -6,6 +6,7 @@ import com.api.social_meli.model.User;
 import com.api.social_meli.repository.impl.UserRepositoryImpl;
 import com.api.social_meli.service.impl.UserServiceImpl;
 import com.api.social_meli.util.MockFactoryUtils;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -74,6 +75,49 @@ public class UserServiceTest {
 
         //ASSERT
         assertEquals(3,getFollowerCountDto.getFollowers_count());
+    }
+    //endregion
+
+    //region FOLLOW USER
+    @Test
+    @DisplayName("Intentar seguir a usuario existente")
+    void shouldFollowUserSuccessfullyWhenUserExists(){
+        // ARRANGE
+
+        int userId = 2;
+        int userIdToFollow = 3;
+        User userFollower = MockFactoryUtils.createUserWithIdAndFollowed(userId);
+        User userToFollow = MockFactoryUtils.createUserWithFollowersAndPost(userIdToFollow);
+
+        when(userRepository.findById(userId)).thenReturn(userFollower);
+        when(userRepository.findById(userIdToFollow)).thenReturn(userToFollow);
+
+        //ACT
+        MessageDto response = userService.followUser(userId, userIdToFollow);
+
+        //ASSERT
+        assertEquals("El usuario se comenzo a seguir exitosamente", response.getMessage());
+        assertTrue(userFollower.getFollowed().contains(userIdToFollow), "El usuario debería estar en la lista de seguidos.");
+        assertTrue(userToFollow.getFollowers().contains(userId), "El usuario seguidor debería estar en la lista de seguidores.");
+    }
+
+    @Test
+    @DisplayName("Intentar seguir a usuario no existente")
+    void shouldNotFollowUserWhenNonexistentUser(){
+        // ARRANGE
+        int userId = 2;
+        int userIdToFollow = 3000;
+        User userFollower = MockFactoryUtils.createUserWithIdAndFollowed(userId);
+
+        when(userRepository.findById(userId)).thenReturn(userFollower);
+        when(userRepository.findById(userIdToFollow)).thenReturn(null);
+
+        // ACT & ASSERT
+        NotFoundException thrown = assertThrows(NotFoundException.class, () -> {
+            userService.followUser(userId, userIdToFollow);
+        });
+
+        assertEquals("Usuario o vendedor no encontrado", thrown.getMessage());
     }
     //endregion
 }
