@@ -11,6 +11,7 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -72,4 +73,12 @@ public class MockFactoryUtils {
                 .orElseThrow(() -> new RuntimeException("No existe el user con ese id entre los mocks."))
                 .getFollowed();
     }
+
+    //region USER CREATION
+    public User createUserWithOnlyFollowersAndFolloweds(int userId, List<Integer> followed, List<Integer> followers) {
+
+        return new User(userId,"test",followed,followers,new ArrayList<>(),new ArrayList<>());
+
+    }
+    //endregion
 }
