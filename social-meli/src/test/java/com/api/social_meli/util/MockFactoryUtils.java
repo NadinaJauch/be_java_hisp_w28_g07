@@ -11,6 +11,7 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MockFactoryUtils {
@@ -74,4 +75,27 @@ public class MockFactoryUtils {
         user.setPosts(List.of(2,4,5));
         return user;
     }
+
+    //region USER CREATION
+    public static User createUserWithOnlyFollowersAndFolloweds(int userId, List<Integer> followed, List<Integer> followers) {
+
+        return new User(userId,"test",followed,followers,new ArrayList<>(),new ArrayList<>());
+
+    }
+
+    public static User createUserWithIdAndFollowed(int userId){
+        User user = new User();
+        user.setId(userId);
+        user.setFollowed(new ArrayList<>());
+        return user;
+    }
+
+    public static User createUserWithFollowersAndPost(int userId){
+        User user = new User();
+        user.setId(userId);
+        user.setFollowers(new ArrayList<>());
+        user.setPosts(new ArrayList<>(List.of(1)));
+        return user;
+    }
+    //endregion
 }
