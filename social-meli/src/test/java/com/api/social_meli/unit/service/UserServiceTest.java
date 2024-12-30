@@ -1,4 +1,5 @@
 package com.api.social_meli.unit.service;
+
 import com.api.social_meli.dto.GetFollowerCountDto;
 import com.api.social_meli.dto.MessageDto;
 import com.api.social_meli.exception.NotFoundException;
@@ -12,10 +13,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
+
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -26,14 +30,21 @@ public class UserServiceTest {
     @InjectMocks
     private UserServiceImpl userService;
 
-    //region UNFOLLOW USER
+    //region T-0002 - US-0007 UNFOLLOW USER
     @Test
-    void unfollowValidUsersSuccessfullyUnfollows() {
+    void unfollowUser_success() {
         // ARRANGE
         int userId = 1;
         int userIdToUnfollow = 2;
-        User user = MockFactoryUtils.createUserWithOnlyFollowersAndFolloweds(userId, new ArrayList<>(List.of(userIdToUnfollow)), new ArrayList<>());
-        User userToUnfollow = MockFactoryUtils.createUserWithOnlyFollowersAndFolloweds(userIdToUnfollow, new ArrayList<>(),  new ArrayList<>(List.of(userId)));
+
+        User user = new User();
+        user.setId(userId);
+        user.setFollowed(new ArrayList<>(List.of(userIdToUnfollow)));
+
+        User userToUnfollow = new User();
+        userToUnfollow.setId(userIdToUnfollow);
+        userToUnfollow.setFollowers(new ArrayList<>(List.of(userId)));
+
         when(userRepository.findById(userId)).thenReturn(user);
         when(userRepository.findById(userIdToUnfollow)).thenReturn(userToUnfollow);
 
@@ -48,16 +59,18 @@ public class UserServiceTest {
 
     @Test
     void unfollowNotExistentUserThrowsNotFoundEx() {
-        //ARRANGE
+
         int userId = 1;
         int userIdToUnfollow = 23232;
+
         User user = new User();
         user.setId(userId);
+
         when(userRepository.findById(userId)).thenReturn(user);
         when(userRepository.findById(userIdToUnfollow)).thenReturn(null);
 
-        //ACT & ASSERT
         assertThrows(NotFoundException.class, () -> userService.unfollowUser(userId, userIdToUnfollow));
+
     }
     //endregion
 
