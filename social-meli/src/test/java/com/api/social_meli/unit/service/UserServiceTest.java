@@ -24,16 +24,14 @@ public class UserServiceTest {
     @InjectMocks
     private UserServiceImpl userService;
 
-    private final MockFactoryUtils userFactoryUtils = new MockFactoryUtils();
-
     //region UNFOLLOW USER
     @Test
     void unfollowValidUsersSuccessfullyUnfollows() {
         // ARRANGE
         int userId = 1;
         int userIdToUnfollow = 2;
-        User user = userFactoryUtils.createUserWithOnlyFollowersAndFolloweds(userId, new ArrayList<>(List.of(userIdToUnfollow)), new ArrayList<>());
-        User userToUnfollow = userFactoryUtils.createUserWithOnlyFollowersAndFolloweds(userIdToUnfollow, new ArrayList<>(),  new ArrayList<>(List.of(userId)));
+        User user = MockFactoryUtils.createUserWithOnlyFollowersAndFolloweds(userId, new ArrayList<>(List.of(userIdToUnfollow)), new ArrayList<>());
+        User userToUnfollow = MockFactoryUtils.createUserWithOnlyFollowersAndFolloweds(userIdToUnfollow, new ArrayList<>(),  new ArrayList<>(List.of(userId)));
         when(userRepository.findById(userId)).thenReturn(user);
         when(userRepository.findById(userIdToUnfollow)).thenReturn(userToUnfollow);
 
