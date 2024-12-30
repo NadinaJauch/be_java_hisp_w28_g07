@@ -84,19 +84,13 @@ public class UserServiceTest {
     @DisplayName("Intentar seguir a usuario existente")
     void shouldFollowUserSuccessfullyWhenUserExists(){
         // ARRANGE
+
         int userId = 2;
         int userIdToFollow = 3;
+        User userFollower = MockFactoryUtils.createUserWithIdAndFollowed(userId);
+        User userToFollow = MockFactoryUtils.createUserWithFollowersAndPost(userIdToFollow);
 
-        User user = new User();
-        user.setId(userId);
-        user.setFollowed(new ArrayList<>());
-
-        User userToFollow = new User();
-        userToFollow.setId(userIdToFollow);
-        userToFollow.setFollowers(new ArrayList<>());
-        userToFollow.setPosts(new ArrayList<>(List.of(1)));
-
-        when(userRepository.findById(userId)).thenReturn(user);
+        when(userRepository.findById(userId)).thenReturn(userFollower);
         when(userRepository.findById(userIdToFollow)).thenReturn(userToFollow);
 
         //ACT
@@ -104,7 +98,7 @@ public class UserServiceTest {
 
         //ASSERT
         assertEquals("El usuario se comenzo a seguir exitosamente", response.getMessage());
-        assertTrue(user.getFollowed().contains(userIdToFollow), "El usuario debería estar en la lista de seguidos.");
+        assertTrue(userFollower.getFollowed().contains(userIdToFollow), "El usuario debería estar en la lista de seguidos.");
         assertTrue(userToFollow.getFollowers().contains(userId), "El usuario seguidor debería estar en la lista de seguidores.");
     }
 
@@ -114,12 +108,9 @@ public class UserServiceTest {
         // ARRANGE
         int userId = 2;
         int userIdToFollow = 3000;
+        User userFollower = MockFactoryUtils.createUserWithIdAndFollowed(userId);
 
-        User user = new User();
-        user.setId(userId);
-        user.setFollowed(new ArrayList<>());
-
-        when(userRepository.findById(userId)).thenReturn(user);
+        when(userRepository.findById(userId)).thenReturn(userFollower);
         when(userRepository.findById(userIdToFollow)).thenReturn(null);
 
         // ACT & ASSERT
