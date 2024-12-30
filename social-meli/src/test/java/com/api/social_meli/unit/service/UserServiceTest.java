@@ -6,7 +6,6 @@ import com.api.social_meli.exception.NotFoundException;
 import com.api.social_meli.model.User;
 import com.api.social_meli.repository.impl.UserRepositoryImpl;
 import com.api.social_meli.service.impl.UserServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,7 +13,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,7 +30,7 @@ public class UserServiceTest {
 
     //region T-0002 - US-0007 UNFOLLOW USER
     @Test
-    void unfollowUser_success() {
+    void unfollowValidUsersSuccessfullyUnfollows() {
         // ARRANGE
         int userId = 1;
         int userIdToUnfollow = 2;
@@ -58,7 +56,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void unfollowUser_userDoesNotExist() {
+    void unfollowNotExistentUserThrowsNotFoundEx() {
 
         int userId = 1;
         int userIdToUnfollow = 23232;
@@ -72,6 +70,25 @@ public class UserServiceTest {
         assertThrows(NotFoundException.class, () -> userService.unfollowUser(userId, userIdToUnfollow));
 
     }
-
     //endregion
+
+
+    //region T-0007 US-0002 VERIFY FOLLOWER COUNT
+    @Test
+    void getFollowerCountValidUserReturnsCorrectCount(){
+
+        //ARRANGE
+        User user = new User();
+        user.setId(1);
+        user.setFollowers(new ArrayList<>(List.of(2,3,4)));
+
+        when(userRepository.findById(1)).thenReturn(user);
+
+        //ACT
+        GetFollowerCountDto getFollowerCountDto = userService.getFollowerCount(1);
+
+        //ASSERT
+        assertEquals(3,getFollowerCountDto.getFollowers_count());
+    }
+//endregion
 }
