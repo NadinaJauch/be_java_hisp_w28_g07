@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class FavouritePostRequestDto {
     @JsonProperty("user_id")
-    private int userId;
+    private Integer userId;
     @JsonProperty("post_id")
     private int postId;
 }

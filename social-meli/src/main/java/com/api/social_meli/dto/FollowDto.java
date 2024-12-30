@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class FollowDto {
     @JsonProperty("user_id")
-    private int userId;
+    private Integer userId;
     @JsonProperty("user_name")
     private String name;
 }
