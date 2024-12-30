@@ -17,7 +17,7 @@ public class PostDto {
     @JsonProperty("post_id")
     private int postId;
     @JsonProperty("user_id")
-    private int userId;
+    private Integer userId;
     @JsonProperty("date")
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate publishDate;

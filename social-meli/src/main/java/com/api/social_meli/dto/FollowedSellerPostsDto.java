@@ -10,6 +10,6 @@ import java.util.List;
 @Data
 public class FollowedSellerPostsDto {
     @JsonProperty("user_id")
-    private int userId;
+    private Integer userId;
     private List<PostDto> posts;
 }

@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 public class GetFavouritePostsResponseDto {
     @JsonProperty("user_id")
-    private int userId;
+    private Integer userId;
     @JsonProperty("favourite_posts")
     private List<PostDto> favouritePosts;
 }

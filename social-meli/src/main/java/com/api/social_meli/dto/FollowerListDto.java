@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 public class FollowerListDto {
     @JsonProperty("user_id")
-    private int userId;
+    private Integer userId;
     @JsonProperty("user_name")
     private String userName;
     private List<FollowDto> followers;
