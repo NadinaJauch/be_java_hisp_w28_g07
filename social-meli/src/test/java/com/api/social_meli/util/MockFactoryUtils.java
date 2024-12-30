@@ -11,6 +11,7 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MockFactoryUtils {
@@ -55,6 +56,14 @@ public class MockFactoryUtils {
 
         // una reflexion para obtener el tipo generico de esta clase base
         return objectMapper.readValue(file, new TypeReference<List<User>>() {});
+    }
+    //endregion
+
+    //region USER CREATION
+    public static User createUserWithOnlyFollowersAndFolloweds(int userId, List<Integer> followed, List<Integer> followers) {
+
+        return new User(userId,"test",followed,followers,new ArrayList<>(),new ArrayList<>());
+
     }
     //endregion
 }
