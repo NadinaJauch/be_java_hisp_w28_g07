@@ -195,6 +195,8 @@ public class UserServiceImpl implements IUserService {
             case "name_desc":
                 sortList.sort((followed1, followed2) -> followed2.getName().compareTo(followed1.getName()));
                 break;
+            default:
+                throw new BadRequestException("No es un ordenamiento válido.");
         }
         return sortList;
     }
