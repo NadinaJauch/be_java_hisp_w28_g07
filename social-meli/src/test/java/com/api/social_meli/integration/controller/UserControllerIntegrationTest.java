@@ -28,7 +28,7 @@ public class UserControllerIntegrationTest {
     @Test
     public void getFollowerCountOk() throws Exception {
         //ARRANGE
-        int parametroUserId = 3;
+        Integer parametroUserId = 3;
         GetFollowerCountDto dtoEsperado = new GetFollowerCountDto(3,"María López",3);
 
         ResultMatcher statusEsperado= status().isOk();
@@ -45,7 +45,7 @@ public class UserControllerIntegrationTest {
     @Test
     public void getFollowerCountException() throws Exception {
         //ARRANGE
-        int parametroUserId = 60;
+        Integer parametroUserId = 60;
         ExceptionDto dtoEsperado = new ExceptionDto("Usuario no encontrado");
 
         ResultMatcher statusEsperado= status().isNotFound();
