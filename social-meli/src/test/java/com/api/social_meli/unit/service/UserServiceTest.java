@@ -26,6 +26,7 @@ public class UserServiceTest {
     @InjectMocks
     private UserServiceImpl userService;
 
+    //region UNFOLLOW USER
     @Test
     void unfollowValidUsersSuccessfullyUnfollows() {
         // ARRANGE
