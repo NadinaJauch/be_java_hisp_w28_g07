@@ -32,7 +32,7 @@ public class UserServiceTest {
 
     //region T-0002 - US-0007 UNFOLLOW USER
     @Test
-    void unfollowUser_success() {
+    void unfollowValidUsersSuccessfullyUnfollows() {
         // ARRANGE
         int userId = 1;
         int userIdToUnfollow = 2;
@@ -58,7 +58,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void unfollowUser_userDoesNotExist() {
+    void unfollowNotExistentUserThrowsNotFoundEx() {
 
         int userId = 1;
         int userIdToUnfollow = 23232;
@@ -76,10 +76,10 @@ public class UserServiceTest {
     //endregion
 
 
-//region T-0007 US-0002 VERIFY FOLLOWER COUNT
+    //region T-0007 US-0002 VERIFY FOLLOWER COUNT
 
     @Test
-    void verifyFolloweCount(){
+    void getFollowerCountValidUserReturnsCorrectCount(){
 
         //ARRANGE
         User user = new User();
