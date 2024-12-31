@@ -59,6 +59,7 @@ public class MockFactoryUtils {
     }
     //endregion
 
+    //region GET FOLLOWS ORDER ERROR
     public static User getUserWithFolloweds(){
         User user = new User();
         user.setUserId(1);
@@ -75,6 +76,7 @@ public class MockFactoryUtils {
         user.setPosts(List.of(2,4,5));
         return user;
     }
+    //endregion
 
     //region USER CREATION
     public static User createUserWithOnlyFollowersAndFolloweds(int userId, List<Integer> followed, List<Integer> followers) {

@@ -1,9 +1,7 @@
 package com.api.social_meli.unit.service;
-import com.api.social_meli.dto.GetFollowerCountDto;
-import com.api.social_meli.dto.MessageDto;
+import com.api.social_meli.dto.*;
 import com.api.social_meli.exception.NotFoundException;
 import com.api.social_meli.model.User;
-import com.api.social_meli.repository.impl.UserRepositoryImpl;
 import com.api.social_meli.service.impl.UserServiceImpl;
 import com.api.social_meli.util.MockFactoryUtils;
 import org.junit.jupiter.api.DisplayName;
@@ -14,6 +12,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import static java.util.Optional.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import com.api.social_meli.exception.BadRequestException;
@@ -50,6 +51,23 @@ public class UserServiceTest {
     }
 
     @Test
+    @DisplayName("Obtener Followeds orden válido.")
+    public void getFollowedsOrderedByNameValidOrderThrowException(){
+        //Arrange
+        String order = "name_asc";
+        User user = MockFactoryUtils.getUserWithFolloweds();
+
+        //Act
+        Mockito.when(userRepository.findById(user.getUserId())).thenReturn(user);
+        Mockito.when(userRepository.exists(user.getUserId())).thenReturn(true);
+        Mockito.when(mapper.convertValue(userRepository.findById(2), FollowDto.class)).thenReturn(new FollowDto(2,""));
+        FollowedListDto result = userService.getFollowedsOrderedByName(user.getUserId(), order);
+
+        //Assert
+        Assertions.assertEquals(3, result.getFollowed().size());
+    }
+
+    @Test
     @DisplayName("Obtener Followers orden inválido.")
     public void getFollowersOrderedByNameInvalidOrderThrowException(){
         //Arrange
@@ -63,8 +81,24 @@ public class UserServiceTest {
         //Assert
         Assertions.assertThrows(BadRequestException.class, ()->userService.getFollowersOrderedByName(user.getUserId(), order));
     }
-    //endregion
 
+    @Test
+    @DisplayName("Obtener Followers orden válido.")
+    public void getFollowersOrderedByNameValidOrderThrowException(){
+        //Arrange
+        String order = "name_desc";
+        User user = MockFactoryUtils.getUserWithFollowersAndPost();
+
+        //Act
+        Mockito.when(userRepository.findById(user.getUserId())).thenReturn(user);
+        Mockito.when(userRepository.exists(user.getUserId())).thenReturn(true);
+        Mockito.when(mapper.convertValue(userRepository.findById(1), FollowDto.class)).thenReturn(new FollowDto(1,""));
+        FollowerListDto result = userService.getFollowersOrderedByName(user.getUserId(), order);
+
+        //Assert
+        Assertions.assertEquals(3, result.getFollowers().size());
+    }
+    //endregion
 
     //region UNFOLLOW USER
     @Test
