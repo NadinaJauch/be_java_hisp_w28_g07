@@ -20,6 +20,15 @@ public class ProductController {
     public ResponseEntity<?> getPromoProductCount(@RequestParam("user_id") Integer userId) {
         return new ResponseEntity<>(postService.getPromoProductCount(userId), HttpStatus.OK);
     }
+
+    /**
+     * USER STORY 0006: Obtiene un listado de las publicaciones realizadas por los vendedores que
+     * un usuario sigue en las últimas dos semanas
+     *
+     * @param userId Usuario cuyos seguidores hay que verificar publicaciones
+     * @param order Establece orden ascendiente o descendiente
+     * @return 200 OK, Lista de posts generados por los vendedores que sigue el usuario mandado
+     */
     @GetMapping("/followed/{userId}/list")
     public ResponseEntity<FollowedSellerPostsDto> getFollowedSellersPosts(@PathVariable int userId,
                                                                           @RequestParam (required = false)
@@ -32,6 +41,11 @@ public class ProductController {
         return new ResponseEntity<>(postService.createPromoPost(dto), HttpStatus.OK);
     }
 
+    /**
+     * USER STORY 0005: Da de alta a un post
+     * @param dto Datos de la publicacion a generar
+     * @return 200 OK, Mensaje de publicacion con exito
+     */
     @PostMapping("/post")
     public ResponseEntity<?> createPost(@RequestBody PostDto dto) {
         return new ResponseEntity<>(postService.createPost(dto), HttpStatus.OK);
