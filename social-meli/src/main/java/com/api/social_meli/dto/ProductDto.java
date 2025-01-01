@@ -14,10 +14,10 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @Data
 public class ProductDto {
-    @Min(value = -1, message = "El id debe ser mayor a cero")
-    //TODO: Ints por ser primitivos no pueden ser nulls, siempre seran ceros al no tener un valor declarado. Mencionar al team de que existe la chance de que haya que refactorizar todos los ints de DTOs a Integers.
+    @Min(value = 0, message = "El id debe ser mayor a cero")
+    @NotBlank
     @JsonProperty("product_id")
-    private int productId;
+    private Integer productId;
     @NotBlank(message = "El campo no puede estar vacio")
     @Size(min = 0, max = 40, message = "La longitud no puede superar los 40 caracteres")
     @Pattern(regexp = "^[a-zA-Z0-9 ]*$", message = "El campo no puede poseer caracteres especiales")
