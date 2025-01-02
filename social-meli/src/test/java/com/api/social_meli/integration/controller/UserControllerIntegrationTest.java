@@ -5,7 +5,7 @@ import com.api.social_meli.dto.FavouritePostRequestDto;
 import com.api.social_meli.dto.GetFollowerCountDto;
 import com.api.social_meli.dto.MessageDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -137,4 +137,45 @@ public class UserControllerIntegrationTest {
 
     //endregion
 
+    //region FOLLOW USER
+    @Test
+    @DisplayName("Seguir usuario exitosamente")
+    public void followUserOk() throws Exception {
+        // ARRANGE
+        Integer userId = 2;
+        Integer userIdToFollow = 3;
+
+        ResultMatcher statusExpected = status().isOk();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(new MessageDto("El usuario se comenzo a seguir exitosamente")));
+
+        // ACT && ASSERT
+        mockMvc.perform(post("/users/{userId}/follow/{userIdToFollow}", userId, userIdToFollow))
+                .andExpectAll(
+                        statusExpected,
+                        contentTypeExpected,
+                        bodyExpected
+                ).andDo(print());
+    }
+
+    @Test
+    @DisplayName("Seguir usuario inexistente")
+    public void followUserNotFoundException() throws Exception {
+        // ARRANGE
+        Integer userId = 2;
+        Integer userIdToFollow = 3000;
+
+        ResultMatcher statusExpected = status().isNotFound();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(new MessageDto("Usuario o vendedor no encontrado")));
+
+        // ACT && ASSERT
+        mockMvc.perform(post("/users/{userId}/follow/{userIdToFollow}", userId, userIdToFollow))
+                .andExpectAll(
+                        statusExpected,
+                        contentTypeExpected,
+                        bodyExpected
+                ).andDo(print());
+    }
+    //endregion
 }
