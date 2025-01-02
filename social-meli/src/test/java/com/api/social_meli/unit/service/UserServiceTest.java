@@ -68,7 +68,6 @@ public class UserServiceTest {
     //endregion
 
     //region VERIFY FOLLOWER COUNT
-
     @Test
     void getFollowerCountValidUserReturnsCorrectCount(){
         //ARRANGE
