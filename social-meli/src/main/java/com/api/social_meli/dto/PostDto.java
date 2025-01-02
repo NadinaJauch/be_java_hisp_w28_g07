@@ -33,7 +33,8 @@ public class PostDto {
     private LocalDate publishDate;
     @Valid
     private ProductDto product;
-    @Min(value = 1, message = "El campo 'category' no puede estar vacio")
+    @Min(value = 1, message = "El campo 'category' debe ser mayor que cero")
+    @NotNull(message = "El campo 'category' no puede estar vacio")
     @JsonProperty("category")
     private int categoryId;
     private double price;
