@@ -71,11 +71,12 @@ public class UserServiceImpl implements IUserService {
                 .map(followedId -> mapper.convertValue(userRepository.findById(followedId), FollowDto.class))
                 .toList();
 
-        if (order != null)
-            followedDtos = sortList(followedDtos, order);
-
         if (followedDtos.isEmpty())
             throw new NotFoundException("El usuario, no sigue a ningún vendedor.");
+
+        if (order != null) {
+            followedDtos = sortList(followedDtos, order);
+        }
 
         return new FollowedListDto(searchedUser.getId(),searchedUser.getName(), followedDtos);
     }
@@ -195,9 +196,9 @@ public class UserServiceImpl implements IUserService {
             case "name_desc":
                 sortList.sort((followed1, followed2) -> followed2.getName().compareTo(followed1.getName()));
                 break;
+            default:
+                throw new BadRequestException("No es un ordenamiento válido.");
         }
         return sortList;
     }
-
-
 }
