@@ -23,17 +23,17 @@ import java.time.format.DateTimeFormatter;
 public class PostDto {
     @JsonProperty("post_id")
     private int postId;
-    @Min(value = 1, message = "El id debe ser mayor a cero")
-    @NotNull(message = "El id no puede estar vacio")
+    @Min(value = 1, message = "El 'user_id' debe ser mayor a cero")
+    @NotNull(message = "El 'user_id' no puede estar vacio")
     @JsonProperty("user_id")
     private Integer userId;
-    @NotNull(message = "La fecha no puede estar vacía")
+    @NotNull(message = "La fecha en 'date' no puede estar vacía")
     @JsonProperty("date")
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate publishDate;
     @Valid
     private ProductDto product;
-    @Min(value = 0, message = "El campo no puede estar vacio")
+    @Min(value = 1, message = "El campo 'category' no puede estar vacio")
     @JsonProperty("category")
     private int categoryId;
     private double price;
