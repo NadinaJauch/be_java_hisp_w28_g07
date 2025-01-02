@@ -1,5 +1,6 @@
 package com.api.social_meli.util;
 
+import com.api.social_meli.dto.FollowDto;
 import com.api.social_meli.model.Post;
 import com.api.social_meli.model.PostCategory;
 import com.api.social_meli.model.Product;
@@ -79,6 +80,48 @@ public class MockFactoryUtils {
         user.setFollowers(new ArrayList<>());
         user.setPosts(new ArrayList<>(List.of(1)));
         return user;
+    }
+    //endregion
+
+    //region GET FOLLOWS ORDER ERROR
+    public static User getUserWithFolloweds(){
+        User user = new User();
+        user.setUserId(1);
+        user.setName("Ana Martínez");
+        user.setFollowed(List.of(3,5,4));
+        return user;
+    }
+
+    public static User getUserWithFollowersAndPost(){
+        User user = new User();
+        user.setUserId(3);
+        user.setName("María López");
+        user.setFollowers(List.of(1,5,6));
+        user.setPosts(List.of(2,4,5));
+        return user;
+    }
+    //endregion
+
+    //region GET FOLLOW SORTED LIST
+    public static User createUserWithIdNameAndFolloweds(int userId, String name, List<Integer> followeds){
+        User user = new User();
+        user.setId(userId);
+        user.setName(name);
+        user.setFollowed(followeds);
+        return user;
+    }
+
+    public static User createUserWithIdNameFollowersAndPost(int userId, String name, List<Integer> followers, List<Integer> posts){
+        User user = new User();
+        user.setId(userId);
+        user.setName(name);
+        user.setFollowers(followers);
+        user.setPosts(posts);
+        return user;
+    }
+
+    public static FollowDto convertUserToFollowDto (User user){
+        return new FollowDto(user.getUserId(), user.getName());
     }
     //endregion
 }
