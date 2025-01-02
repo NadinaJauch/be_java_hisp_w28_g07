@@ -30,34 +30,34 @@ public class UserControllerIntegrationTest {
     @Test
     public void getFollowerCountOk() throws Exception {
         //ARRANGE
-        Integer parametroUserId = 3;
-        GetFollowerCountDto dtoEsperado = new GetFollowerCountDto(3,"María López",3);
+        Integer userId = 3;
+        GetFollowerCountDto responseExpected = new GetFollowerCountDto(3,"María López",3);
 
-        ResultMatcher statusEsperado= status().isOk();
-        ResultMatcher contentTypeEsperado = content().contentType("application/json");
-        ResultMatcher bodyEsperado = content().json(objectMapper.writeValueAsString(dtoEsperado));
+        ResultMatcher statusExpected= status().isNotFound();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(responseExpected));
 
         //ACT && ASSERT
-        mockMvc.perform(get("/users/{userId}/followers/count", parametroUserId))
+        mockMvc.perform(get("/users/{userId}/followers/count", userId))
                 .andExpectAll(
-                        statusEsperado, contentTypeEsperado, bodyEsperado
+                        statusExpected,contentTypeExpected,bodyExpected
                 ).andDo(print());
     }
 
     @Test
     public void getFollowerCountException() throws Exception {
         //ARRANGE
-        Integer parametroUserId = 60;
-        ExceptionDto dtoEsperado = new ExceptionDto("Usuario no encontrado");
+        Integer userId = 60;
+        ExceptionDto responseExpected = new ExceptionDto("Usuario no encontrado");
 
-        ResultMatcher statusEsperado= status().isNotFound();
-        ResultMatcher contentTypeEsperado = content().contentType("application/json");
-        ResultMatcher bodyEsperado = content().json(objectMapper.writeValueAsString(dtoEsperado));
+        ResultMatcher statusExpected= status().isNotFound();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(responseExpected));
 
         //ACT && ASSERT
-        mockMvc.perform(get("/users/{userId}/followers/count", parametroUserId))
+        mockMvc.perform(get("/users/{userId}/followers/count", userId))
                 .andExpectAll(
-                        statusEsperado, contentTypeEsperado, bodyEsperado
+                        statusExpected, contentTypeExpected, bodyExpected
                 ).andDo(print());
     }
 
@@ -71,14 +71,14 @@ public class UserControllerIntegrationTest {
         Integer userId = 6;
         Integer userIdToUnfollow = 2;
 
-        ResultMatcher statusEsperado= status().isOk();
-        ResultMatcher contentTypeEsperado = content().contentType("application/json");
-        ResultMatcher bodyEsperado = content().json(objectMapper.writeValueAsString(new MessageDto("El usuario se dejo de seguir exitosamente")));
+        ResultMatcher statusExpected= status().isOk();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(new MessageDto("El usuario se dejo de seguir exitosamente")));
 
         //ACT && ASSERT
         mockMvc.perform(post("/users/{userId}/unfollow/{userIdToUnfollow}", userId, userIdToUnfollow))
                 .andExpectAll(
-                        statusEsperado, contentTypeEsperado, bodyEsperado
+                        statusExpected, contentTypeExpected, bodyExpected
                 ).andDo(print());
 
     }
@@ -88,13 +88,13 @@ public class UserControllerIntegrationTest {
         Integer userId = 2;
         Integer userIdToUnfollow = 5;
 
-        ResultMatcher statusEsperado= status().isBadRequest();
-        ResultMatcher contentTypeEsperado = content().contentType("application/json");
-        ResultMatcher bodyEsperado = content().json(objectMapper.writeValueAsString(new MessageDto("Actualmente no sigue a ese usuario")));
+        ResultMatcher statusExpected= status().isBadRequest();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(new MessageDto("Actualmente no sigue a ese usuario")));
 
         mockMvc.perform(post("/users/{userId}/unfollow/{userIdToUnfollow}", userId, userIdToUnfollow))
                 .andExpectAll(
-                        statusEsperado, contentTypeEsperado, bodyEsperado
+                        statusExpected, contentTypeExpected, bodyExpected
                 ).andDo(print());
     }
     //endregion
