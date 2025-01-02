@@ -102,18 +102,12 @@ public class MockFactoryUtils {
                 .getFollowed();
     }
 
-    public static Boolean getMockPostOrderAsc(List<PostDto> sortedPosts) {
-        for (int i = 1; i < sortedPosts.size(); i++) {
-            if (sortedPosts.get(i).getPublishDate().isBefore(sortedPosts.get(i - 1).getPublishDate())) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static Boolean getMockPostOrderDesc(List<PostDto> sortedPosts) {
-        for (int i = 1; i < sortedPosts.size(); i++) {
-            if (sortedPosts.get(i).getPublishDate().isAfter(sortedPosts.get(i - 1).getPublishDate())) {
+    public static boolean isSortedByDate(List<PostDto> posts, boolean ascending) {
+        for (int i = 1; i < posts.size(); i++) {
+            boolean condition = ascending
+                    ? posts.get(i).getPublishDate().isBefore(posts.get(i - 1).getPublishDate())
+                    : posts.get(i).getPublishDate().isAfter(posts.get(i - 1).getPublishDate());
+            if (condition) {
                 return false;
             }
         }
