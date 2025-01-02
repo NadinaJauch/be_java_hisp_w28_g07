@@ -129,6 +129,7 @@ public class UserServiceTest {
     //endregion
 
     //region GET FOLLOWS ORDER ERROR
+    //region FOLLOWEDS
     @Test
     @DisplayName("Obtener Followeds orden inválido.")
     public void getFollowedsOrderedByNameInvalidOrderThrowException(){
@@ -146,7 +147,7 @@ public class UserServiceTest {
 
     @Test
     @DisplayName("Obtener Followeds orden válido.")
-    public void getFollowedsOrderedByNameValidOrderThrowException(){
+    public void getFollowedsOrderedByNameValidOrderReturnList(){
         //Arrange
         String order = "name_asc";
         User user = MockFactoryUtils.getUserWithFolloweds();
@@ -160,7 +161,9 @@ public class UserServiceTest {
         //Assert
         Assertions.assertEquals(3, result.getFollowed().size());
     }
+    //endregion
 
+    //region FOLLOWERS
     @Test
     @DisplayName("Obtener Followers orden inválido.")
     public void getFollowersOrderedByNameInvalidOrderThrowException(){
@@ -178,7 +181,7 @@ public class UserServiceTest {
 
     @Test
     @DisplayName("Obtener Followers orden válido.")
-    public void getFollowersOrderedByNameValidOrderThrowException(){
+    public void getFollowersOrderedByNameValidReturnList(){
         //Arrange
         String order = "name_desc";
         User user = MockFactoryUtils.getUserWithFollowersAndPost();
@@ -193,8 +196,10 @@ public class UserServiceTest {
         Assertions.assertEquals(3, result.getFollowers().size());
     }
     //endregion
+    //endregion
 
     //region GET FOLLOWS SORTED BY NAME
+    //region FOLLOWEDS
     @Test
     @DisplayName("Obtener Followeds ordenados por nombre de manera ascendente.")
     public void getFollowedsOrderedByNameValidOrderReturnSortedListAsc(){
@@ -299,7 +304,9 @@ public class UserServiceTest {
         //Assert
         Assertions.assertThrows(NotFoundException.class, ()->userService.getFollowedsOrderedByName(userId, order));
     }
+    //endregion
 
+    //region FOLLOWERS
     @Test
     @DisplayName("Obtener Followers ordenados por nombre de manera ascendente.")
     public void getFollowersOrderedByNameValidOrderReturnSortedListAsc(){
@@ -404,5 +411,6 @@ public class UserServiceTest {
         //Assert
         Assertions.assertThrows(BadRequestException.class, ()->userService.getFollowersOrderedByName(userId, order));
     }
+    //endregion
     //endregion
 }
