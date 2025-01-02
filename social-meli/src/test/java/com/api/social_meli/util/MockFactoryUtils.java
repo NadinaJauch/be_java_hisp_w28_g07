@@ -1,9 +1,6 @@
 package com.api.social_meli.util;
 
-import com.api.social_meli.dto.FollowDto;
-import com.api.social_meli.dto.FollowedSellerPostsDto;
-import com.api.social_meli.dto.PostDto;
-import com.api.social_meli.dto.UserDto;
+import com.api.social_meli.dto.*;
 import com.api.social_meli.model.Post;
 import com.api.social_meli.model.PostCategory;
 import com.api.social_meli.model.Product;
@@ -20,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class MockFactoryUtils {
@@ -52,7 +50,7 @@ public class MockFactoryUtils {
     }
     //endregion
 
-    // POSTS OF FOLLOWED SELLERS
+    //region POSTS OF FOLLOWED SELLERS
     public static void setPostsAsPostedOneWeekAgo(List<Post> postsMock, List<Integer> postIds) {
         postIds.forEach(postId ->
                 postsMock.stream()
@@ -138,4 +136,46 @@ public class MockFactoryUtils {
         return true;
     }
     //endregion
+
+
+    public static GetFavouritePostsResponseDto createGetFavouritePostsResponseDtoForUser(int userId) throws IOException {
+        List<User> users = getUsersMock();
+        List<Post> posts = getPostsMock();
+
+        Optional<User> optionalUser = users.stream().filter(u -> u.getId() == userId).findFirst();
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+
+            List<PostDto> favouritePosts = user.getFavourites().stream()
+                    .flatMap(postId -> posts.stream()
+                            .filter(post -> post.getId() == postId)
+                            .findFirst()
+                            .stream()
+                    )
+                    .map(post -> new PostDto(
+                            post.getPostId(),
+                            post.getUserId(),
+                            post.getPublishDate(),
+                            new ProductDto(
+                                    post.getProduct().getProductId(),
+                                    post.getProduct().getName(),
+                                    post.getProduct().getType(),
+                                    post.getProduct().getBrand(),
+                                    post.getProduct().getColour(),
+                                    post.getProduct().getNotes()
+                            ),
+                            post.getCategoryId(),
+                            post.getPrice()
+                    ))
+                    .collect(Collectors.toList());
+
+
+            return new GetFavouritePostsResponseDto(userId, favouritePosts);
+        }
+
+        throw new IllegalArgumentException("User with ID " + userId + " not found");
+    }
+
+
 }

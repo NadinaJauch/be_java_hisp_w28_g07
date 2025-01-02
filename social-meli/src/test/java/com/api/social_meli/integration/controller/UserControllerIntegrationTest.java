@@ -1,10 +1,13 @@
 package com.api.social_meli.integration.controller;
 
+import com.api.social_meli.dto.*;
+import com.api.social_meli.util.MockFactoryUtils;
 import com.api.social_meli.dto.ExceptionDto;
 import com.api.social_meli.dto.FavouritePostRequestDto;
 import com.api.social_meli.dto.GetFollowerCountDto;
 import com.api.social_meli.dto.MessageDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -177,5 +179,42 @@ public class UserControllerIntegrationTest {
                         bodyExpected
                 ).andDo(print());
     }
+    //endregion
+
+    //region GET FAVOURITE POST
+
+    @Test
+    public void favouritePostListOk() throws Exception {
+        //ARRANGE
+        Integer userId = 1;
+        objectMapper.registerModule(new JavaTimeModule());
+        GetFavouritePostsResponseDto responseExpected = MockFactoryUtils.createGetFavouritePostsResponseDtoForUser(userId);
+
+        System.out.println(responseExpected);
+        ResultMatcher statusExpected = status().isOk();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(responseExpected));
+
+        //ACT & ASSERT
+        mockMvc.perform(get("/users/{userId}/favourites", userId)).andExpectAll(
+                statusExpected, contentTypeExpected, bodyExpected
+        ).andDo(print());
+    }
+
+    @Test
+    public void favouritePostListNotFoundException() throws Exception {
+        //ARRANGE
+        Integer userId = 222;
+
+        ResultMatcher statusExpected = status().isNotFound();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(new MessageDto("No se encontró ningún usuario con ese ID.")));
+
+        //ACT & ASSERT
+        mockMvc.perform(get("/users/{userId}/favourites", userId)).andExpectAll(
+                statusExpected, contentTypeExpected, bodyExpected
+        ).andDo(print());
+    }
+
     //endregion
 }
