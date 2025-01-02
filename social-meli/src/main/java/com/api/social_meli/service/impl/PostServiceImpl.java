@@ -88,6 +88,9 @@ public class PostServiceImpl implements IPostService {
     }
 
     public FollowedSellerPostsDto getFollowedSellersPosts(int userId, String order) {
+        if(!order.equals("date_desc") && !order.equals("date_asc"))
+            throw new BadRequestException("Tipo de order no válido, ingrese date_asc o date_desc");
+
         if (!userRepository.exists(userId))
             throw new NotFoundException("No se encontró ningún usuario con ese ID.");
 
@@ -101,9 +104,6 @@ public class PostServiceImpl implements IPostService {
 
         if(order == null)
             return new FollowedSellerPostsDto(userId, posts);
-
-        if(!order.equals("date_desc") && !order.equals("date_asc"))
-            throw new BadRequestException("Tipo de order no válido, ingrese date_asc o date_desc");
 
         return new FollowedSellerPostsDto(userId, getSortedPost(posts,order));
     }
