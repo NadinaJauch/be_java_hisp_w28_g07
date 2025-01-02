@@ -23,7 +23,7 @@ public class BaseRepository<T extends Identifiable> {
         entity.setId(counter);
         entities.add(entity);
         counter++;
-        return entities.getLast();
+        return entities.get(entities.size()-1);
     }
 
     public T findById(int id) {
