@@ -1,6 +1,9 @@
 package com.api.social_meli.util;
 
 import com.api.social_meli.dto.FollowDto;
+import com.api.social_meli.dto.FollowedSellerPostsDto;
+import com.api.social_meli.dto.PostDto;
+import com.api.social_meli.dto.UserDto;
 import com.api.social_meli.model.Post;
 import com.api.social_meli.model.PostCategory;
 import com.api.social_meli.model.Product;
@@ -12,9 +15,12 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MockFactoryUtils {
 
@@ -46,6 +52,7 @@ public class MockFactoryUtils {
     }
     //endregion
 
+    // POSTS OF FOLLOWED SELLERS
     public static void setPostsAsPostedOneWeekAgo(List<Post> postsMock, List<Integer> postIds) {
         postIds.forEach(postId ->
                 postsMock.stream()
@@ -74,20 +81,21 @@ public class MockFactoryUtils {
                 .orElseThrow(() -> new RuntimeException("No existe el user con ese id entre los mocks."))
                 .getFollowed();
     }
+    //endregion
 
     //region USER CREATION
     public static User createUserWithOnlyFollowersAndFolloweds(int userId, List<Integer> followed, List<Integer> followers) {
         return new User(userId,"test",followed,followers,new ArrayList<>(),new ArrayList<>());
     }
 
-    public static User createUserWithIdAndFollowed(int userId){
+    public static User createUserWithIdAndFollowed(int userId) {
         User user = new User();
         user.setId(userId);
         user.setFollowed(new ArrayList<>());
         return user;
     }
 
-    public static User createUserWithFollowersAndPost(int userId){
+    public static User createUserWithFollowersAndPost(int userId) {
         User user = new User();
         user.setId(userId);
         user.setFollowers(new ArrayList<>());
@@ -97,7 +105,7 @@ public class MockFactoryUtils {
     //endregion
 
     //region GET FOLLOW SORTED LIST
-    public static User createUserWithIdNameAndFolloweds(int userId, String name, List<Integer> followeds){
+    public static User createUserWithIdNameAndFolloweds(int userId, String name, List<Integer> followeds) {
         User user = new User();
         user.setId(userId);
         user.setName(name);
@@ -105,7 +113,7 @@ public class MockFactoryUtils {
         return user;
     }
 
-    public static User createUserWithIdNameFollowersAndPost(int userId, String name, List<Integer> followers, List<Integer> posts){
+    public static User createUserWithIdNameFollowersAndPost(int userId, String name, List<Integer> followers, List<Integer> posts) {
         User user = new User();
         user.setId(userId);
         user.setName(name);
@@ -114,8 +122,20 @@ public class MockFactoryUtils {
         return user;
     }
 
-    public static FollowDto convertUserToFollowDto (User user){
+    public static FollowDto convertUserToFollowDto (User user) {
         return new FollowDto(user.getUserId(), user.getName());
+    }
+
+    public static boolean isSortedByDate(List<PostDto> posts, boolean ascending) {
+        for (int i = 1; i < posts.size(); i++) {
+            boolean condition = ascending
+                    ? posts.get(i).getPublishDate().isBefore(posts.get(i - 1).getPublishDate())
+                    : posts.get(i).getPublishDate().isAfter(posts.get(i - 1).getPublishDate());
+            if (condition) {
+                return false;
+            }
+        }
+        return true;
     }
     //endregion
 }
