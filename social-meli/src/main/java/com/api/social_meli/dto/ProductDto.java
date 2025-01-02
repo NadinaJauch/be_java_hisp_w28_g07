@@ -1,21 +1,19 @@
 package com.api.social_meli.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@EqualsAndHashCode
 public class ProductDto {
     @Min(value = 0, message = "El id debe ser mayor a cero")
-    @NotBlank
+    @NotNull
     @JsonProperty("product_id")
     private Integer productId;
     @NotBlank(message = "El campo no puede estar vacio")

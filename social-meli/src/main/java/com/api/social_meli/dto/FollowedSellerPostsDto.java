@@ -3,13 +3,15 @@ package com.api.social_meli.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import java.util.List;
 
 @AllArgsConstructor
 @Data
+@EqualsAndHashCode
 public class FollowedSellerPostsDto {
     @Min(value = 0, message = "El id debe ser mayor a cero")
     @NotBlank
