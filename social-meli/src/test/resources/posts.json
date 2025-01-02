@@ -3,7 +3,7 @@
     "post_id": 1,
     "seller": {
       "user_id": 2,
-      "user_name": "TEST",
+      "user_name": "Carlos Gómez",
       "followed": [],
       "followers": [1, 6],
       "posts": [1]

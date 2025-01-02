@@ -31,7 +31,7 @@ public class PostServiceImpl implements IPostService {
     private IUserRepository userRepository;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @Override
     public MessageDto createPost(PostDto dto) {
@@ -120,7 +120,8 @@ public class PostServiceImpl implements IPostService {
 
     @Override
     public List<PostDto> getPostsByUserId(int userId) {
-        return objectMapper.convertValue(postRepository.findByUserId(userId), new TypeReference<List<PostDto>>() {});
+        List<Post> postsFromRepo = postRepository.findByUserId(userId);
+        return objectMapper.convertValue(postsFromRepo, new TypeReference<List<PostDto>>() {});
     }
 
     private List<PostDto> getSortedPost(List<PostDto> posts, String order){

@@ -4,9 +4,15 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -14,15 +20,21 @@ import java.time.format.DateTimeFormatter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@EqualsAndHashCode
 public class PostDto {
     @JsonProperty("post_id")
     private int postId;
+    @Min(value = 1, message = "El id debe ser mayor a cero")
+    @NotNull(message = "El id no puede estar vacio")
     @JsonProperty("user_id")
-    private int userId;
+    private Integer userId;
+    @NotNull(message = "La fecha no puede estar vacía")
     @JsonProperty("date")
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate publishDate;
+    @Valid
     private ProductDto product;
+    @Min(value = 0, message = "El campo no puede estar vacio")
     @JsonProperty("category")
     private int categoryId;
     private double price;
