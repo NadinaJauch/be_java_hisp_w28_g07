@@ -1,8 +1,6 @@
 package com.api.social_meli.integration.controller;
 
-import com.api.social_meli.dto.ExceptionDto;
-import com.api.social_meli.dto.GetFollowerCountDto;
-import com.api.social_meli.dto.MessageDto;
+import com.api.social_meli.dto.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,6 +9,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -140,5 +141,121 @@ public class UserControllerIntegrationTest {
                         bodyExpected
                 ).andDo(print());
     }
+    //endregion
+
+    //region GET FOLLOWS SORTED LISTS
+    //region FOLLOWEDS
+    @Test
+    public void getFollowedsOrderedByNameOk() throws Exception{
+        //Arrange
+        Integer userId = 1;
+        String order = "name_asc";
+        FollowedListDto listSpected = new FollowedListDto(
+                1,
+                "Ana Martínez",
+                new ArrayList<>(
+                        List.of(
+                                new FollowDto(4, "Juan Pérez"),
+                                new FollowDto(5, "Lucía Fernández"),
+                                new FollowDto(3, "María López")
+                        )
+                )
+        );
+
+        ResultMatcher statusExpected = status().isOk();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(listSpected));
+
+        //Act + Assert
+        mockMvc.perform(get("/users/{userId}/followed/list", userId).param("order", order))
+                .andExpectAll(
+                        statusExpected, contentTypeExpected, bodyExpected
+                ).andDo(print());
+    }
+
+    @Test
+    public void getFollowedsOrderedByNameInvalidUserIdNotFoundException() throws Exception{
+        //Arrange
+        Integer userId = 1000;
+        String order = "name_asc";
+        ExceptionDto exceptionDto = new ExceptionDto("No se encontró el usuario.");
+
+        ResultMatcher statusExpected = status().isNotFound();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(exceptionDto));
+
+        //Act + Assert
+        mockMvc.perform(get("/users/{userId}/followed/list", userId).param("order", order))
+                .andExpectAll(
+                        statusExpected, contentTypeExpected, bodyExpected
+                ).andDo(print());
+    }
+    //endregion
+
+    //region FOLLOWERS
+    @Test
+    public void getFollowersOrderedByNameOk() throws Exception{
+        //Arrange
+        Integer userId = 3;
+        String order = "name_desc";
+        FollowerListDto listSpected = new FollowerListDto(
+                3,
+                "María López",
+                new ArrayList<>(
+                        List.of(
+                                new FollowDto(6, "Miguel Rodríguez"),
+                                new FollowDto(5, "Lucía Fernández"),
+                                new FollowDto(1, "Ana Martínez")
+                        )
+                )
+        );
+
+        ResultMatcher statusExpected = status().isOk();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(listSpected));
+
+        //Act + Assert
+        mockMvc.perform(get("/users/{userId}/followers/list", userId).param("order", order))
+                .andExpectAll(
+                        statusExpected, contentTypeExpected, bodyExpected
+                ).andDo(print());
+    }
+
+    @Test
+    public void getFollowersOrderedByNameInvalidUserIdNotFoundException() throws Exception{
+        //Arrange
+        Integer userId = 1000;
+        String order = "name_desc";
+        ExceptionDto exceptionDto = new ExceptionDto("No se encontró el usuario.");
+
+        ResultMatcher statusExpected = status().isNotFound();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(exceptionDto));
+
+        //Act + Assert
+        mockMvc.perform(get("/users/{userId}/followers/list", userId).param("order", order))
+                .andExpectAll(
+                        statusExpected, contentTypeExpected, bodyExpected
+                ).andDo(print());
+    }
+
+    @Test
+    public void getFollowersOrderedByNameISNotSellerBadRequestException() throws Exception{
+        //Arrange
+        Integer userId = 1;
+        String order = "name_desc";
+        ExceptionDto exceptionDto = new ExceptionDto("El usuario no es un vendedor y no puede tener seguidores.");
+
+        ResultMatcher statusExpected = status().isBadRequest();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(exceptionDto));
+
+        //Act + Assert
+        mockMvc.perform(get("/users/{userId}/followers/list", userId).param("order", order))
+                .andExpectAll(
+                        statusExpected, contentTypeExpected, bodyExpected
+                ).andDo(print());
+    }
+    //endregion
     //endregion
 }
