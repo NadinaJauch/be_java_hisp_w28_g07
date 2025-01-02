@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -22,7 +24,8 @@ public class UserController {
      * @return 200 OK, Usuario insertado y cantidad de seguidores
      */
     @GetMapping("/{userId}/followers/count")
-    public ResponseEntity<?> getFollowerCount(@PathVariable int userId) {
+    public ResponseEntity<?> getFollowerCount(
+            @PathVariable int userId) {
         return new ResponseEntity<>(userService.getFollowerCount(userId),HttpStatus.OK);
     }
 
@@ -35,7 +38,9 @@ public class UserController {
      * @return 200 OK, Mensaje de usuario dejado de seguir con exito
      */
     @PostMapping("{userId}/unfollow/{userIdToUnfollow}")
-    public ResponseEntity<?> unfollowUser(@PathVariable int userId, @PathVariable int userIdToUnfollow) {
+    public ResponseEntity<?> unfollowUser(
+            @PathVariable int userId,
+            @PathVariable int userIdToUnfollow) {
         return new ResponseEntity<>(userService.unfollowUser(userId,userIdToUnfollow), HttpStatus.OK);
     }
 
@@ -46,7 +51,9 @@ public class UserController {
      * @return 200 OK, Lista de seguidores de usuario insertado
      */
     @GetMapping("/{userId}/followers/list")
-    public ResponseEntity<?> getFollowersList(@PathVariable int userId, @RequestParam (required = false) String order) {
+    public ResponseEntity<?> getFollowersList(
+            @PathVariable int userId,
+            @RequestParam (required = false) String order) {
         return new ResponseEntity<>(userService.getFollowersOrderedByName(userId, order), HttpStatus.OK);
     }
 
@@ -57,7 +64,9 @@ public class UserController {
      * @return 200 OK, Lista de seguidos de usuario insertado
      */
     @GetMapping("{userId}/followed/list")
-    public ResponseEntity<?> getFollowedsByUserId(@PathVariable int userId, @RequestParam(required = false) String order){
+    public ResponseEntity<?> getFollowedsByUserId(
+            @PathVariable int userId,
+            @RequestParam(required = false) String order){
         return new ResponseEntity<>(userService.getFollowedsOrderedByName(userId, order), HttpStatus.OK);
     }
 
@@ -80,18 +89,21 @@ public class UserController {
     }
 
     @PostMapping("/favourites")
-    public ResponseEntity<MessageDto> favouritePost(@RequestBody FavouritePostRequestDto request) {
+    public ResponseEntity<MessageDto> favouritePost(
+            @Valid @RequestBody FavouritePostRequestDto request) {
         return ResponseEntity.ok(userService.favouritePost(request));
     }
 
     @GetMapping("/{userId}/favourites")
-    public ResponseEntity<GetFavouritePostsResponseDto> getFavouritePosts(@PathVariable("userId") int userId) {
+    public ResponseEntity<GetFavouritePostsResponseDto> getFavouritePosts(
+            @PathVariable("userId") int userId) {
         return ResponseEntity.ok(userService.getFavouritePosts(userId));
     }
 
 
     @PostMapping("/unfavourite")
-    public ResponseEntity<?> unfavouritePost(@RequestBody FavouritePostRequestDto request) {
+    public ResponseEntity<?> unfavouritePost(
+            @Valid @RequestBody FavouritePostRequestDto request) {
         return new ResponseEntity<>(userService.unfavouritePost(request), HttpStatus.OK);
     }
 }

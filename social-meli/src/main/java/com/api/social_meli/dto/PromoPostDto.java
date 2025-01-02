@@ -2,25 +2,24 @@ package com.api.social_meli.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 public class PromoPostDto {
     @JsonProperty("post_id")
     private int postId;
-    @Min(value = 0, message = "El id debe ser mayor a cero")
-    //TODO: Ints por ser primitivos no pueden ser nulls, siempre seran ceros al no tener un valor declarado. Mencionar al team de que existe la chance de que haya que refactorizar todos los ints de DTOs a Integers.
+    @Min(value = 1, message = "El id debe ser mayor a cero")
+    @NotNull(message = "El id no puede estar vacio")
     @JsonProperty("user_id")
     private Integer seller;
     @NotBlank(message = "La fecha no puede estar vacía")
@@ -28,7 +27,7 @@ public class PromoPostDto {
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate publishDate;
     private ProductDto product;
-    @Min(value = 0, message = "El campo no puede estar vacio")
+    @Min(value = 1, message = "El campo no puede estar vacio")
     @JsonProperty("category")
     private int categoryId;
     @DecimalMin(value = "0.0", message = "El campo no puede estar vacio")

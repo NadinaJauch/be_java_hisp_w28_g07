@@ -1,16 +1,19 @@
 package com.api.social_meli.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import javax.validation.constraints.Min;
+import jakarta.validation.constraints.Min;
 
 @Data
 @AllArgsConstructor
+@EqualsAndHashCode
 public class PromoPostCountDto {
-    @Min(value = 0, message = "El id debe ser mayor a cero")
-    //TODO: Ints por ser primitivos no pueden ser nulls, siempre seran ceros al no tener un valor declarado. Mencionar al team de que existe la chance de que haya que refactorizar todos los ints de DTOs a Integers.
+    @Min(value = 1, message = "El id debe ser mayor a cero")
+    @NotNull(message = "El id no puede estar vacio")
     @JsonProperty("user_id")
     private Integer userId;
     @JsonProperty("user_name")

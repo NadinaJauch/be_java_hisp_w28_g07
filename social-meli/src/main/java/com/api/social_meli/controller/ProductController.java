@@ -4,10 +4,12 @@ import com.api.social_meli.dto.PostDto;
 import com.api.social_meli.dto.PromoPostDto;
 import com.api.social_meli.dto.FollowedSellerPostsDto;
 import com.api.social_meli.service.IPostService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/products")
@@ -17,7 +19,8 @@ public class ProductController {
     private IPostService postService;
 
     @GetMapping("/promo-post/count")
-    public ResponseEntity<?> getPromoProductCount(@RequestParam("user_id") Integer userId) {
+    public ResponseEntity<?> getPromoProductCount(
+            @RequestParam("user_id") Integer userId) {
         return new ResponseEntity<>(postService.getPromoProductCount(userId), HttpStatus.OK);
     }
 
@@ -30,14 +33,15 @@ public class ProductController {
      * @return 200 OK, Lista de posts generados por los vendedores que sigue el usuario mandado
      */
     @GetMapping("/followed/{userId}/list")
-    public ResponseEntity<FollowedSellerPostsDto> getFollowedSellersPosts(@PathVariable int userId,
-                                                                          @RequestParam (required = false)
-                                                                          String order) {
+    public ResponseEntity<FollowedSellerPostsDto> getFollowedSellersPosts(
+            @PathVariable int userId,
+            @RequestParam (required = false) String order) {
         return new ResponseEntity<>(postService.getFollowedSellersPosts(userId, order), HttpStatus.OK);
     }
 
     @PostMapping("/promo-post")
-    public ResponseEntity<?> createPromoPost(@RequestBody PromoPostDto dto) {
+    public ResponseEntity<?> createPromoPost(
+            @Valid @RequestBody PromoPostDto dto) {
         return new ResponseEntity<>(postService.createPromoPost(dto), HttpStatus.OK);
     }
 
@@ -47,7 +51,8 @@ public class ProductController {
      * @return 200 OK, Mensaje de publicacion con exito
      */
     @PostMapping("/post")
-    public ResponseEntity<?> createPost(@RequestBody PostDto dto) {
+    public ResponseEntity<?> createPost(
+            @Valid @RequestBody PostDto dto) {
         return new ResponseEntity<>(postService.createPost(dto), HttpStatus.OK);
     }
 }
