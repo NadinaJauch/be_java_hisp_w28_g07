@@ -1,13 +1,16 @@
 package com.api.social_meli.integration.controller;
 
 import com.api.social_meli.dto.ExceptionDto;
+import com.api.social_meli.dto.FavouritePostRequestDto;
 import com.api.social_meli.dto.GetFollowerCountDto;
 import com.api.social_meli.dto.MessageDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 
@@ -33,7 +36,7 @@ public class UserControllerIntegrationTest {
         Integer userId = 3;
         GetFollowerCountDto responseExpected = new GetFollowerCountDto(3,"María López",3);
 
-        ResultMatcher statusExpected= status().isNotFound();
+        ResultMatcher statusExpected= status().isOk();
         ResultMatcher contentTypeExpected = content().contentType("application/json");
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(responseExpected));
 
@@ -97,6 +100,41 @@ public class UserControllerIntegrationTest {
                         statusExpected, contentTypeExpected, bodyExpected
                 ).andDo(print());
     }
+    //endregion
+
+
+    //region FAVOURITE POST
+    @Test
+    public void favouritePostOk() throws Exception {
+        //ARRANGE
+        String jsonRequest = objectMapper.writer().writeValueAsString(new FavouritePostRequestDto(1,5));
+
+        ResultMatcher statusExpected= status().isOk();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(new MessageDto("Publicación agregada a favoritos exitosamente")));
+
+        //ACT && ASSERT
+        mockMvc.perform(post("/users/favourites").content(jsonRequest).contentType(MediaType.APPLICATION_JSON)).andExpectAll(
+                statusExpected, contentTypeExpected, bodyExpected
+        );
+
+    }
+
+    @Test
+    public void favouritePostConflictException() throws Exception {
+        //ARRANGE
+        String jsonRequest = objectMapper.writer().writeValueAsString(new FavouritePostRequestDto(1,2));
+
+        ResultMatcher statusExpected= status().isConflict();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(new MessageDto("El post ya está en favoritos")));
+
+        //ACT && ASSERT
+        mockMvc.perform(post("/users/favourites").content(jsonRequest).contentType(MediaType.APPLICATION_JSON)).andExpectAll(
+                statusExpected, contentTypeExpected, bodyExpected
+        );
+    }
+
     //endregion
 
 }
