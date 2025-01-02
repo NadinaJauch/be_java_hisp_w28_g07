@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @Data
 @EqualsAndHashCode
 public class ProductDto {
-    @Min(value = 0, message = "El id debe ser mayor a cero")
-    @NotNull
+    @Min(value = 1, message = "El id debe ser mayor a cero")
+    @NotNull(message = "El id no puede estar vacio")
     @JsonProperty("product_id")
     private Integer productId;
     @NotBlank(message = "El campo no puede estar vacio")

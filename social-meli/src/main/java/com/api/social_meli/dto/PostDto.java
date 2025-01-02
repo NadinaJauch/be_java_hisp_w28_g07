@@ -23,7 +23,7 @@ import java.time.format.DateTimeFormatter;
 public class PostDto {
     @JsonProperty("post_id")
     private int postId;
-    @Min(value = 0, message = "El id debe ser mayor a cero")
+    @Min(value = 1, message = "El id debe ser mayor a cero")
     @NotNull(message = "El id no puede estar vacio")
     @JsonProperty("user_id")
     private Integer userId;
