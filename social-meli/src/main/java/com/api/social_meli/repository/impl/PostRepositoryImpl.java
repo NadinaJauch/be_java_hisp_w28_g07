@@ -20,5 +20,4 @@ public class PostRepositoryImpl extends BaseRepository<Post> implements IPostRep
                 .filter(x -> x.getSeller().getUserId() == userId)
                 .toList();
     }
-
 }

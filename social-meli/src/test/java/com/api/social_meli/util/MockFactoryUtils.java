@@ -83,25 +83,6 @@ public class MockFactoryUtils {
     }
     //endregion
 
-    //region GET FOLLOWS ORDER ERROR
-    public static User getUserWithFolloweds(){
-        User user = new User();
-        user.setUserId(1);
-        user.setName("Ana Martínez");
-        user.setFollowed(List.of(3,5,4));
-        return user;
-    }
-
-    public static User getUserWithFollowersAndPost(){
-        User user = new User();
-        user.setUserId(3);
-        user.setName("María López");
-        user.setFollowers(List.of(1,5,6));
-        user.setPosts(List.of(2,4,5));
-        return user;
-    }
-    //endregion
-
     //region GET FOLLOW SORTED LIST
     public static User createUserWithIdNameAndFolloweds(int userId, String name, List<Integer> followeds){
         User user = new User();
