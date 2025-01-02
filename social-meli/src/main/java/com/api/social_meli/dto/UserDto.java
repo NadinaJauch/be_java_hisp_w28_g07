@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @AllArgsConstructor
@@ -13,6 +15,8 @@ import java.util.List;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDto {
+    @Min(value = 0, message = "El id debe ser mayor a cero")
+    @NotBlank
     @JsonProperty("user_id")
     private Integer userId;
     @JsonProperty("user_name")
