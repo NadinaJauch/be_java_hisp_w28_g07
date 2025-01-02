@@ -32,7 +32,6 @@ public class MockFactoryUtils {
     }
 
     public static List<Post> getPostsMock() throws IOException {
-        File file;
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         File file = ResourceUtils.getFile("classpath:posts.json");
@@ -53,6 +52,7 @@ public class MockFactoryUtils {
     }
     //endregion
 
+    // POSTS OF FOLLOWED SELLERS
     public static void setPostsAsPostedOneWeekAgo(List<Post> postsMock, List<Integer> postIds) {
         postIds.forEach(postId ->
                 postsMock.stream()
@@ -81,6 +81,7 @@ public class MockFactoryUtils {
                 .orElseThrow(() -> new RuntimeException("No existe el user con ese id entre los mocks."))
                 .getFollowed();
     }
+    //endregion
 
     //region USER CREATION
     public static User createUserWithOnlyFollowersAndFolloweds(int userId, List<Integer> followed, List<Integer> followers) {
@@ -124,44 +125,17 @@ public class MockFactoryUtils {
     public static FollowDto convertUserToFollowDto (User user) {
         return new FollowDto(user.getUserId(), user.getName());
     }
-    //endregion
 
-    public static void setPostsAsPostedOneWeekAgo(List<Post> postsMock, List<Integer> postIds) {
-        postIds.forEach(postId ->
-                postsMock.stream()
-                        .filter(post -> post.getPostId() == postId)
-                        .forEach(post -> post.setPublishDate(LocalDate.now().minusWeeks(1)))
-        );
-    }
-
-    public static void setPostsFromFollowedUsersAsPostedThreeWeeksAgo(List<Post> postMock, List<Integer> followedUserIds) {
-        followedUserIds.forEach(followedUserId ->
-                postMock.stream()
-                        .filter(post -> post.getUserId() == followedUserId)
-                        .forEach(post -> post.setPublishDate(LocalDate.now().minusWeeks(3))));
-    }
-
-    public static List<Post> filterPostsByUserId(List<Post> postsMock, int userId) {
-        return postsMock.stream()
-                .filter(post -> post.getUserId() == userId)
-                .toList();
-    }
-
-    public static List<Integer> getFollowedsByUserId(List<User> userMocks, int userId) {
-        return userMocks.stream()
-                .filter(x -> x.getUserId() == userId)
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("No existe el user con ese id entre los mocks."))
-                .getFollowed();
-    }
-
-    isSortedByDate(List<PostDto> posts, boolean ascending) {
+    public static boolean isSortedByDate(List<PostDto> posts, boolean ascending) {
         for (int i = 1; i < posts.size(); i++) {
-            if ((ascending && posts.get(i).getPublishDate().isBefore(posts.get(i - 1).getPublishDate())) ||
-                    (!ascending && posts.get(i).getPublishDate().isAfter(posts.get(i - 1).getPublishDate()))) {
+            boolean condition = ascending
+                    ? posts.get(i).getPublishDate().isBefore(posts.get(i - 1).getPublishDate())
+                    : posts.get(i).getPublishDate().isAfter(posts.get(i - 1).getPublishDate());
+            if (condition) {
                 return false;
             }
         }
         return true;
     }
+    //endregion
 }
