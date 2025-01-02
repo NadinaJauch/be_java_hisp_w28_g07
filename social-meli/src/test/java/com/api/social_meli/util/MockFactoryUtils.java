@@ -11,50 +11,65 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 public class MockFactoryUtils {
 
     //region ENTITIES MOCK
-    public List<Product> getProductsMock() throws IOException {
-        File file;
+    public static List<Product> getProductsMock() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-
-        file = ResourceUtils.getFile("classpath:products.json"); // obtencion de archivo
-
-        // una reflexion para obtener el tipo generico de esta clase base
+        File file = ResourceUtils.getFile("classpath:products.json");
         return objectMapper.readValue(file, new TypeReference<List<Product>>() {});
     }
 
-    public List<Post> getPostsMock() throws IOException {
-        File file;
+    public static List<Post> getPostsMock() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule()); // para que tome los DateTime
-
-        file = ResourceUtils.getFile("classpath:posts.json"); // obtencion de archivo
-
-        // una reflexion para obtener el tipo generico de esta clase base
+        objectMapper.registerModule(new JavaTimeModule());
+        File file = ResourceUtils.getFile("classpath:posts.json");
         return objectMapper.readValue(file, new TypeReference<List<Post>>() {});
     }
 
-    public List<PostCategory> getPostCategoriesMock() throws IOException {
-        File file;
+    public static List<PostCategory> getPostCategoriesMock() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-
-        file = ResourceUtils.getFile("classpath:postcategory.json"); // obtencion de archivo
-
-        // una reflexion para obtener el tipo generico de esta clase base
+        File file = ResourceUtils.getFile("classpath:postcategory.json");
         return objectMapper.readValue(file, new TypeReference<List<PostCategory>>() {});
     }
 
-    public List<User> getUsersMock() throws IOException {
+    public static List<User> getUsersMock() throws IOException {
         File file;
         ObjectMapper objectMapper = new ObjectMapper();
-
         file = ResourceUtils.getFile("classpath:users.json"); // obtencion de archivo
-
-        // una reflexion para obtener el tipo generico de esta clase base
         return objectMapper.readValue(file, new TypeReference<List<User>>() {});
     }
     //endregion
+
+    public static void setPostsAsPostedOneWeekAgo(List<Post> postsMock, List<Integer> postIds) {
+        postIds.forEach(postId ->
+                postsMock.stream()
+                        .filter(post -> post.getPostId() == postId)
+                        .forEach(post -> post.setPublishDate(LocalDate.now().minusWeeks(1)))
+        );
+    }
+
+    public static void setPostsFromFollowedUsersAsPostedThreeWeeksAgo(List<Post> postMock, List<Integer> followedUserIds) {
+        followedUserIds.forEach(followedUserId ->
+                postMock.stream()
+                        .filter(post -> post.getUserId() == followedUserId)
+                        .forEach(post -> post.setPublishDate(LocalDate.now().minusWeeks(3))));
+    }
+
+    public static List<Post> filterPostsByUserId(List<Post> postsMock, int userId) {
+         return postsMock.stream()
+                .filter(post -> post.getUserId() == userId)
+                .toList();
+    }
+
+    public static List<Integer> getFollowedsByUserId(List<User> userMocks, int userId) {
+        return userMocks.stream()
+                .filter(x -> x.getUserId() == userId)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No existe el user con ese id entre los mocks."))
+                .getFollowed();
+    }
 }
