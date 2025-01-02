@@ -1,5 +1,10 @@
 package com.api.social_meli.util;
 
+
+import com.api.social_meli.dto.FollowDto;
+import com.api.social_meli.dto.FollowedSellerPostsDto;
+import com.api.social_meli.dto.PostDto;
+import com.api.social_meli.dto.UserDto;
 import com.api.social_meli.model.Post;
 import com.api.social_meli.model.PostCategory;
 import com.api.social_meli.model.Product;
@@ -11,51 +16,128 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MockFactoryUtils {
 
     //region ENTITIES MOCK
-    public List<Product> getProductsMock() throws IOException {
-        File file;
+    public static List<Product> getProductsMock() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-
-        file = ResourceUtils.getFile("classpath:products.json"); // obtencion de archivo
-
-        // una reflexion para obtener el tipo generico de esta clase base
+        File file = ResourceUtils.getFile("classpath:products.json");
         return objectMapper.readValue(file, new TypeReference<List<Product>>() {});
     }
 
-    public List<Post> getPostsMock() throws IOException {
-        File file;
+    public static List<Post> getPostsMock() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule()); // para que tome los DateTime
-
-        file = ResourceUtils.getFile("classpath:posts.json"); // obtencion de archivo
-
-        // una reflexion para obtener el tipo generico de esta clase base
+        objectMapper.registerModule(new JavaTimeModule());
+        File file = ResourceUtils.getFile("classpath:posts.json");
         return objectMapper.readValue(file, new TypeReference<List<Post>>() {});
     }
 
-    public List<PostCategory> getPostCategoriesMock() throws IOException {
-        File file;
+    public static List<PostCategory> getPostCategoriesMock() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-
-        file = ResourceUtils.getFile("classpath:postcategory.json"); // obtencion de archivo
-
-        // una reflexion para obtener el tipo generico de esta clase base
+        File file = ResourceUtils.getFile("classpath:postcategory.json");
         return objectMapper.readValue(file, new TypeReference<List<PostCategory>>() {});
     }
 
-    public List<User> getUsersMock() throws IOException {
+    public static List<User> getUsersMock() throws IOException {
         File file;
         ObjectMapper objectMapper = new ObjectMapper();
-
         file = ResourceUtils.getFile("classpath:users.json"); // obtencion de archivo
-
-        // una reflexion para obtener el tipo generico de esta clase base
         return objectMapper.readValue(file, new TypeReference<List<User>>() {});
+    }
+    //endregion
+
+    // POSTS OF FOLLOWED SELLERS
+    public static void setPostsAsPostedOneWeekAgo(List<Post> postsMock, List<Integer> postIds) {
+        postIds.forEach(postId ->
+                postsMock.stream()
+                        .filter(post -> post.getPostId() == postId)
+                        .forEach(post -> post.setPublishDate(LocalDate.now().minusWeeks(1)))
+        );
+    }
+
+    public static void setPostsFromFollowedUsersAsPostedThreeWeeksAgo(List<Post> postMock, List<Integer> followedUserIds) {
+        followedUserIds.forEach(followedUserId ->
+                postMock.stream()
+                        .filter(post -> post.getUserId() == followedUserId)
+                        .forEach(post -> post.setPublishDate(LocalDate.now().minusWeeks(3))));
+    }
+
+    public static List<Post> filterPostsByUserId(List<Post> postsMock, int userId) {
+         return postsMock.stream()
+                .filter(post -> post.getUserId() == userId)
+                .toList();
+    }
+
+    public static List<Integer> getFollowedsByUserId(List<User> userMocks, int userId) {
+        return userMocks.stream()
+                .filter(x -> x.getUserId() == userId)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No existe el user con ese id entre los mocks."))
+                .getFollowed();
+    }
+    //endregion
+
+    //region USER CREATION
+    public static User createUserWithOnlyFollowersAndFolloweds(int userId, List<Integer> followed, List<Integer> followers) {
+        return new User(userId,"test",followed,followers,new ArrayList<>(),new ArrayList<>());
+    }
+
+    public static User createUserWithIdAndFollowed(int userId) {
+        User user = new User();
+        user.setId(userId);
+        user.setFollowed(new ArrayList<>());
+        return user;
+    }
+
+    public static User createUserWithFollowersAndPost(int userId) {
+        User user = new User();
+        user.setId(userId);
+        user.setFollowers(new ArrayList<>());
+        user.setPosts(new ArrayList<>(List.of(1)));
+        return user;
+    }
+    //endregion
+
+    //region GET FOLLOW SORTED LIST
+    public static User createUserWithIdNameAndFolloweds(int userId, String name, List<Integer> followeds) {
+        User user = new User();
+        user.setId(userId);
+        user.setName(name);
+        user.setFollowed(followeds);
+        return user;
+    }
+
+    public static User createUserWithIdNameFollowersAndPost(int userId, String name, List<Integer> followers, List<Integer> posts) {
+        User user = new User();
+        user.setId(userId);
+        user.setName(name);
+        user.setFollowers(followers);
+        user.setPosts(posts);
+        return user;
+    }
+
+    public static FollowDto convertUserToFollowDto (User user) {
+        return new FollowDto(user.getUserId(), user.getName());
+    }
+
+    public static boolean isSortedByDate(List<PostDto> posts, boolean ascending) {
+        for (int i = 1; i < posts.size(); i++) {
+            boolean condition = ascending
+                    ? posts.get(i).getPublishDate().isBefore(posts.get(i - 1).getPublishDate())
+                    : posts.get(i).getPublishDate().isAfter(posts.get(i - 1).getPublishDate());
+            if (condition) {
+                return false;
+            }
+        }
+        return true;
     }
     //endregion
 
