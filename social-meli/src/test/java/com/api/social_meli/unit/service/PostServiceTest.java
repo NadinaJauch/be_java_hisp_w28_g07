@@ -83,6 +83,7 @@ public class PostServiceTest {
                 "Todos los posts deberían tener una fecha de publicación dentro de las últimas dos semanas.");
     }
 
+    @Test
     @DisplayName("Caso en el que no hay posts (de usuarios seguidos por usuario válido) dentro de las últimas dos semanas")
     public void shouldReturnEmptyListWhenFollowedUsersHaveNoRecentPosts() {
         // ARRANGE
