@@ -1,8 +1,6 @@
 package com.api.social_meli.integration.controller;
 
-import com.api.social_meli.dto.ExceptionDto;
-import com.api.social_meli.dto.GetFollowerCountDto;
-import com.api.social_meli.dto.MessageDto;
+import com.api.social_meli.dto.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +8,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -99,4 +100,45 @@ public class UserControllerIntegrationTest {
     }
     //endregion
 
+    //region GET FOLLOWS LISTS
+    //region FOLLOWEDS
+    @Test
+    public void getFollowedsOrderedByNameInvalidOrderBadRequestException() throws Exception{
+        //Arrange
+        Integer userId = 1;
+        String order = "name";
+        ExceptionDto exceptionDto = new ExceptionDto("No es un ordenamiento válido.");
+
+        ResultMatcher statusExpected = status().isBadRequest();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(exceptionDto));
+
+        //Act + Assert
+        mockMvc.perform(get("/users/{userId}/followed/list", userId).param("order", order))
+                .andExpectAll(
+                        statusExpected, contentTypeExpected, bodyExpected
+                ).andDo(print());
+    }
+    //endregion
+
+    //region FOLLOWERS
+    @Test
+    public void getFollowersOrderedByNameInvalidOrderBadRequestException() throws Exception{
+        //Arrange
+        Integer userId = 3;
+        String order = "name";
+        ExceptionDto exceptionDto = new ExceptionDto("No es un ordenamiento válido.");
+
+        ResultMatcher statusExpected = status().isBadRequest();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(exceptionDto));
+
+        //Act + Assert
+        mockMvc.perform(get("/users/{userId}/followers/list", userId).param("order", order))
+                .andExpectAll(
+                        statusExpected, contentTypeExpected, bodyExpected
+                ).andDo(print());
+    }
+    //endregion
+    //endregion
 }
