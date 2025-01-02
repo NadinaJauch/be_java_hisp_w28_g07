@@ -140,14 +140,4 @@ public class MockFactoryUtils {
         return true;
     }
     //endregion
-
-    //region USER CREATION
-    public static User createUserWithOnlyFollowersAndFolloweds(int userId, List<Integer> followed, List<Integer> followers) {
-
-        return new User(userId,"test",followed,followers,new ArrayList<>(),new ArrayList<>());
-
-    }
-    //endregion
-
-
 }
