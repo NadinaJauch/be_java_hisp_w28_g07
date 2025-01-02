@@ -20,35 +20,35 @@ public class UserController {
 
     @GetMapping("/{userId}/followers/count")
     public ResponseEntity<?> getFollowerCount(
-            @Valid @PathVariable int userId) {
+            @PathVariable int userId) {
         return new ResponseEntity<>(userService.getFollowerCount(userId),HttpStatus.OK);
     }
 
     @PostMapping("{userId}/unfollow/{userIdToUnfollow}")
     public ResponseEntity<?> unfollowUser(
-            @Valid @PathVariable int userId,
-            @Valid @PathVariable int userIdToUnfollow) {
+            @PathVariable int userId,
+            @PathVariable int userIdToUnfollow) {
         return new ResponseEntity<>(userService.unfollowUser(userId,userIdToUnfollow), HttpStatus.OK);
     }
 
     @GetMapping("/{userId}/followers/list")
     public ResponseEntity<?> getFollowersList(
-            @Valid @PathVariable int userId,
-            @Valid @RequestParam (required = false) String order) {
+            @PathVariable int userId,
+            @RequestParam (required = false) String order) {
         return new ResponseEntity<>(userService.getFollowersOrderedByName(userId, order), HttpStatus.OK);
     }
 
     @GetMapping("{userId}/followed/list")
     public ResponseEntity<?> getFollowedsByUserId(
-            @Valid @PathVariable int userId,
-            @Valid @RequestParam(required = false) String order){
+            @PathVariable int userId,
+            @RequestParam(required = false) String order){
         return new ResponseEntity<>(userService.getFollowedsOrderedByName(userId, order), HttpStatus.OK);
     }
 
     @PostMapping("/{userId}/follow/{userIdToFollow}")
     public ResponseEntity<?> followUser(
-            @Valid @PathVariable("userId") int userId,
-            @Valid @PathVariable("userIdToFollow") int userIdToFollow) {
+            @PathVariable("userId") int userId,
+            @PathVariable("userIdToFollow") int userIdToFollow) {
         return new ResponseEntity<>(userService.followUser(userId, userIdToFollow), HttpStatus.OK);
     }
 
@@ -65,7 +65,7 @@ public class UserController {
 
     @GetMapping("/{userId}/favourites")
     public ResponseEntity<GetFavouritePostsResponseDto> getFavouritePosts(
-            @Valid @PathVariable("userId") int userId) {
+            @PathVariable("userId") int userId) {
         return ResponseEntity.ok(userService.getFavouritePosts(userId));
     }
 

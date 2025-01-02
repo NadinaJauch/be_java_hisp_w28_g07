@@ -19,23 +19,26 @@ public class ProductController {
     private IPostService postService;
 
     @GetMapping("/promo-post/count")
-    public ResponseEntity<?> getPromoProductCount(@RequestParam("user_id") Integer userId) {
+    public ResponseEntity<?> getPromoProductCount(
+            @RequestParam("user_id") Integer userId) {
         return new ResponseEntity<>(postService.getPromoProductCount(userId), HttpStatus.OK);
     }
     @GetMapping("/followed/{userId}/list")
-    public ResponseEntity<FollowedSellerPostsDto> getFollowedSellersPosts(@PathVariable int userId,
-                                                                          @RequestParam (required = false)
-                                                                          String order) {
+    public ResponseEntity<FollowedSellerPostsDto> getFollowedSellersPosts(
+            @PathVariable int userId,
+            @RequestParam (required = false) String order) {
         return new ResponseEntity<>(postService.getFollowedSellersPosts(userId, order), HttpStatus.OK);
     }
 
     @PostMapping("/promo-post")
-    public ResponseEntity<?> createPromoPost(@Valid @RequestBody PromoPostDto dto) {
+    public ResponseEntity<?> createPromoPost(
+            @Valid @RequestBody PromoPostDto dto) {
         return new ResponseEntity<>(postService.createPromoPost(dto), HttpStatus.OK);
     }
 
     @PostMapping("/post")
-    public ResponseEntity<?> createPost(@Valid @RequestBody PostDto dto) {
+    public ResponseEntity<?> createPost(
+            @Valid @RequestBody PostDto dto) {
         return new ResponseEntity<>(postService.createPost(dto), HttpStatus.OK);
     }
 }
