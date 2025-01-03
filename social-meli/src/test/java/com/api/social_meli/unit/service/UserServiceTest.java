@@ -47,7 +47,7 @@ public class UserServiceTest {
         // Act
         MessageDto response = userService.unfollowUser(userId, userIdToUnfollow);
 
-        //Assert
+        // Assert
         assertEquals("El usuario se dejo de seguir exitosamente", response.getMessage());
         assertFalse(user.getFollowed().contains(userIdToUnfollow));
         assertFalse(userToUnfollow.getFollowers().contains(userId));
@@ -82,7 +82,7 @@ public class UserServiceTest {
         // Act
         GetFollowerCountDto getFollowerCountDto = userService.getFollowerCount(1);
 
-        //Assert
+        // Assert
         assertEquals(3,getFollowerCountDto.getFollowers_count());
     }
 
@@ -105,7 +105,7 @@ public class UserServiceTest {
         // Act
         MessageDto response = userService.followUser(userId, userIdToFollow);
 
-        //Assert
+        // Assert
         assertEquals("El usuario se comenzo a seguir exitosamente", response.getMessage());
         assertTrue(userFollower.getFollowed().contains(userIdToFollow), "El usuario debería estar en la lista de seguidos.");
         assertTrue(userToFollow.getFollowers().contains(userId), "El usuario seguidor debería estar en la lista de seguidores.");
@@ -143,11 +143,11 @@ public class UserServiceTest {
         String order = "Ordenar A-Z";
         User userAna = MockFactoryUtils.createUserWithIdNameAndFolloweds(1, "Ana Martínez", List.of(3,5,4));
 
-        //Act
+        // Act
         Mockito.when(userRepository.findById(userAna.getUserId())).thenReturn(userAna);
         Mockito.when(userRepository.exists(userAna.getUserId())).thenReturn(true);
 
-        //Assert
+        // Assert
         Assertions.assertThrows(BadRequestException.class, ()->userService.getFollowedsOrderedByName(userAna.getUserId(), order));
     }
 
@@ -158,13 +158,13 @@ public class UserServiceTest {
         String order = "name_asc";
         User userAna = MockFactoryUtils.createUserWithIdNameAndFolloweds(1, "Ana Martínez", List.of(3,5,4));
 
-        //Act
+        // Act
         Mockito.when(userRepository.findById(userAna.getUserId())).thenReturn(userAna);
         Mockito.when(userRepository.exists(userAna.getUserId())).thenReturn(true);
         Mockito.when(mapper.convertValue(userRepository.findById(2), FollowDto.class)).thenReturn(new FollowDto(2,""));
         FollowedListDto result = userService.getFollowedsOrderedByName(userAna.getUserId(), order);
 
-        //Assert
+        // Assert
         Assertions.assertEquals(3, result.getFollowed().size());
     }
 
@@ -179,12 +179,12 @@ public class UserServiceTest {
         String order = "Ordenar Z-A";
         User userMaria = MockFactoryUtils.createUserWithIdNameFollowersAndPost(3, "María López", List.of(1,5,6), List.of(2,4,5));
 
-        //Act
+        // Act
         Mockito.when(userRepository.findById(userMaria.getUserId())).thenReturn(userMaria);
         Mockito.when(userRepository.exists(userMaria.getUserId())).thenReturn(true);
 
-        //Assert
-        Assertions.assertThrows(BadRequestException.class, ()->userService.getFollowersOrderedByName(userMaria.getUserId(), order));
+        // Assert
+        Assertions.assertThrows(BadRequestException.class, () -> userService.getFollowersOrderedByName(userMaria.getUserId(), order));
     }
 
     @Test
@@ -194,13 +194,13 @@ public class UserServiceTest {
         String order = "name_desc";
         User userMaria = MockFactoryUtils.createUserWithIdNameFollowersAndPost(3, "María López", List.of(1,5,6), List.of(2,4,5));
 
-        //Act
+        // Act
         Mockito.when(userRepository.findById(userMaria.getUserId())).thenReturn(userMaria);
         Mockito.when(userRepository.exists(userMaria.getUserId())).thenReturn(true);
         Mockito.when(mapper.convertValue(userRepository.findById(1), FollowDto.class)).thenReturn(new FollowDto(1,""));
         FollowerListDto result = userService.getFollowersOrderedByName(userMaria.getUserId(), order);
 
-        //Assert
+        // Assert
         Assertions.assertEquals(3, result.getFollowers().size());
     }
 
@@ -229,7 +229,7 @@ public class UserServiceTest {
 
         List<FollowDto> expectedList = List.of(juanDto, luciaDto, mariaDto);
 
-        //Act
+        // Act
         Mockito.when(userRepository.findById(1)).thenReturn(userAna);
         Mockito.when(userRepository.exists(1)).thenReturn(true);
 
@@ -264,7 +264,7 @@ public class UserServiceTest {
 
         List<FollowDto> expectedList = List.of(mariaDto, luciaDto, juanDto);
 
-        //Act
+        // Act
         Mockito.when(userRepository.findById(1)).thenReturn(userAna);
         Mockito.when(userRepository.exists(1)).thenReturn(true);
 
@@ -292,12 +292,12 @@ public class UserServiceTest {
         user.setId(userId);
         user.setFollowed(new ArrayList<>());
 
-        //Act
+        // Act
         Mockito.when(userRepository.findById(userId)).thenReturn(user);
         Mockito.when(userRepository.exists(userId)).thenReturn(true);
 
-        //Assert
-        Assertions.assertThrows(NotFoundException.class, ()->userService.getFollowedsOrderedByName(userId, order));
+        // Assert
+        Assertions.assertThrows(NotFoundException.class, () -> userService.getFollowedsOrderedByName(userId, order));
     }
 
     @Test
@@ -309,12 +309,12 @@ public class UserServiceTest {
         User user = new User();
         user.setId(userId);
 
-        //Act
+        // Act
         Mockito.when(userRepository.findById(userId)).thenReturn(user);
         Mockito.when(userRepository.exists(userId)).thenReturn(false);
 
-        //Assert
-        Assertions.assertThrows(NotFoundException.class, ()->userService.getFollowedsOrderedByName(userId, order));
+        // Assert
+        Assertions.assertThrows(NotFoundException.class, () -> userService.getFollowedsOrderedByName(userId, order));
     }
 
     //endregion
@@ -338,7 +338,7 @@ public class UserServiceTest {
 
         List<FollowDto> expectedList = List.of(anaDto, luciaDto, miguelDto);
 
-        //Act
+        // Act
         Mockito.when(userRepository.findById(3)).thenReturn(userMaria);
         Mockito.when(userRepository.exists(3)).thenReturn(true);
 
@@ -373,7 +373,7 @@ public class UserServiceTest {
 
         List<FollowDto> expectedList = List.of(miguelDto, luciaDto, anaDto);
 
-        //Act
+        // Act
         Mockito.when(userRepository.findById(3)).thenReturn(userMaria);
         Mockito.when(userRepository.exists(3)).thenReturn(true);
 
@@ -400,12 +400,12 @@ public class UserServiceTest {
         User user = new User();
         user.setId(userId);
 
-        //Act
+        // Act
         Mockito.when(userRepository.findById(userId)).thenReturn(user);
         Mockito.when(userRepository.exists(userId)).thenReturn(false);
 
-        //Assert
-        Assertions.assertThrows(NotFoundException.class, ()->userService.getFollowersOrderedByName(userId, order));
+        // Assert
+        Assertions.assertThrows(NotFoundException.class, () -> userService.getFollowersOrderedByName(userId, order));
     }
 
     @Test
@@ -418,12 +418,12 @@ public class UserServiceTest {
         user.setId(userId);
         user.setPosts(new ArrayList<>());
 
-        //Act
+        // Act
         Mockito.when(userRepository.findById(userId)).thenReturn(user);
         Mockito.when(userRepository.exists(userId)).thenReturn(true);
 
-        //Assert
-        Assertions.assertThrows(BadRequestException.class, ()->userService.getFollowersOrderedByName(userId, order));
+        // Assert
+        Assertions.assertThrows(BadRequestException.class, () ->userService.getFollowersOrderedByName(userId, order));
     }
 
     //endregion

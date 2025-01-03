@@ -83,7 +83,7 @@ public class PostControllerIntegrationTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/products/promo-post")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(payloadJson))
-        //Assert
+        // Assert
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("$.message").value(expectedMessage));
@@ -122,7 +122,7 @@ public class PostControllerIntegrationTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/products/promo-post")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(payloadJson))
-        //Assert
+        // Assert
                 .andDo(print()).andExpect(status().isBadRequest())
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("$.description").value(containsString("El 'user_id' debe ser mayor a cero")));
@@ -161,7 +161,7 @@ public class PostControllerIntegrationTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/products/promo-post")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(payloadJson))
-        //Assert
+        // Assert
                 .andDo(print()).andExpect(status().isBadRequest())
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("$.description").value(containsString("El 'user_id' debe ser mayor a cero")))

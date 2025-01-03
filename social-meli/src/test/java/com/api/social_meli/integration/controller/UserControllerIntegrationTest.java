@@ -285,7 +285,7 @@ public class UserControllerIntegrationTest {
         ResultMatcher contentTypeExpected = content().contentType("application/json");
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(exceptionDto));
 
-        //Act & Assert
+        // Act & Assert
         mockMvc.perform(get("/users/{userId}/followed/list", userId).param("order", order))
                 .andExpectAll(
                         statusExpected, contentTypeExpected, bodyExpected
@@ -313,7 +313,7 @@ public class UserControllerIntegrationTest {
         ResultMatcher contentTypeExpected = content().contentType("application/json");
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(listSpected));
 
-        //Act & Assert
+        // Act & Assert
         mockMvc.perform(get("/users/{userId}/followed/list", userId).param("order", order))
                 .andExpectAll(
                         statusExpected, contentTypeExpected, bodyExpected
@@ -333,7 +333,7 @@ public class UserControllerIntegrationTest {
         ResultMatcher contentTypeExpected = content().contentType("application/json");
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(exceptionDto));
 
-        //Act & Assert
+        // Act & Assert
         mockMvc.perform(get("/users/{userId}/followers/list", userId).param("order", order))
                 .andExpectAll(
                         statusExpected, contentTypeExpected, bodyExpected
@@ -361,7 +361,7 @@ public class UserControllerIntegrationTest {
         ResultMatcher contentTypeExpected = content().contentType("application/json");
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(listSpected));
 
-        //Act & Assert
+        // Act & Assert
         mockMvc.perform(get("/users/{userId}/followers/list", userId).param("order", order))
                 .andExpectAll(
                         statusExpected, contentTypeExpected, bodyExpected
@@ -397,7 +397,7 @@ public class UserControllerIntegrationTest {
         ResultMatcher contentTypeExpected = content().contentType("application/json");
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(listSpected));
 
-        //Act & Assert
+        // Act & Assert
         mockMvc.perform(get("/users/{userId}/followed/list", userId).param("order", order))
                 .andExpectAll(
                         statusExpected, contentTypeExpected, bodyExpected
@@ -415,7 +415,7 @@ public class UserControllerIntegrationTest {
         ResultMatcher contentTypeExpected = content().contentType("application/json");
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(exceptionDto));
 
-        //Act & Assert
+        // Act & Assert
         mockMvc.perform(get("/users/{userId}/followed/list", userId).param("order", order))
                 .andExpectAll(
                         statusExpected, contentTypeExpected, bodyExpected
@@ -447,7 +447,7 @@ public class UserControllerIntegrationTest {
         ResultMatcher contentTypeExpected = content().contentType("application/json");
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(listSpected));
 
-        //Act & Assert
+        // Act & Assert
         mockMvc.perform(get("/users/{userId}/followers/list", userId).param("order", order))
                 .andExpectAll(
                         statusExpected, contentTypeExpected, bodyExpected
@@ -465,7 +465,7 @@ public class UserControllerIntegrationTest {
         ResultMatcher contentTypeExpected = content().contentType("application/json");
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(exceptionDto));
 
-        //Act & Assert
+        // Act & Assert
         mockMvc.perform(get("/users/{userId}/followers/list", userId).param("order", order))
                 .andExpectAll(
                         statusExpected, contentTypeExpected, bodyExpected
@@ -483,7 +483,7 @@ public class UserControllerIntegrationTest {
         ResultMatcher contentTypeExpected = content().contentType("application/json");
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(exceptionDto));
 
-        //Act & Assert
+        // Act & Assert
         mockMvc.perform(get("/users/{userId}/followers/list", userId).param("order", order))
                 .andExpectAll(
                         statusExpected, contentTypeExpected, bodyExpected

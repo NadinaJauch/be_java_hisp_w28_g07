@@ -74,7 +74,7 @@ public class PostServiceTest {
         // Arrange
         int userId = 1;
         List<Integer> followedByUser = MockFactoryUtils.getFollowedsByUserId(usersMock, userId);
-        MockFactoryUtils.setPostsAsPostedOneWeekAgo(postsMock, List.of(2, 4)); // Se que los posts 2 y 4 son algunos de los posts de usuarios que el usuario 1 sigue
+        MockFactoryUtils.setPostsAsPostedOneWeekAgo(postsMock, List.of(2, 4));
 
         when(userRepository.findAll()).thenReturn(usersMock);
         when(userRepository.exists(userId)).thenReturn(true);
@@ -192,7 +192,6 @@ public class PostServiceTest {
         int userId = 1;
         String order = "date_asc";
         MockFactoryUtils.setPostsAsPostedOneWeekAgo(postsMock, List.of(2, 4));
-        // Se que los posts 2 y 4 son algunos de los posts de usuarios que el usuario 1 sigue
 
         when(userRepository.exists(userId)).thenReturn(true);
         when(userRepository.findAll()).thenReturn(usersMock);
@@ -222,7 +221,6 @@ public class PostServiceTest {
         int userId = 1;
         String order = "date_desc";
         MockFactoryUtils.setPostsAsPostedOneWeekAgo(postsMock, List.of(2, 4));
-        // Se que los posts 2 y 4 son algunos de los posts de usuarios que el usuario 1 sigue
 
         when(userRepository.exists(userId)).thenReturn(true);
         when(userRepository.findAll()).thenReturn(usersMock);
