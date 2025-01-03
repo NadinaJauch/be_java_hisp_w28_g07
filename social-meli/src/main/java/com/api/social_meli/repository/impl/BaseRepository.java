@@ -23,7 +23,7 @@ public class BaseRepository<T extends Identifiable> {
         entity.setId(counter);
         entities.add(entity);
         counter++;
-        return entities.getLast();
+        return entities.get(entities.size()-1);
     }
 
     public T findById(int id) {
@@ -38,21 +38,16 @@ public class BaseRepository<T extends Identifiable> {
         return entities;
     }
 
-    public void delete(T entity) {
-        entities.remove(entity);
-    }
-
     public boolean exists(int id) {
         return entities.stream().anyMatch(x -> x.getId() == id);
     }
 
     protected void loadDataBase(String fileName) {
         try {
-            File file;
             ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.registerModule(new JavaTimeModule()); // para que tome los DateTime
+            objectMapper.registerModule(new JavaTimeModule());
 
-            file = ResourceUtils.getFile("classpath:" + fileName + ".json"); // obtencion de archivo
+            File file = ResourceUtils.getFile("classpath:" + fileName + ".json");
 
             // una reflexion para obtener el tipo generico de esta clase base
             Class<T> entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];

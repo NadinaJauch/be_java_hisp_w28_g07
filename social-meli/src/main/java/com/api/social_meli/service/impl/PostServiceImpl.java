@@ -31,7 +31,7 @@ public class PostServiceImpl implements IPostService {
     private IUserRepository userRepository;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @Override
     public MessageDto createPost(PostDto dto) {
@@ -41,6 +41,9 @@ public class PostServiceImpl implements IPostService {
         }
         if(!postCategoryRepository.exists(dto.getCategoryId())){
             throw new BadRequestException("Esta categoria no existe");
+        }
+        if (postRepository.exists(toRegister.getId())) {
+            throw new BadRequestException("El post ya existe");
         }
         toRegister.setSeller(userRepository.findById(dto.getUserId()));
         toRegister.setPostId(postRepository.findAll().size()+1);
@@ -88,6 +91,9 @@ public class PostServiceImpl implements IPostService {
     }
 
     public FollowedSellerPostsDto getFollowedSellersPosts(int userId, String order) {
+            if(!"date_desc".equals(order) && !"date_asc".equals(order) && order != null)
+                throw new BadRequestException("Tipo de order no válido, ingrese date_asc o date_desc");
+
         if (!userRepository.exists(userId))
             throw new NotFoundException("No se encontró ningún usuario con ese ID.");
 
@@ -101,9 +107,6 @@ public class PostServiceImpl implements IPostService {
 
         if(order == null)
             return new FollowedSellerPostsDto(userId, posts);
-
-        if(!order.equals("date_desc") && !order.equals("date_asc"))
-            throw new BadRequestException("Tipo de order no válido, ingrese date_asc o date_desc");
 
         return new FollowedSellerPostsDto(userId, getSortedPost(posts,order));
     }
@@ -120,7 +123,8 @@ public class PostServiceImpl implements IPostService {
 
     @Override
     public List<PostDto> getPostsByUserId(int userId) {
-        return objectMapper.convertValue(postRepository.findByUserId(userId), new TypeReference<List<PostDto>>() {});
+        List<Post> postsFromRepo = postRepository.findByUserId(userId);
+        return objectMapper.convertValue(postsFromRepo, new TypeReference<List<PostDto>>() {});
     }
 
     private List<PostDto> getSortedPost(List<PostDto> posts, String order){

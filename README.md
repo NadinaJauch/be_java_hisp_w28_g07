@@ -91,6 +91,57 @@ Se utilizó la clase `BaseRepository` como base para proporcionar métodos comun
 15. (Bonus) Sacar (eliminar) un post de los favoritos de un usuario - (Lisandro Giussani Alo)
 16. (Bonus) Traer todos los usuarios - (Fernanda Agustina Castaldo) 
 
+# Testing 
+
+## Validaciones en campos para todas las US 
+
+| Dato/Parámetro  | ¿Obligatorio? | Validación                                                                                                                                                      | Mensaje de error                                                                                   |
+|------------------|---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|
+| user_id          | Sí            | Que el campo no esté vacío. <br> Mayor 0                                                                                                                   | El id no puede estar vacío. <br> El id debe ser mayor a cero                                     |
+| date             | Sí            | Que el campo no esté vacío.                                                                                                                                  | La fecha no puede estar vacía.                                                                     |
+| product_id       | Sí            | Que el campo no esté vacío. <br> Mayor 0                                                                                                                   | La id no puede estar vacía. <br> El id debe ser mayor a cero                                     |
+| product_name     | Sí            | Que el campo no esté vacío. <br> Longitud máxima de 40 caracteres. <br> Que no posea caracteres especiales (%, &, $, etc), permite espacios.               | El campo no puede estar vacío. <br> La longitud no puede superar los 40 caracteres. <br> El campo no puede poseer caracteres especiales.  |
+| type             | Sí            | Que el campo no esté vacío. <br> Longitud máxima de 15 caracteres. <br> Que no posea caracteres especiales (%, &, $, etc)                                 | El campo no puede estar vacío. <br> La longitud no puede superar los 15 caracteres. <br> El campo no puede poseer caracteres especiales.  |
+| brand            | Sí            | Que el campo no esté vacío. <br> Longitud máxima de 25 caracteres. <br> Que no posea caracteres especiales (%, &, $, etc)                                 | La longitud no puede superar los 25 caracteres. <br> El campo no puede estar vacío. <br> El campo no puede poseer caracteres especiales.  |
+| color            | Sí            | Que el campo no esté vacío. <br> Longitud máxima de 15 caracteres. <br> Que no posea caracteres especiales (%, &, $, etc)                                 | El campo no puede estar vacío. <br> La longitud no puede superar los 15 caracteres. <br> El campo no puede poseer caracteres especiales.  |
+| notes            | No            | Longitud máxima de 80 caracteres. <br> Que no posea caracteres especiales (%, &, $, etc), permite espacios.                                                 | La longitud no puede superar los 80 caracteres. <br> El campo no puede poseer caracteres especiales.  |
+| category         | Sí            | Que el campo no esté vacío.                                                                                                                                  | El campo no puede estar vacío.                                                                     |
+| price            | Sí            | Que el campo no esté vacío. <br> El precio máximo puede ser 10.000.000.                                                                                     | El campo no puede estar vacío. <br> El precio máximo por producto es de 10.000.000                |
+
+**Asignado**: Martin Ignacio Romero
+
+## Tests unitarios 
+
+| US        | Situaciones de entrada                                                                                                     | Comportamiento Esperado                                                                                               | Asignado       |
+|-----------|----------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|-----------------|
+| US-0001   | T-0001                                                                                                                    | Se cumple: Permite continuar con normalidad. <br> No se cumple: Notifica la no existencia mediante una excepción.      | Fernanda Castaldo      |
+| US-0007   | T-0002                                                                                                                    | Se cumple: Permite continuar con normalidad. <br> No se cumple: Notifica la no existencia mediante una excepción.      | Lisandro Giussani Alo   |
+| US-0008   | T-0003                                                                                                                    | Se cumple: Permite continuar con normalidad. <br> No se cumple: Notifica la no existencia mediante una excepción.      | Martin Daniel Simonetti  |
+| US-0008   | T-0004                                                                                                                    | Devuelve la lista ordenada según el criterio solicitado.                                                                | Martin Daniel Simonetti |
+| US-0009   | T-0005                                                                                                                    | Se cumple: Permite continuar con normalidad. <br> No se cumple: Notifica la no existencia mediante una excepción.      | Pilar Innocenti    |
+| US-0009   | T-0006                                                                                                                    | Verificar el correcto ordenamiento ascendente y descendente por fecha.                                                 | Pilar Innocenti   |
+| US-0002   | T-0007                                                                                                                    | Devuelve el cálculo correcto del total de la cantidad de seguidores que posee un usuario.                             | Lisandro Giussani Alo |
+| US-0006   | T-0008                                                                                                                    | Devuelve únicamente los datos de las publicaciones que tengan fecha de publicación dentro de las últimas dos semanas a partir del día de la fecha. | Nadina Ambar Jauch     |
+
+## Test de integración 
+
+| US         | Descripción                                                                                                       | Asignado                     |
+|------------|-------------------------------------------------------------------------------------------------------------------|------------------------------|
+| US-0001    | Seguir usuario                                                                                                   | Fernanda Castaldo            |
+| US-0002    | Verificar que la cantidad de seguidores de un determinado usuario sea correcta.                                  | Lisandro Giussani Alo        |
+| US-0005    | Crear post sin promo                                                                                              | Lisandro Giussani Alo        |
+| US-0006    | Obtener posts de las últimas dos semanas de los vendedores seguidos por un usuario                                | Nadina Ambar Jauch           |
+| US-0007    | Dejar de seguir usuario                                                                                            | Lisandro Giussani Alo        |
+| US-0003, US-0004, US-0008 | Verificar ordenamiento de seguidores y seguidos                                                       | Martin Daniel Simonetti      |
+| US-0009    | Verificar ordenamiento de fecha ascendente y descendente de los post                                            | Pilar Innocenti              |
+| US-0010    | Crear post con promo                                                                                              | Martin Ignacio Romero        |
+| US-0011    | Traer cantidad de posts en promoción                                                                              | Lisandro Giussani Alo        |
+| US-0012    | Traer post por categoría                                                                                          | Lisandro Giussani Alo        |
+| BONUS      | Traer cantidad de seguidores de usuario                                                                           | Lisandro Giussani Alo        |
+| BONUS      | Traer listado de posts favoritos de un usuario                                                                    | Lisandro Giussani Alo        |
+
+**Se logró un coverage total de 89%**
+
 # Integrantes 
 
 - Nadina Ambar Jauch 
