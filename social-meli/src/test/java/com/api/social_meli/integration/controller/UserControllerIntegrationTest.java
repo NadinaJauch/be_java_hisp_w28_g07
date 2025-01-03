@@ -43,9 +43,10 @@ public class UserControllerIntegrationTest {
     }
 
     //region GET FOLLOWER COUNT
+
     @Test
     public void getFollowerCountOk() throws Exception {
-        //ARRANGE
+        // Arrange
         Integer userId = 3;
         GetFollowerCountDto responseExpected = new GetFollowerCountDto(3,"María López",3);
 
@@ -53,7 +54,7 @@ public class UserControllerIntegrationTest {
         ResultMatcher contentTypeExpected = content().contentType("application/json");
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(responseExpected));
 
-        //ACT && ASSERT
+        // Act & Assert
         mockMvc.perform(get("/users/{userId}/followers/count", userId))
                 .andExpectAll(
                         statusExpected,contentTypeExpected,bodyExpected
@@ -62,7 +63,7 @@ public class UserControllerIntegrationTest {
 
     @Test
     public void getFollowerCountException() throws Exception {
-        //ARRANGE
+        // Arrange
         Integer userId = 60;
         ExceptionDto responseExpected = new ExceptionDto("Usuario no encontrado");
 
@@ -70,7 +71,7 @@ public class UserControllerIntegrationTest {
         ResultMatcher contentTypeExpected = content().contentType("application/json");
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(responseExpected));
 
-        //ACT && ASSERT
+        // Act & Assert
         mockMvc.perform(get("/users/{userId}/followers/count", userId))
                 .andExpectAll(
                         statusExpected, contentTypeExpected, bodyExpected
@@ -80,10 +81,11 @@ public class UserControllerIntegrationTest {
     //endregion
 
     //region UNFOLLOW USER
+
     @Test
     public void unfollowUserOk() throws Exception {
 
-        //ARRANGE
+        // Arrange
         Integer userId = 6;
         Integer userIdToUnfollow = 2;
 
@@ -91,7 +93,7 @@ public class UserControllerIntegrationTest {
         ResultMatcher contentTypeExpected = content().contentType("application/json");
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(new MessageDto("El usuario se dejo de seguir exitosamente")));
 
-        //ACT && ASSERT
+        // Act & Assert
         mockMvc.perform(post("/users/{userId}/unfollow/{userIdToUnfollow}", userId, userIdToUnfollow))
                 .andExpectAll(
                         statusExpected, contentTypeExpected, bodyExpected
@@ -113,20 +115,22 @@ public class UserControllerIntegrationTest {
                         statusExpected, contentTypeExpected, bodyExpected
                 ).andDo(print());
     }
+
     //endregion
 
     //region FAVOURITE POST
+
     @Test
     @DirtiesContext
     public void favouritePostOk() throws Exception {
-        //ARRANGE
+        // Arrange
         String jsonRequest = objectMapper.writer().writeValueAsString(new FavouritePostRequestDto(1,5));
 
         ResultMatcher statusExpected= status().isOk();
         ResultMatcher contentTypeExpected = content().contentType("application/json");
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(new MessageDto("Publicación agregada a favoritos exitosamente")));
 
-        //ACT && ASSERT
+        // Act & Assert
         mockMvc.perform(post("/users/favourites").content(jsonRequest).contentType(MediaType.APPLICATION_JSON)).andExpectAll(
                 statusExpected, contentTypeExpected, bodyExpected
         );
@@ -135,14 +139,14 @@ public class UserControllerIntegrationTest {
 
     @Test
     public void favouritePostConflictException() throws Exception {
-        //ARRANGE
+        // Arrange
         String jsonRequest = objectMapper.writer().writeValueAsString(new FavouritePostRequestDto(1,2));
 
         ResultMatcher statusExpected= status().isConflict();
         ResultMatcher contentTypeExpected = content().contentType("application/json");
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(new MessageDto("El post ya está en favoritos")));
 
-        //ACT && ASSERT
+        // Act & Assert
         mockMvc.perform(post("/users/favourites").content(jsonRequest).contentType(MediaType.APPLICATION_JSON)).andExpectAll(
                 statusExpected, contentTypeExpected, bodyExpected
         );
@@ -154,14 +158,14 @@ public class UserControllerIntegrationTest {
 
     @Test
     public void unfavouritePostOk() throws Exception {
-        //ARRANGE
+        // Arrange
         String jsonRequest = objectMapper.writer().writeValueAsString(new FavouritePostRequestDto(4,2));
 
         ResultMatcher statusExpected= status().isOk();
         ResultMatcher contentTypeExpected = content().contentType("application/json");
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(new MessageDto("Post sacado de favoritos correctamente")));
 
-        //ACT && ASSERT
+        // Act & Assert
         mockMvc.perform(post("/users/unfavourite").content(jsonRequest).contentType(MediaType.APPLICATION_JSON)).andExpectAll(
                 statusExpected, contentTypeExpected, bodyExpected
         );
@@ -170,14 +174,14 @@ public class UserControllerIntegrationTest {
 
     @Test
     public void unfavouritePostNotFoundException() throws Exception {
-        //ARRANGE
+        // Arrange
         String jsonRequest = objectMapper.writer().writeValueAsString(new FavouritePostRequestDto(4,232));
 
         ResultMatcher statusExpected= status().isNotFound();
         ResultMatcher contentTypeExpected = content().contentType("application/json");
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(new MessageDto("No se encontro el post")));
 
-        //ACT && ASSERT
+        // Act & Assert
         mockMvc.perform(post("/users/unfavourite").content(jsonRequest).contentType(MediaType.APPLICATION_JSON)).andExpectAll(
                 statusExpected, contentTypeExpected, bodyExpected
         );
@@ -190,7 +194,7 @@ public class UserControllerIntegrationTest {
 
     @Test
     public void favouritePostListOk() throws Exception {
-        //ARRANGE
+        // Arrange
         Integer userId = 1;
 
         GetFavouritePostsResponseDto responseExpected = MockFactoryUtils.createGetFavouritePostsResponseDtoForUser();
@@ -199,7 +203,7 @@ public class UserControllerIntegrationTest {
         ResultMatcher contentTypeExpected = content().contentType("application/json");
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(responseExpected));
 
-        //ACT & ASSERT
+        // Act & Assert
         mockMvc.perform(get("/users/{userId}/favourites", userId)).andExpectAll(
                 statusExpected, contentTypeExpected, bodyExpected
         ).andDo(print());
@@ -207,14 +211,14 @@ public class UserControllerIntegrationTest {
 
     @Test
     public void favouritePostListNotFoundException() throws Exception {
-        //ARRANGE
+        // Arrange
         Integer userId = 222;
 
         ResultMatcher statusExpected = status().isNotFound();
         ResultMatcher contentTypeExpected = content().contentType("application/json");
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(new MessageDto("No se encontró ningún usuario con ese ID.")));
 
-        //ACT & ASSERT
+        // Act & Assert
         mockMvc.perform(get("/users/{userId}/favourites", userId)).andExpectAll(
                 statusExpected, contentTypeExpected, bodyExpected
         ).andDo(print());
@@ -223,10 +227,11 @@ public class UserControllerIntegrationTest {
     //endregion
 
     //region FOLLOW USER
+
     @Test
     @DisplayName("Seguir usuario exitosamente")
     public void followUserOk() throws Exception {
-        // ARRANGE
+        // Arrange
         Integer userId = 2;
         Integer userIdToFollow = 3;
 
@@ -234,7 +239,7 @@ public class UserControllerIntegrationTest {
         ResultMatcher contentTypeExpected = content().contentType("application/json");
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(new MessageDto("El usuario se comenzo a seguir exitosamente")));
 
-        // ACT && ASSERT
+        // Act & Assert
         mockMvc.perform(post("/users/{userId}/follow/{userIdToFollow}", userId, userIdToFollow))
                 .andExpectAll(
                         statusExpected,
@@ -246,7 +251,7 @@ public class UserControllerIntegrationTest {
     @Test
     @DisplayName("Seguir usuario inexistente")
     public void followUserNotFoundException() throws Exception {
-        // ARRANGE
+        // Arrange
         Integer userId = 2;
         Integer userIdToFollow = 3000;
 
@@ -254,7 +259,7 @@ public class UserControllerIntegrationTest {
         ResultMatcher contentTypeExpected = content().contentType("application/json");
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(new MessageDto("Usuario o vendedor no encontrado")));
 
-        // ACT && ASSERT
+        // Act & Assert
         mockMvc.perform(post("/users/{userId}/follow/{userIdToFollow}", userId, userIdToFollow))
                 .andExpectAll(
                         statusExpected,
@@ -262,13 +267,16 @@ public class UserControllerIntegrationTest {
                         bodyExpected
                 ).andDo(print());
     }
+
     //endregion
 
     //region GET FOLLOWS LISTS
+
     //region FOLLOWEDS
+
     @Test
     public void getFollowedsOrderedByNameInvalidOrderBadRequestException() throws Exception{
-        //Arrange
+        // Arrange
         Integer userId = 1;
         String order = "name";
         ExceptionDto exceptionDto = new ExceptionDto("No es un ordenamiento válido.");
@@ -277,7 +285,7 @@ public class UserControllerIntegrationTest {
         ResultMatcher contentTypeExpected = content().contentType("application/json");
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(exceptionDto));
 
-        //Act + Assert
+        //Act & Assert
         mockMvc.perform(get("/users/{userId}/followed/list", userId).param("order", order))
                 .andExpectAll(
                         statusExpected, contentTypeExpected, bodyExpected
@@ -286,7 +294,7 @@ public class UserControllerIntegrationTest {
 
     @Test
     public void getFollowedsOrderedByNameNotOrderList() throws Exception{
-        //Arrange
+        // Arrange
         Integer userId = 1;
         String order = null;
         FollowedListDto listSpected = new FollowedListDto(
@@ -305,7 +313,7 @@ public class UserControllerIntegrationTest {
         ResultMatcher contentTypeExpected = content().contentType("application/json");
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(listSpected));
 
-        //Act + Assert
+        //Act & Assert
         mockMvc.perform(get("/users/{userId}/followed/list", userId).param("order", order))
                 .andExpectAll(
                         statusExpected, contentTypeExpected, bodyExpected
@@ -316,7 +324,7 @@ public class UserControllerIntegrationTest {
     //region FOLLOWERS
     @Test
     public void getFollowersOrderedByNameInvalidOrderBadRequestException() throws Exception{
-        //Arrange
+        // Arrange
         Integer userId = 3;
         String order = "name";
         ExceptionDto exceptionDto = new ExceptionDto("No es un ordenamiento válido.");
@@ -325,7 +333,7 @@ public class UserControllerIntegrationTest {
         ResultMatcher contentTypeExpected = content().contentType("application/json");
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(exceptionDto));
 
-        //Act + Assert
+        //Act & Assert
         mockMvc.perform(get("/users/{userId}/followers/list", userId).param("order", order))
                 .andExpectAll(
                         statusExpected, contentTypeExpected, bodyExpected
@@ -334,7 +342,7 @@ public class UserControllerIntegrationTest {
 
     @Test
     public void getFollowersOrderedByNameNotOrderList() throws Exception{
-        //Arrange
+        // Arrange
         Integer userId = 3;
         String order = null;
         FollowerListDto listSpected = new FollowerListDto(
@@ -353,20 +361,24 @@ public class UserControllerIntegrationTest {
         ResultMatcher contentTypeExpected = content().contentType("application/json");
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(listSpected));
 
-        //Act + Assert
+        //Act & Assert
         mockMvc.perform(get("/users/{userId}/followers/list", userId).param("order", order))
                 .andExpectAll(
                         statusExpected, contentTypeExpected, bodyExpected
                 ).andDo(print());
     }
+
     //endregion
+
     //endregion
 
     //region GET FOLLOWS SORTED LISTS
+
     //region FOLLOWEDS
+
     @Test
     public void getFollowedsOrderedByNameOk() throws Exception{
-        //Arrange
+        // Arrange
         Integer userId = 1;
         String order = "name_asc";
         FollowedListDto listSpected = new FollowedListDto(
@@ -385,7 +397,7 @@ public class UserControllerIntegrationTest {
         ResultMatcher contentTypeExpected = content().contentType("application/json");
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(listSpected));
 
-        //Act + Assert
+        //Act & Assert
         mockMvc.perform(get("/users/{userId}/followed/list", userId).param("order", order))
                 .andExpectAll(
                         statusExpected, contentTypeExpected, bodyExpected
@@ -394,7 +406,7 @@ public class UserControllerIntegrationTest {
 
     @Test
     public void getFollowedsOrderedByNameInvalidUserIdNotFoundException() throws Exception{
-        //Arrange
+        // Arrange
         Integer userId = 1000;
         String order = "name_asc";
         ExceptionDto exceptionDto = new ExceptionDto("No se encontró el usuario.");
@@ -403,18 +415,20 @@ public class UserControllerIntegrationTest {
         ResultMatcher contentTypeExpected = content().contentType("application/json");
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(exceptionDto));
 
-        //Act + Assert
+        //Act & Assert
         mockMvc.perform(get("/users/{userId}/followed/list", userId).param("order", order))
                 .andExpectAll(
                         statusExpected, contentTypeExpected, bodyExpected
                 ).andDo(print());
     }
+
     //endregion
 
     //region FOLLOWERS
+
     @Test
     public void getFollowersOrderedByNameOk() throws Exception{
-        //Arrange
+        // Arrange
         Integer userId = 3;
         String order = "name_desc";
         FollowerListDto listSpected = new FollowerListDto(
@@ -433,7 +447,7 @@ public class UserControllerIntegrationTest {
         ResultMatcher contentTypeExpected = content().contentType("application/json");
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(listSpected));
 
-        //Act + Assert
+        //Act & Assert
         mockMvc.perform(get("/users/{userId}/followers/list", userId).param("order", order))
                 .andExpectAll(
                         statusExpected, contentTypeExpected, bodyExpected
@@ -442,7 +456,7 @@ public class UserControllerIntegrationTest {
 
     @Test
     public void getFollowersOrderedByNameInvalidUserIdNotFoundException() throws Exception{
-        //Arrange
+        // Arrange
         Integer userId = 1000;
         String order = "name_desc";
         ExceptionDto exceptionDto = new ExceptionDto("No se encontró el usuario.");
@@ -451,7 +465,7 @@ public class UserControllerIntegrationTest {
         ResultMatcher contentTypeExpected = content().contentType("application/json");
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(exceptionDto));
 
-        //Act + Assert
+        //Act & Assert
         mockMvc.perform(get("/users/{userId}/followers/list", userId).param("order", order))
                 .andExpectAll(
                         statusExpected, contentTypeExpected, bodyExpected
@@ -460,7 +474,7 @@ public class UserControllerIntegrationTest {
 
     @Test
     public void getFollowersOrderedByNameISNotSellerBadRequestException() throws Exception{
-        //Arrange
+        // Arrange
         Integer userId = 1;
         String order = "name_desc";
         ExceptionDto exceptionDto = new ExceptionDto("El usuario no es un vendedor y no puede tener seguidores.");
@@ -469,12 +483,14 @@ public class UserControllerIntegrationTest {
         ResultMatcher contentTypeExpected = content().contentType("application/json");
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(exceptionDto));
 
-        //Act + Assert
+        //Act & Assert
         mockMvc.perform(get("/users/{userId}/followers/list", userId).param("order", order))
                 .andExpectAll(
                         statusExpected, contentTypeExpected, bodyExpected
                 ).andDo(print());
     }
+
     //endregion
+
     //endregion
 }
