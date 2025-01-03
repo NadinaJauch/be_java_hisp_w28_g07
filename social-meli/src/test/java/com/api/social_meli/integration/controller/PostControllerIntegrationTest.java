@@ -3,18 +3,22 @@ package com.api.social_meli.integration.controller;
 import com.api.social_meli.dto.*;
 import com.api.social_meli.util.MockFactoryUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.api.social_meli.dto.ProductDto;
+import com.api.social_meli.dto.PromoPostDto;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
+
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
@@ -43,6 +47,7 @@ public class PostControllerIntegrationTest {
     }
 
     //region CREATE PROMO POST
+
     @Test
     @DisplayName("1.1: CreatePromnoPost OK")
     public void createPromoPostOK() throws Exception{
@@ -113,8 +118,6 @@ public class PostControllerIntegrationTest {
 
         String payloadJson = writer.writeValueAsString(toRegister);
 
-        String expectedMessage = "Creado con exito";
-
         //ACT
         mockMvc.perform(MockMvcRequestBuilders.post("/products/promo-post")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -154,8 +157,6 @@ public class PostControllerIntegrationTest {
 
         String payloadJson = writer.writeValueAsString(toRegister);
 
-        String expectedMessage = "Creado con exito";
-
         //ACT
         mockMvc.perform(MockMvcRequestBuilders.post("/products/promo-post")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -176,12 +177,13 @@ public class PostControllerIntegrationTest {
                 .andExpect(jsonPath("$.description").value(containsString("El campo 'notes' no puede poseer caracteres especiales")))
                 .andExpect(jsonPath("$.description").value(containsString("La longitud del campo 'notes' no puede superar los 80 caracteres")))
                 .andExpect(jsonPath("$.description").value(containsString("El campo 'category' debe ser mayor que cero")))
-                .andExpect(jsonPath("$.description").value(containsString("El precio maximo por producto es de 10.000.000")))
-        ;
+                .andExpect(jsonPath("$.description").value(containsString("El precio maximo por producto es de 10.000.000")));
     }
+
     //endregion
 
     //region CREATE POST
+
     @Test
     public void createPostTestOk() throws Exception {
         //ARRANGE
@@ -214,9 +216,11 @@ public class PostControllerIntegrationTest {
                 statusExpected, contentTypeExpected, bodyExpected
         );
     }
+
     //endregion
 
     //region GET BY CATEGORY ID
+
     @Test
     public void getPostByCategoryIdTestOk() throws Exception {
         //ARRANGE
@@ -261,9 +265,11 @@ public class PostControllerIntegrationTest {
                         bodyExpected
                 );
     }
+
     //endregion
 
     //region PROMO PRODUCT COUNT
+
     @Test
     public void getPromoProductCountTestOk() throws Exception {
         //ARRANGE
@@ -304,5 +310,6 @@ public class PostControllerIntegrationTest {
                         bodyExpected
                 );
     }
+
     //endregion
 }

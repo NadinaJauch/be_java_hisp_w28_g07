@@ -14,6 +14,7 @@ import com.api.social_meli.util.MockFactoryUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,12 +47,17 @@ public class PostServiceTest {
     private IUserRepository userRepository;
 
     @Spy
-    private ObjectMapper objectMapper = new ObjectMapper()
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .registerModule(new JavaTimeModule());
+    static ObjectMapper objectMapper;
 
     @InjectMocks
     private PostServiceImpl postService;
+
+    @BeforeAll
+    public static void setUp() {
+        objectMapper = new ObjectMapper()
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .registerModule(new JavaTimeModule());
+    }
 
 
     @BeforeEach
@@ -201,7 +207,7 @@ public class PostServiceTest {
         assertNotNull(result.getPosts(), "La lista de posteos tiene que existir");
         assertFalse(result.getPosts().isEmpty(), "Tiene que haber posts");
         List<PostDto> sortedPosts = result.getPosts();
-        assertTrue(MockFactoryUtils.isSortedByDate(sortedPosts, true),
+        assertTrue(MockFactoryUtils.arePostsSortedByDate(sortedPosts, true),
                 "La lista no está ordenada ascendentemente por fecha");
     }
 
@@ -231,7 +237,7 @@ public class PostServiceTest {
         assertNotNull(result.getPosts(), "La lista de posteos tiene que existir");
         assertFalse(result.getPosts().isEmpty(), "Tiene que haber posts");
         List<PostDto> sortedPosts = result.getPosts();
-        assertTrue(MockFactoryUtils.isSortedByDate(sortedPosts, false),
+        assertTrue(MockFactoryUtils.arePostsSortedByDate(sortedPosts, false),
                 "La lista no está ordenada descendentemente por fecha");
     }
     //endregion
