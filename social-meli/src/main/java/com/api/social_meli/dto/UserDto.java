@@ -18,8 +18,8 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @EqualsAndHashCode
 public class UserDto {
-    @Min(value = 1, message = "El id debe ser mayor a cero")
-    @NotNull(message = "El id no puede estar vacio")
+    @Min(value = 1, message = "El 'user_id' debe ser mayor a cero")
+    @NotNull(message = "El 'user_id' no puede estar vacio")
     @JsonProperty("user_id")
     private Integer userId;
     @JsonProperty("user_name")
