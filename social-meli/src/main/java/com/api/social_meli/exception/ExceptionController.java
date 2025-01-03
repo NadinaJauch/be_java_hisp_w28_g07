@@ -1,8 +1,10 @@
 package com.api.social_meli.exception;
 
+import com.api.social_meli.dto.ErrorDTO;
 import com.api.social_meli.dto.ExceptionDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -24,5 +26,11 @@ public class ExceptionController {
     public ResponseEntity<?> badRequest(ConflictException e){
         ExceptionDto exceptionDto = new ExceptionDto(e.getMessage());
         return new ResponseEntity<>(exceptionDto, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class) //ToDo: ver como generar custom errors para mandar a traves de este metodo
+    public ResponseEntity<ErrorDTO> handleValidationExceptions(MethodArgumentNotValidException e) {
+        ErrorDTO errorDTO = new ErrorDTO(e.getClass().getSimpleName() ,e.getBindingResult().getFieldError().getDefaultMessage());
+        return new ResponseEntity<>(errorDTO, HttpStatus.BAD_REQUEST);
     }
 }
