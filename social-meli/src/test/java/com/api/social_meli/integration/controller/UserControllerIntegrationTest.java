@@ -21,6 +21,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -216,5 +218,102 @@ public class UserControllerIntegrationTest {
         ).andDo(print());
     }
 
+    //endregion
+    //region GET FOLLOWS LISTS
+    //region FOLLOWEDS
+    @Test
+    public void getFollowedsOrderedByNameInvalidOrderBadRequestException() throws Exception{
+        //Arrange
+        Integer userId = 1;
+        String order = "name";
+        ExceptionDto exceptionDto = new ExceptionDto("No es un ordenamiento válido.");
+
+        ResultMatcher statusExpected = status().isBadRequest();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(exceptionDto));
+
+        //Act + Assert
+        mockMvc.perform(get("/users/{userId}/followed/list", userId).param("order", order))
+                .andExpectAll(
+                        statusExpected, contentTypeExpected, bodyExpected
+                ).andDo(print());
+    }
+
+    @Test
+    public void getFollowedsOrderedByNameNotOrderList() throws Exception{
+        //Arrange
+        Integer userId = 1;
+        String order = null;
+        FollowedListDto listSpected = new FollowedListDto(
+                1,
+                "Ana Martínez",
+                new ArrayList<>(
+                        List.of(
+                                new FollowDto(3, "María López"),
+                                new FollowDto(4, "Juan Pérez"),
+                                new FollowDto(5, "Lucía Fernández")
+                        )
+                )
+        );
+
+        ResultMatcher statusExpected = status().isOk();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(listSpected));
+
+        //Act + Assert
+        mockMvc.perform(get("/users/{userId}/followed/list", userId).param("order", order))
+                .andExpectAll(
+                        statusExpected, contentTypeExpected, bodyExpected
+                ).andDo(print());
+    }
+    //endregion
+
+    //region FOLLOWERS
+    @Test
+    public void getFollowersOrderedByNameInvalidOrderBadRequestException() throws Exception{
+        //Arrange
+        Integer userId = 3;
+        String order = "name";
+        ExceptionDto exceptionDto = new ExceptionDto("No es un ordenamiento válido.");
+
+        ResultMatcher statusExpected = status().isBadRequest();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(exceptionDto));
+
+        //Act + Assert
+        mockMvc.perform(get("/users/{userId}/followers/list", userId).param("order", order))
+                .andExpectAll(
+                        statusExpected, contentTypeExpected, bodyExpected
+                ).andDo(print());
+    }
+
+    @Test
+    public void getFollowersOrderedByNameNotOrderList() throws Exception{
+        //Arrange
+        Integer userId = 3;
+        String order = null;
+        FollowerListDto listSpected = new FollowerListDto(
+                3,
+                "María López",
+                new ArrayList<>(
+                        List.of(
+                                new FollowDto(1, "Ana Martínez"),
+                                new FollowDto(5, "Lucía Fernández"),
+                                new FollowDto(6, "Miguel Rodríguez")
+                        )
+                )
+        );
+
+        ResultMatcher statusExpected = status().isOk();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(listSpected));
+
+        //Act + Assert
+        mockMvc.perform(get("/users/{userId}/followers/list", userId).param("order", order))
+                .andExpectAll(
+                        statusExpected, contentTypeExpected, bodyExpected
+                ).andDo(print());
+    }
+    //endregion
     //endregion
 }
