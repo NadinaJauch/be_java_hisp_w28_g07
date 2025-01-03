@@ -207,7 +207,7 @@ public class PostServiceTest {
         assertNotNull(result.getPosts(), "La lista de posteos tiene que existir");
         assertFalse(result.getPosts().isEmpty(), "Tiene que haber posts");
         List<PostDto> sortedPosts = result.getPosts();
-        assertTrue(MockFactoryUtils.isSortedByDate(sortedPosts, true),
+        assertTrue(MockFactoryUtils.arePostsSortedByDate(sortedPosts, true),
                 "La lista no está ordenada ascendentemente por fecha");
     }
 
@@ -237,7 +237,7 @@ public class PostServiceTest {
         assertNotNull(result.getPosts(), "La lista de posteos tiene que existir");
         assertFalse(result.getPosts().isEmpty(), "Tiene que haber posts");
         List<PostDto> sortedPosts = result.getPosts();
-        assertTrue(MockFactoryUtils.isSortedByDate(sortedPosts, false),
+        assertTrue(MockFactoryUtils.arePostsSortedByDate(sortedPosts, false),
                 "La lista no está ordenada descendentemente por fecha");
     }
     //endregion

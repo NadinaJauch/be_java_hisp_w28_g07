@@ -3,7 +3,6 @@ package com.api.social_meli.integration.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.api.social_meli.dto.ProductDto;
 import com.api.social_meli.dto.PromoPostDto;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -16,13 +15,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import static org.hamcrest.Matchers.contains;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.hamcrest.Matchers.containsString;
@@ -35,9 +32,6 @@ public class PostControllerIntegrationTest {
     MockMvc mockMvc;
 
     ObjectMapper objectMapper = new ObjectMapper();
-
-    @Autowired
-    private MockMvc mockMvc;
 
     @Test
     @DisplayName("1.1: CreatePromnoPost OK")
@@ -175,8 +169,4 @@ public class PostControllerIntegrationTest {
                 .andExpect(jsonPath("$.description").value(containsString("El precio maximo por producto es de 10.000.000")))
         ;
     }
-
-
-
-
 }
