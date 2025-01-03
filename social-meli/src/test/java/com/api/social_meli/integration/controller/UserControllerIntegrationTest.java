@@ -8,12 +8,14 @@ import com.api.social_meli.dto.GetFollowerCountDto;
 import com.api.social_meli.dto.MessageDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -23,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -31,7 +34,13 @@ public class UserControllerIntegrationTest {
     @Autowired
     MockMvc mockMvc;
 
-    ObjectMapper objectMapper = new ObjectMapper();
+    static ObjectMapper objectMapper;
+
+    @BeforeAll
+    public static void setUp() {
+        objectMapper = new ObjectMapper()
+                .registerModule(new JavaTimeModule());
+    }
 
     //region GET FOLLOWER COUNT
     @Test
@@ -106,9 +115,9 @@ public class UserControllerIntegrationTest {
     }
     //endregion
 
-
     //region FAVOURITE POST
     @Test
+    @DirtiesContext
     public void favouritePostOk() throws Exception {
         //ARRANGE
         String jsonRequest = objectMapper.writer().writeValueAsString(new FavouritePostRequestDto(1,5));
@@ -137,6 +146,78 @@ public class UserControllerIntegrationTest {
         mockMvc.perform(post("/users/favourites").content(jsonRequest).contentType(MediaType.APPLICATION_JSON)).andExpectAll(
                 statusExpected, contentTypeExpected, bodyExpected
         );
+    }
+
+    //endregion
+
+    //region UNFAVOURITE POST
+
+    @Test
+    public void unfavouritePostOk() throws Exception {
+        //ARRANGE
+        String jsonRequest = objectMapper.writer().writeValueAsString(new FavouritePostRequestDto(4,2));
+
+        ResultMatcher statusExpected= status().isOk();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(new MessageDto("Post sacado de favoritos correctamente")));
+
+        //ACT && ASSERT
+        mockMvc.perform(post("/users/unfavourite").content(jsonRequest).contentType(MediaType.APPLICATION_JSON)).andExpectAll(
+                statusExpected, contentTypeExpected, bodyExpected
+        );
+
+    }
+
+    @Test
+    public void unfavouritePostNotFoundException() throws Exception {
+        //ARRANGE
+        String jsonRequest = objectMapper.writer().writeValueAsString(new FavouritePostRequestDto(4,232));
+
+        ResultMatcher statusExpected= status().isNotFound();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(new MessageDto("No se encontro el post")));
+
+        //ACT && ASSERT
+        mockMvc.perform(post("/users/unfavourite").content(jsonRequest).contentType(MediaType.APPLICATION_JSON)).andExpectAll(
+                statusExpected, contentTypeExpected, bodyExpected
+        );
+
+    }
+
+    //endregion
+
+    //region GET FAVOURITE POST
+
+    @Test
+    public void favouritePostListOk() throws Exception {
+        //ARRANGE
+        Integer userId = 1;
+
+        GetFavouritePostsResponseDto responseExpected = MockFactoryUtils.createGetFavouritePostsResponseDtoForUser(userId);
+
+        ResultMatcher statusExpected = status().isOk();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(responseExpected));
+
+        //ACT & ASSERT
+        mockMvc.perform(get("/users/{userId}/favourites", userId)).andExpectAll(
+                statusExpected, contentTypeExpected, bodyExpected
+        ).andDo(print());
+    }
+
+    @Test
+    public void favouritePostListNotFoundException() throws Exception {
+        //ARRANGE
+        Integer userId = 222;
+
+        ResultMatcher statusExpected = status().isNotFound();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(new MessageDto("No se encontró ningún usuario con ese ID.")));
+
+        //ACT & ASSERT
+        mockMvc.perform(get("/users/{userId}/favourites", userId)).andExpectAll(
+                statusExpected, contentTypeExpected, bodyExpected
+        ).andDo(print());
     }
 
     //endregion
@@ -183,42 +264,6 @@ public class UserControllerIntegrationTest {
     }
     //endregion
 
-    //region GET FAVOURITE POST
-
-    @Test
-    public void favouritePostListOk() throws Exception {
-        //ARRANGE
-        Integer userId = 1;
-        objectMapper.registerModule(new JavaTimeModule());
-        GetFavouritePostsResponseDto responseExpected = MockFactoryUtils.createGetFavouritePostsResponseDtoForUser(userId);
-
-        System.out.println(responseExpected);
-        ResultMatcher statusExpected = status().isOk();
-        ResultMatcher contentTypeExpected = content().contentType("application/json");
-        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(responseExpected));
-
-        //ACT & ASSERT
-        mockMvc.perform(get("/users/{userId}/favourites", userId)).andExpectAll(
-                statusExpected, contentTypeExpected, bodyExpected
-        ).andDo(print());
-    }
-
-    @Test
-    public void favouritePostListNotFoundException() throws Exception {
-        //ARRANGE
-        Integer userId = 222;
-
-        ResultMatcher statusExpected = status().isNotFound();
-        ResultMatcher contentTypeExpected = content().contentType("application/json");
-        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(new MessageDto("No se encontró ningún usuario con ese ID.")));
-
-        //ACT & ASSERT
-        mockMvc.perform(get("/users/{userId}/favourites", userId)).andExpectAll(
-                statusExpected, contentTypeExpected, bodyExpected
-        ).andDo(print());
-    }
-
-    //endregion
     //region GET FOLLOWS LISTS
     //region FOLLOWEDS
     @Test
