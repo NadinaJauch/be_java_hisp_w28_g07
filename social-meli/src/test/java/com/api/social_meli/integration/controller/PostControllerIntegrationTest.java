@@ -185,7 +185,7 @@ public class PostControllerIntegrationTest {
     @Test
     public void createPostTestOk() throws Exception {
         //ARRANGE
-        PostDto expectedDto = MockFactoryUtils.getPostResponseDto();
+        PostDto expectedDto = MockFactoryUtils.createPostResponseDto();
         String jsonRequest = objectMapper.writer().writeValueAsString(expectedDto);
 
         ResultMatcher statusExpected= status().isOk();
@@ -201,7 +201,7 @@ public class PostControllerIntegrationTest {
     @Test
     public void createPostTestBadRequest() throws Exception {
         //ARRANGE
-        PostDto expectedDto = MockFactoryUtils.getPostResponseDto();
+        PostDto expectedDto = MockFactoryUtils.createPostResponseDto();
         expectedDto.setPostId(1);
         String jsonRequest = objectMapper.writer().writeValueAsString(expectedDto);
 

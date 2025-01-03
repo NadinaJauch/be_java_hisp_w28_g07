@@ -137,7 +137,7 @@ public class MockFactoryUtils {
     }
     //endregion
 
-
+    //region GET FAVOURITE POSTS
     public static GetFavouritePostsResponseDto createGetFavouritePostsResponseDtoForUser()  {
         List<PostDto> favouritePosts = new ArrayList<>();
 
@@ -184,8 +184,9 @@ public class MockFactoryUtils {
         return favouritePostsResponse;
 
     }
+    //endregion
 
-
+    //region GET POST BY CATEGORY
     public static GetByCategoryResponseDto getPostByCategoryResponseDto(){
         return new GetByCategoryResponseDto("Accessories",List.of(
                 new PostDto(
@@ -205,8 +206,10 @@ public class MockFactoryUtils {
                 )
         ));
     }
+    //endregion
 
-    public static PostDto getPostResponseDto(){
+    //region CREATE POST
+    public static PostDto createPostResponseDto(){
         return new PostDto(6,
                 2,
                 LocalDate.parse("29-04-2021", DateTimeFormatter.ofPattern("dd-MM-yyyy")),
@@ -221,6 +224,6 @@ public class MockFactoryUtils {
                 2,
                 1500.50);
     }
-
+    //endregion
 
 }
