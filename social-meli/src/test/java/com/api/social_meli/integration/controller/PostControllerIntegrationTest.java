@@ -49,7 +49,7 @@ public class PostControllerIntegrationTest {
     //region CREATE PROMO POST
 
     @Test
-    @DisplayName("1.1: CreatePromnoPost OK")
+    @DisplayName("Bonus - Crear Promo Post. Ok.")
     public void createPromoPostOK() throws Exception{
 
         // Arrange
@@ -70,12 +70,8 @@ public class PostControllerIntegrationTest {
                 true,
                 0.25
         );
-        ObjectWriter writer = new ObjectMapper()
-                .registerModule(new JavaTimeModule())
-                .configure(SerializationFeature.WRAP_ROOT_VALUE, false)
-                .writer().withDefaultPrettyPrinter();
 
-        String payloadJson = writer.writeValueAsString(toRegister);
+        String payloadJson = objectMapper.writeValueAsString(toRegister);
 
         String expectedMessage = "Post con promo realizado con exito";
 
@@ -90,46 +86,7 @@ public class PostControllerIntegrationTest {
     }
 
     @Test
-    @DisplayName("1.2: CreatePromoPost BadRequest (seller_id menor a cero)")
-    public void createPromoPostBadRequest() throws Exception{
-
-        // Arrange
-        PromoPostDto toRegister = new PromoPostDto(
-                1,
-                -1,
-                LocalDate.parse("29-04-2021", DateTimeFormatter.ofPattern("dd-MM-yyyy")),
-                new ProductDto(
-                        1,
-                        "Silla Gamer",
-                        "Gamer",
-                        "Racer",
-                        "RedBlack",
-                        "Special Edition"
-                ),
-                2,
-                1500.50,
-                true,
-                0.25
-        );
-        ObjectWriter writer = new ObjectMapper()
-                .registerModule(new JavaTimeModule())
-                .configure(SerializationFeature.WRAP_ROOT_VALUE, false)
-                .writer().withDefaultPrettyPrinter();
-
-        String payloadJson = writer.writeValueAsString(toRegister);
-
-        // Act
-        mockMvc.perform(MockMvcRequestBuilders.post("/products/promo-post")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(payloadJson))
-        // Assert
-                .andDo(print()).andExpect(status().isBadRequest())
-                .andExpect(content().contentType("application/json"))
-                .andExpect(jsonPath("$.description").value(containsString("El 'user_id' debe ser mayor a cero")));
-    }
-
-    @Test
-    @DisplayName("1.2: CreatePromoPost BadRequest (tira todas las validaciones)")
+    @DisplayName("Bonus - Crea un promo post. BadRequest. Datos inválidos.")
     public void createPromoPostStressTest() throws Exception{
 
         // Arrange
@@ -150,12 +107,8 @@ public class PostControllerIntegrationTest {
                 true,
                 0.25
         );
-        ObjectWriter writer = new ObjectMapper()
-                .registerModule(new JavaTimeModule())
-                .configure(SerializationFeature.WRAP_ROOT_VALUE, false)
-                .writer().withDefaultPrettyPrinter();
 
-        String payloadJson = writer.writeValueAsString(toRegister);
+        String payloadJson = objectMapper.writeValueAsString(toRegister);
 
         // Act
         mockMvc.perform(MockMvcRequestBuilders.post("/products/promo-post")
@@ -185,6 +138,7 @@ public class PostControllerIntegrationTest {
     //region CREATE POST
 
     @Test
+    @DisplayName("Bonus - Crea un Post. Ok.")
     public void createPostTestOk() throws Exception {
         // Arrange
         PostDto expectedDto = MockFactoryUtils.createPostResponseDto();
@@ -201,6 +155,7 @@ public class PostControllerIntegrationTest {
     }
 
     @Test
+    @DisplayName("Bonus - Crea un Post. BadRequest.")
     public void createPostTestBadRequest() throws Exception {
         // Arrange
         PostDto expectedDto = MockFactoryUtils.createPostResponseDto();
@@ -222,11 +177,12 @@ public class PostControllerIntegrationTest {
     //region GET BY CATEGORY ID
 
     @Test
+    @DisplayName("Bonus - Obtener Posts de una categoría por rango de precios.")
     public void getPostByCategoryIdTestOk() throws Exception {
         // Arrange
         int categoryId = 3;
-        int price_min= 100;
-        int price_max= 200;
+        int priceMin= 100;
+        int priceMax= 200;
 
         GetByCategoryResponseDto expectedDto = MockFactoryUtils.getPostByCategoryResponseDto();
 
@@ -235,7 +191,7 @@ public class PostControllerIntegrationTest {
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(expectedDto));
 
         // Act & Assert
-        mockMvc.perform(get("/posts/{categoryId}/category/list/{price_min}/{price_max}", categoryId, price_min, price_max)
+        mockMvc.perform(get("/posts/{categoryId}/category/list/{price_min}/{price_max}", categoryId, priceMin, priceMax)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         statusExpected,
@@ -246,18 +202,19 @@ public class PostControllerIntegrationTest {
 
 
     @Test
+    @DisplayName("Bonus - Traer Posts por categoría. NotFound.")
     public void getPostByCategoryIdTestNotFound() throws Exception {
         // Arrange
         int categoryId = 1;
-        int price_min= 100;
-        int price_max= 200;
+        int priceMin= 100;
+        int priceMax= 200;
 
         ResultMatcher statusExpected= status().isNotFound();
         ResultMatcher contentTypeExpected = content().contentType("application/json");
         ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(new MessageDto("No se encontraron post con ese id o rango de precio")));
 
         // Act & Assert
-        mockMvc.perform(get("/posts/{categoryId}/category/list/{price_min}/{price_max}", categoryId, price_min, price_max)
+        mockMvc.perform(get("/posts/{categoryId}/category/list/{price_min}/{price_max}", categoryId, priceMin, priceMax)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         statusExpected,
@@ -271,9 +228,10 @@ public class PostControllerIntegrationTest {
     //region PROMO PRODUCT COUNT
 
     @Test
+    @DisplayName("Bonus - Trae la cantidad de productos en promoción de un usuario.")
     public void getPromoProductCountTestOk() throws Exception {
         // Arrange
-        int user_id = 3;
+        int userId = 3;
         PromoPostCountDto expectedDto = new PromoPostCountDto(3,"María López",2);
 
         ResultMatcher statusExpected= status().isOk();
@@ -282,7 +240,7 @@ public class PostControllerIntegrationTest {
 
         // Act & Assert
         mockMvc.perform(get("/products/promo-post/count")
-                        .param("user_id", String.valueOf(user_id))
+                        .param("user_id", String.valueOf(userId))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         statusExpected,
@@ -292,9 +250,10 @@ public class PostControllerIntegrationTest {
     }
 
     @Test
+    @DisplayName("Bonus - Obtener la cantidad de productos en promoción de un usuario. NotFound.")
     public void getPromoProductCountTestNotFoundException() throws Exception {
         // Arrange
-        int user_id = 4;
+        int userId = 4;
 
         ResultMatcher statusExpected= status().isNotFound();
         ResultMatcher contentTypeExpected = content().contentType("application/json");
@@ -302,7 +261,7 @@ public class PostControllerIntegrationTest {
 
         // Act & Assert
         mockMvc.perform(get("/products/promo-post/count")
-                        .param("user_id", String.valueOf(user_id))
+                        .param("user_id", String.valueOf(userId))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
                         statusExpected,

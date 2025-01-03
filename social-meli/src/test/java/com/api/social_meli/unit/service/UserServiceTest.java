@@ -35,6 +35,7 @@ public class UserServiceTest {
     //region UNFOLLOW USER
 
     @Test
+    @DisplayName("T0002 - Se deja de seguir a un usuario. Ok.")
     void unfollowValidUsersSuccessfullyUnfollows() {
         // Arrange
         int userId = 1;
@@ -54,6 +55,7 @@ public class UserServiceTest {
     }
 
     @Test
+    @DisplayName("T-0002 - Deja de seguir a un Usuario. NotFound.")
     void unfollowNotExistentUserThrowsNotFoundEx() {
         // Arrange
         int userId = 1;
@@ -72,6 +74,7 @@ public class UserServiceTest {
     //region VERIFY FOLLOWER COUNT
 
     @Test
+    @DisplayName("T-0002 - Obtener la cantidad de Followers de un Usuario. Ok.")
     void getFollowerCountValidUserReturnsCorrectCount(){
         // Arrange
         User user = new User();
@@ -91,7 +94,7 @@ public class UserServiceTest {
     //region FOLLOW USER
 
     @Test
-    @DisplayName("Intentar seguir a usuario existente")
+    @DisplayName("T0001 - Intentar seguir a usuario existente. Ok.")
     void shouldFollowUserSuccessfullyWhenUserExists(){
         // Arrange
         int userId = 2;
@@ -112,7 +115,7 @@ public class UserServiceTest {
     }
 
     @Test
-    @DisplayName("Intentar seguir a usuario no existente")
+    @DisplayName("T0001 - Intentar seguir a usuario no existente. NotFound.")
     void shouldNotFollowUserWhenNonexistentUser(){
         // Arrange
         int userId = 2;
@@ -137,7 +140,7 @@ public class UserServiceTest {
     //region FOLLOWEDS
 
     @Test
-    @DisplayName("Obtener Followeds orden inválido.")
+    @DisplayName("T-0003 - Obtener Followeds orden inválido.")
     public void getFollowedsOrderedByNameInvalidOrderThrowException(){
         // Arrange
         String order = "Ordenar A-Z";
@@ -152,7 +155,7 @@ public class UserServiceTest {
     }
 
     @Test
-    @DisplayName("Obtener Followeds orden válido.")
+    @DisplayName("T0004 - Obtener Followeds orden válido. Ok.")
     public void getFollowedsOrderedByNameValidOrderReturnList(){
         // Arrange
         String order = "name_asc";
@@ -173,7 +176,7 @@ public class UserServiceTest {
     //region FOLLOWERS
 
     @Test
-    @DisplayName("Obtener Followers orden inválido.")
+    @DisplayName("T0003 - Obtener Followers orden inválido. BadRequest.")
     public void getFollowersOrderedByNameInvalidOrderThrowException(){
         // Arrange
         String order = "Ordenar Z-A";
@@ -188,7 +191,7 @@ public class UserServiceTest {
     }
 
     @Test
-    @DisplayName("Obtener Followers orden válido.")
+    @DisplayName("T0004 - Obtener Followers orden válido. Ok.")
     public void getFollowersOrderedByNameValidReturnList(){
         // Arrange
         String order = "name_desc";
@@ -213,7 +216,7 @@ public class UserServiceTest {
     //region FOLLOWEDS
 
     @Test
-    @DisplayName("Obtener Followeds ordenados por nombre de manera ascendente.")
+    @DisplayName("T-0004 - Obtener Followeds ordenados por nombre de manera ascendente.")
     public void getFollowedsOrderedByNameValidOrderReturnSortedListAsc(){
         // Arrange
         String order = "name_asc";
@@ -248,7 +251,7 @@ public class UserServiceTest {
     }
 
     @Test
-    @DisplayName("Obtener Followeds ordenados por nombre de manera descendente.")
+    @DisplayName("T0004 - Obtener Followeds ordenados por nombre de manera descendente.")
     public void getFollowedsOrderedByNameValidOrderReturnSortedListDesc(){
         // Arrange
         String order = "name_desc";
@@ -283,7 +286,7 @@ public class UserServiceTest {
     }
 
     @Test
-    @DisplayName("Ordenar lista de Followeds vacía.")
+    @DisplayName("T0004 - Ordenar lista de Followeds vacía. NotFound.")
     public void getFollowedsOrderedByNameEmptyListNotFoundException(){
         // Arrange
         int userId = 2;
@@ -301,7 +304,7 @@ public class UserServiceTest {
     }
 
     @Test
-    @DisplayName("Ordenar lista de Followeds de usuario inexistente.")
+    @DisplayName("T0004 - lista de Followeds de usuario inexistente. NotFound.")
     public void getFollowedsOrderedByNameInvalidUserIdNotFoundException(){
         // Arrange
         int userId = 1000;
@@ -322,7 +325,7 @@ public class UserServiceTest {
     //region FOLLOWERS
 
     @Test
-    @DisplayName("Obtener Followers ordenados por nombre de manera ascendente.")
+    @DisplayName("T0004 - Obtener Followers ordenados por nombre de manera ascendente. Ok.")
     public void getFollowersOrderedByNameValidOrderReturnSortedListAsc(){
         // Arrange
         String order = "name_asc";
@@ -357,7 +360,7 @@ public class UserServiceTest {
     }
 
     @Test
-    @DisplayName("Obtener Followers ordenados por nombre de manera descendente.")
+    @DisplayName("T-0004 - Obtener Followers ordenados por nombre de manera descendente. Ok.")
     public void getFollowersOrderedByNameValidOrderReturnSortedListDesc(){
         // Arrange
         String order = "name_desc";
@@ -392,7 +395,7 @@ public class UserServiceTest {
     }
 
     @Test
-    @DisplayName("Ordenar lista de Followers de usuario inexistente.")
+    @DisplayName("T-0004 - Ordenar lista de Followers de usuario inexistente.")
     public void getFollowersOrderedByNameInvalidUserIdNotFoundException(){
         // Arrange
         int userId = 1000;
@@ -409,7 +412,7 @@ public class UserServiceTest {
     }
 
     @Test
-    @DisplayName("Ordenar lista de Followers de usuario que no es vendedor.")
+    @DisplayName("T0004 - Ordenar lista de Followers de usuario que no es vendedor. BadRequest.")
     public void getFollowersOrderedByNameIsNotSellerBadRequestException(){
         // Arrange
         int userId = 1;

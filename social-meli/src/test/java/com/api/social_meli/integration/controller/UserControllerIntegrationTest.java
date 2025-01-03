@@ -45,6 +45,7 @@ public class UserControllerIntegrationTest {
     //region GET FOLLOWER COUNT
 
     @Test
+    @DisplayName("T-0002 - Obtiene la cantidad de Followers de un usuario. Ok.")
     public void getFollowerCountOk() throws Exception {
         // Arrange
         Integer userId = 3;
@@ -62,7 +63,8 @@ public class UserControllerIntegrationTest {
     }
 
     @Test
-    public void getFollowerCountException() throws Exception {
+    @DisplayName("T-0002 - Obtener la cantidad de Followers de un usuario. NotFound.")
+    public void getFollowerCountNotFoundException() throws Exception {
         // Arrange
         Integer userId = 60;
         ExceptionDto responseExpected = new ExceptionDto("Usuario no encontrado");
@@ -83,6 +85,7 @@ public class UserControllerIntegrationTest {
     //region UNFOLLOW USER
 
     @Test
+    @DisplayName("T-0002 - Deja de seguir a un usuario. Ok.")
     public void unfollowUserOk() throws Exception {
 
         // Arrange
@@ -102,6 +105,7 @@ public class UserControllerIntegrationTest {
     }
 
     @Test
+    @DisplayName("T0002 - Deja de seguir a un usuario. BadRequest.")
     public void unfollowUserBadRequestException() throws Exception {
         Integer userId = 2;
         Integer userIdToUnfollow = 5;
@@ -122,6 +126,7 @@ public class UserControllerIntegrationTest {
 
     @Test
     @DirtiesContext
+    @DisplayName("Bonus - Agrega un Post a favoritos. Ok.")
     public void favouritePostOk() throws Exception {
         // Arrange
         String jsonRequest = objectMapper.writer().writeValueAsString(new FavouritePostRequestDto(1,5));
@@ -138,6 +143,7 @@ public class UserControllerIntegrationTest {
     }
 
     @Test
+    @DisplayName("Bonus - Agregar un Post a favoritos. Conflict.")
     public void favouritePostConflictException() throws Exception {
         // Arrange
         String jsonRequest = objectMapper.writer().writeValueAsString(new FavouritePostRequestDto(1,2));
@@ -157,6 +163,7 @@ public class UserControllerIntegrationTest {
     //region UNFAVOURITE POST
 
     @Test
+    @DisplayName("Bonus - Saca un Post de favoritos. Ok.")
     public void unfavouritePostOk() throws Exception {
         // Arrange
         String jsonRequest = objectMapper.writer().writeValueAsString(new FavouritePostRequestDto(4,2));
@@ -173,6 +180,7 @@ public class UserControllerIntegrationTest {
     }
 
     @Test
+    @DisplayName("Bonus - Saca un Post de favoritos. NotFound.")
     public void unfavouritePostNotFoundException() throws Exception {
         // Arrange
         String jsonRequest = objectMapper.writer().writeValueAsString(new FavouritePostRequestDto(4,232));
@@ -193,6 +201,7 @@ public class UserControllerIntegrationTest {
     //region GET FAVOURITE POST
 
     @Test
+    @DisplayName("Bonus - Obtiene la lista de favoritos de un usuario. Ok.")
     public void favouritePostListOk() throws Exception {
         // Arrange
         Integer userId = 1;
@@ -210,6 +219,7 @@ public class UserControllerIntegrationTest {
     }
 
     @Test
+    @DisplayName("Bonus - Obtener lista de Favoritos de un usuario. NotFound.")
     public void favouritePostListNotFoundException() throws Exception {
         // Arrange
         Integer userId = 222;
@@ -229,7 +239,7 @@ public class UserControllerIntegrationTest {
     //region FOLLOW USER
 
     @Test
-    @DisplayName("Seguir usuario exitosamente")
+    @DisplayName("T-0001 - Seguir usuario exitosamente. Ok.")
     public void followUserOk() throws Exception {
         // Arrange
         Integer userId = 2;
@@ -249,7 +259,7 @@ public class UserControllerIntegrationTest {
     }
 
     @Test
-    @DisplayName("Seguir usuario inexistente")
+    @DisplayName("T-0001 - Seguir usuario inexistente. NotFound.")
     public void followUserNotFoundException() throws Exception {
         // Arrange
         Integer userId = 2;
@@ -275,6 +285,7 @@ public class UserControllerIntegrationTest {
     //region FOLLOWEDS
 
     @Test
+    @DisplayName("T-0003 - Obtener Followeds de un usuario. BadRequest.")
     public void getFollowedsOrderedByNameInvalidOrderBadRequestException() throws Exception{
         // Arrange
         Integer userId = 1;
@@ -293,6 +304,7 @@ public class UserControllerIntegrationTest {
     }
 
     @Test
+    @DisplayName("T-0003 - Obtener Followeds de un usuario. Ok.")
     public void getFollowedsOrderedByNameNotOrderList() throws Exception{
         // Arrange
         Integer userId = 1;
@@ -323,6 +335,7 @@ public class UserControllerIntegrationTest {
 
     //region FOLLOWERS
     @Test
+    @DisplayName("T-0003 - Obtener Followers de un usuario. BadRequest.")
     public void getFollowersOrderedByNameInvalidOrderBadRequestException() throws Exception{
         // Arrange
         Integer userId = 3;
@@ -341,6 +354,7 @@ public class UserControllerIntegrationTest {
     }
 
     @Test
+    @DisplayName("T-0003 - Obtener Followers de un usuario. Ok.")
     public void getFollowersOrderedByNameNotOrderList() throws Exception{
         // Arrange
         Integer userId = 3;
@@ -377,6 +391,7 @@ public class UserControllerIntegrationTest {
     //region FOLLOWEDS
 
     @Test
+    @DisplayName("T-0003 - Obtener Followeds de un usuario. Ok.")
     public void getFollowedsOrderedByNameOk() throws Exception{
         // Arrange
         Integer userId = 1;
@@ -405,6 +420,7 @@ public class UserControllerIntegrationTest {
     }
 
     @Test
+    @DisplayName("T-0004 - Obtener Followeds de un usuario. NotFound.")
     public void getFollowedsOrderedByNameInvalidUserIdNotFoundException() throws Exception{
         // Arrange
         Integer userId = 1000;
@@ -427,6 +443,7 @@ public class UserControllerIntegrationTest {
     //region FOLLOWERS
 
     @Test
+    @DisplayName("T-0004 - Obtener Followers de un usuario. Ok.")
     public void getFollowersOrderedByNameOk() throws Exception{
         // Arrange
         Integer userId = 3;
@@ -455,6 +472,7 @@ public class UserControllerIntegrationTest {
     }
 
     @Test
+    @DisplayName("T-0004 - Obtener Followers de un usuario. NotFound.")
     public void getFollowersOrderedByNameInvalidUserIdNotFoundException() throws Exception{
         // Arrange
         Integer userId = 1000;
@@ -473,6 +491,7 @@ public class UserControllerIntegrationTest {
     }
 
     @Test
+    @DisplayName("T-0004 - Obtener Followers de un usuario que no es vendedor. BadRequest.")
     public void getFollowersOrderedByNameISNotSellerBadRequestException() throws Exception{
         // Arrange
         Integer userId = 1;

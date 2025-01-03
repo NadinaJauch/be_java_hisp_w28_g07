@@ -53,7 +53,7 @@ public class ProductControllerIntegrationTest {
     //region WITHOUT ORDER
 
     @Test
-    @DisplayName("Obtener posts de vendedores seguidos (sin orden), caso OK lista con posts.")
+    @DisplayName("T-0008 - Obtener posts de vendedores seguidos (sin orden), caso OK lista con posts.")
     @DirtiesContext
     void shouldReturnOkWithContentFollowedSellersPosts() throws Exception {
         // Arrange
@@ -76,7 +76,7 @@ public class ProductControllerIntegrationTest {
     }
 
     @Test
-    @DisplayName("Obtener posts de vendedores seguidos (sin orden), caso OK lista de posts vacía.")
+    @DisplayName("T-0008 - Obtener posts de vendedores seguidos (sin orden), caso OK lista de posts vacía.")
     @DirtiesContext
     void shouldReturnOkWithEmptyListOfFollowedSellersPosts() throws Exception {
         // Arrange
@@ -104,7 +104,7 @@ public class ProductControllerIntegrationTest {
     //region WITH ORDER
 
     @Test
-    @DisplayName("Posteos de vendedores seguidos ordenados de forma ascendente")
+    @DisplayName("T-0006 - Posteos de vendedores seguidos ordenados de forma ascendente. Ok.")
     @DirtiesContext
     public void shouldReturnFollowedSellersPostsAscSortedOk() throws Exception {
         // Arrange
@@ -128,7 +128,7 @@ public class ProductControllerIntegrationTest {
     }
 
     @Test
-    @DisplayName("Posteos de vendedores seguidos ordenados de forma descendente")
+    @DisplayName("T-0006 - Posteos de vendedores seguidos ordenados de forma descendente. Ok.")
     @DirtiesContext
     public void shouldReturnFollowedSellersPostsDescSortedOk() throws Exception {
         // Arrange
@@ -156,7 +156,7 @@ public class ProductControllerIntegrationTest {
     //region EXCEPTIONS
 
     @Test
-    @DisplayName("Obtener posts de vendedores seguidos con userId no existente, caso Not Found.")
+    @DisplayName("T-0008 - Obtener posts de vendedores seguidos con userId no existente. Not Found.")
     void shouldReturnNotFoundNonExistentUserWhenGetFollowedSellersPosts() throws Exception {
         // Arrange
         int userId = 99999;
@@ -173,7 +173,7 @@ public class ProductControllerIntegrationTest {
     }
 
     @Test
-    @DisplayName("Obtener posts de vendedores seguidos con orden inválido, caso Bad Request.")
+    @DisplayName("T-0006 - Obtener posts de vendedores seguidos con orden inválido. Bad Request.")
     void shouldReturnBadRequestNotValidOrderWhenGetFollowedSellersPosts() throws Exception {
         // Arrange
         Integer userId = 1;
