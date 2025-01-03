@@ -33,9 +33,10 @@ public class UserServiceTest {
     UserServiceImpl userService;
 
     //region UNFOLLOW USER
+
     @Test
     void unfollowValidUsersSuccessfullyUnfollows() {
-        // ARRANGE
+        // Arrange
         int userId = 1;
         int userIdToUnfollow = 2;
         User user = MockFactoryUtils.createUserWithOnlyFollowersAndFolloweds(userId, new ArrayList<>(List.of(userIdToUnfollow)), new ArrayList<>());
@@ -43,10 +44,10 @@ public class UserServiceTest {
         when(userRepository.findById(userId)).thenReturn(user);
         when(userRepository.findById(userIdToUnfollow)).thenReturn(userToUnfollow);
 
-        //ACT
+        // Act
         MessageDto response = userService.unfollowUser(userId, userIdToUnfollow);
 
-        //ASSERT
+        // Assert
         assertEquals("El usuario se dejo de seguir exitosamente", response.getMessage());
         assertFalse(user.getFollowed().contains(userIdToUnfollow));
         assertFalse(userToUnfollow.getFollowers().contains(userId));
@@ -54,7 +55,7 @@ public class UserServiceTest {
 
     @Test
     void unfollowNotExistentUserThrowsNotFoundEx() {
-        //ARRANGE
+        // Arrange
         int userId = 1;
         int userIdToUnfollow = 23232;
         User user = new User();
@@ -62,33 +63,37 @@ public class UserServiceTest {
         when(userRepository.findById(userId)).thenReturn(user);
         when(userRepository.findById(userIdToUnfollow)).thenReturn(null);
 
-        //ACT & ASSERT
+        // Act & Assert
         assertThrows(NotFoundException.class, () -> userService.unfollowUser(userId, userIdToUnfollow));
     }
+
     //endregion
 
     //region VERIFY FOLLOWER COUNT
+
     @Test
     void getFollowerCountValidUserReturnsCorrectCount(){
-        //ARRANGE
+        // Arrange
         User user = new User();
         user.setId(1);
         user.setFollowers(new ArrayList<>(List.of(2,3,4)));
         when(userRepository.findById(1)).thenReturn(user);
 
-        //ACT
+        // Act
         GetFollowerCountDto getFollowerCountDto = userService.getFollowerCount(1);
 
-        //ASSERT
+        // Assert
         assertEquals(3,getFollowerCountDto.getFollowers_count());
     }
+
     //endregion
 
     //region FOLLOW USER
+
     @Test
     @DisplayName("Intentar seguir a usuario existente")
     void shouldFollowUserSuccessfullyWhenUserExists(){
-        // ARRANGE
+        // Arrange
         int userId = 2;
         int userIdToFollow = 3;
         User userFollower = MockFactoryUtils.createUserWithIdAndFollowed(userId);
@@ -97,10 +102,10 @@ public class UserServiceTest {
         when(userRepository.findById(userId)).thenReturn(userFollower);
         when(userRepository.findById(userIdToFollow)).thenReturn(userToFollow);
 
-        //ACT
+        // Act
         MessageDto response = userService.followUser(userId, userIdToFollow);
 
-        //ASSERT
+        // Assert
         assertEquals("El usuario se comenzo a seguir exitosamente", response.getMessage());
         assertTrue(userFollower.getFollowed().contains(userIdToFollow), "El usuario debería estar en la lista de seguidos.");
         assertTrue(userToFollow.getFollowers().contains(userId), "El usuario seguidor debería estar en la lista de seguidores.");
@@ -109,7 +114,7 @@ public class UserServiceTest {
     @Test
     @DisplayName("Intentar seguir a usuario no existente")
     void shouldNotFollowUserWhenNonexistentUser(){
-        // ARRANGE
+        // Arrange
         int userId = 2;
         int userIdToFollow = 3000;
         User userFollower = MockFactoryUtils.createUserWithIdAndFollowed(userId);
@@ -117,87 +122,96 @@ public class UserServiceTest {
         when(userRepository.findById(userId)).thenReturn(userFollower);
         when(userRepository.findById(userIdToFollow)).thenReturn(null);
 
-        // ACT & ASSERT
+        // Act & Assert
         NotFoundException thrown = assertThrows(NotFoundException.class, () -> {
             userService.followUser(userId, userIdToFollow);
         });
 
         assertEquals("Usuario o vendedor no encontrado", thrown.getMessage());
     }
+
     //endregion
 
     //region GET FOLLOWS ORDER ERROR
+
     //region FOLLOWEDS
+
     @Test
     @DisplayName("Obtener Followeds orden inválido.")
     public void getFollowedsOrderedByNameInvalidOrderThrowException(){
-        //Arrange
+        // Arrange
         String order = "Ordenar A-Z";
         User userAna = MockFactoryUtils.createUserWithIdNameAndFolloweds(1, "Ana Martínez", List.of(3,5,4));
 
-        //Act
+        // Act
         Mockito.when(userRepository.findById(userAna.getUserId())).thenReturn(userAna);
         Mockito.when(userRepository.exists(userAna.getUserId())).thenReturn(true);
 
-        //Assert
+        // Assert
         Assertions.assertThrows(BadRequestException.class, ()->userService.getFollowedsOrderedByName(userAna.getUserId(), order));
     }
 
     @Test
     @DisplayName("Obtener Followeds orden válido.")
     public void getFollowedsOrderedByNameValidOrderReturnList(){
-        //Arrange
+        // Arrange
         String order = "name_asc";
         User userAna = MockFactoryUtils.createUserWithIdNameAndFolloweds(1, "Ana Martínez", List.of(3,5,4));
 
-        //Act
+        // Act
         Mockito.when(userRepository.findById(userAna.getUserId())).thenReturn(userAna);
         Mockito.when(userRepository.exists(userAna.getUserId())).thenReturn(true);
         Mockito.when(mapper.convertValue(userRepository.findById(2), FollowDto.class)).thenReturn(new FollowDto(2,""));
         FollowedListDto result = userService.getFollowedsOrderedByName(userAna.getUserId(), order);
 
-        //Assert
+        // Assert
         Assertions.assertEquals(3, result.getFollowed().size());
     }
+
     //endregion
 
     //region FOLLOWERS
+
     @Test
     @DisplayName("Obtener Followers orden inválido.")
     public void getFollowersOrderedByNameInvalidOrderThrowException(){
-        //Arrange
+        // Arrange
         String order = "Ordenar Z-A";
         User userMaria = MockFactoryUtils.createUserWithIdNameFollowersAndPost(3, "María López", List.of(1,5,6), List.of(2,4,5));
 
-        //Act
+        // Act
         Mockito.when(userRepository.findById(userMaria.getUserId())).thenReturn(userMaria);
         Mockito.when(userRepository.exists(userMaria.getUserId())).thenReturn(true);
 
-        //Assert
-        Assertions.assertThrows(BadRequestException.class, ()->userService.getFollowersOrderedByName(userMaria.getUserId(), order));
+        // Assert
+        Assertions.assertThrows(BadRequestException.class, () -> userService.getFollowersOrderedByName(userMaria.getUserId(), order));
     }
 
     @Test
     @DisplayName("Obtener Followers orden válido.")
     public void getFollowersOrderedByNameValidReturnList(){
-        //Arrange
+        // Arrange
         String order = "name_desc";
         User userMaria = MockFactoryUtils.createUserWithIdNameFollowersAndPost(3, "María López", List.of(1,5,6), List.of(2,4,5));
 
-        //Act
+        // Act
         Mockito.when(userRepository.findById(userMaria.getUserId())).thenReturn(userMaria);
         Mockito.when(userRepository.exists(userMaria.getUserId())).thenReturn(true);
         Mockito.when(mapper.convertValue(userRepository.findById(1), FollowDto.class)).thenReturn(new FollowDto(1,""));
         FollowerListDto result = userService.getFollowersOrderedByName(userMaria.getUserId(), order);
 
-        //Assert
+        // Assert
         Assertions.assertEquals(3, result.getFollowers().size());
     }
+
     //endregion
+
     //endregion
 
     //region GET FOLLOWS SORTED BY NAME
+
     //region FOLLOWEDS
+
     @Test
     @DisplayName("Obtener Followeds ordenados por nombre de manera ascendente.")
     public void getFollowedsOrderedByNameValidOrderReturnSortedListAsc(){
@@ -215,7 +229,7 @@ public class UserServiceTest {
 
         List<FollowDto> expectedList = List.of(juanDto, luciaDto, mariaDto);
 
-        //Act
+        // Act
         Mockito.when(userRepository.findById(1)).thenReturn(userAna);
         Mockito.when(userRepository.exists(1)).thenReturn(true);
 
@@ -250,7 +264,7 @@ public class UserServiceTest {
 
         List<FollowDto> expectedList = List.of(mariaDto, luciaDto, juanDto);
 
-        //Act
+        // Act
         Mockito.when(userRepository.findById(1)).thenReturn(userAna);
         Mockito.when(userRepository.exists(1)).thenReturn(true);
 
@@ -271,40 +285,42 @@ public class UserServiceTest {
     @Test
     @DisplayName("Ordenar lista de Followeds vacía.")
     public void getFollowedsOrderedByNameEmptyListNotFoundException(){
-        //Arrange
+        // Arrange
         int userId = 2;
         String order = "name_asc";
         User user = new User();
         user.setId(userId);
         user.setFollowed(new ArrayList<>());
 
-        //Act
+        // Act
         Mockito.when(userRepository.findById(userId)).thenReturn(user);
         Mockito.when(userRepository.exists(userId)).thenReturn(true);
 
-        //Assert
-        Assertions.assertThrows(NotFoundException.class, ()->userService.getFollowedsOrderedByName(userId, order));
+        // Assert
+        Assertions.assertThrows(NotFoundException.class, () -> userService.getFollowedsOrderedByName(userId, order));
     }
 
     @Test
     @DisplayName("Ordenar lista de Followeds de usuario inexistente.")
     public void getFollowedsOrderedByNameInvalidUserIdNotFoundException(){
-        //Arrange
+        // Arrange
         int userId = 1000;
         String order = "name_asc";
         User user = new User();
         user.setId(userId);
 
-        //Act
+        // Act
         Mockito.when(userRepository.findById(userId)).thenReturn(user);
         Mockito.when(userRepository.exists(userId)).thenReturn(false);
 
-        //Assert
-        Assertions.assertThrows(NotFoundException.class, ()->userService.getFollowedsOrderedByName(userId, order));
+        // Assert
+        Assertions.assertThrows(NotFoundException.class, () -> userService.getFollowedsOrderedByName(userId, order));
     }
+
     //endregion
 
     //region FOLLOWERS
+
     @Test
     @DisplayName("Obtener Followers ordenados por nombre de manera ascendente.")
     public void getFollowersOrderedByNameValidOrderReturnSortedListAsc(){
@@ -322,7 +338,7 @@ public class UserServiceTest {
 
         List<FollowDto> expectedList = List.of(anaDto, luciaDto, miguelDto);
 
-        //Act
+        // Act
         Mockito.when(userRepository.findById(3)).thenReturn(userMaria);
         Mockito.when(userRepository.exists(3)).thenReturn(true);
 
@@ -357,7 +373,7 @@ public class UserServiceTest {
 
         List<FollowDto> expectedList = List.of(miguelDto, luciaDto, anaDto);
 
-        //Act
+        // Act
         Mockito.when(userRepository.findById(3)).thenReturn(userMaria);
         Mockito.when(userRepository.exists(3)).thenReturn(true);
 
@@ -378,37 +394,39 @@ public class UserServiceTest {
     @Test
     @DisplayName("Ordenar lista de Followers de usuario inexistente.")
     public void getFollowersOrderedByNameInvalidUserIdNotFoundException(){
-        //Arrange
+        // Arrange
         int userId = 1000;
         String order = "name_desc";
         User user = new User();
         user.setId(userId);
 
-        //Act
+        // Act
         Mockito.when(userRepository.findById(userId)).thenReturn(user);
         Mockito.when(userRepository.exists(userId)).thenReturn(false);
 
-        //Assert
-        Assertions.assertThrows(NotFoundException.class, ()->userService.getFollowersOrderedByName(userId, order));
+        // Assert
+        Assertions.assertThrows(NotFoundException.class, () -> userService.getFollowersOrderedByName(userId, order));
     }
 
     @Test
     @DisplayName("Ordenar lista de Followers de usuario que no es vendedor.")
     public void getFollowersOrderedByNameIsNotSellerBadRequestException(){
-        //Arrange
+        // Arrange
         int userId = 1;
         String order = "name_desc";
         User user = new User();
         user.setId(userId);
         user.setPosts(new ArrayList<>());
 
-        //Act
+        // Act
         Mockito.when(userRepository.findById(userId)).thenReturn(user);
         Mockito.when(userRepository.exists(userId)).thenReturn(true);
 
-        //Assert
-        Assertions.assertThrows(BadRequestException.class, ()->userService.getFollowersOrderedByName(userId, order));
+        // Assert
+        Assertions.assertThrows(BadRequestException.class, () ->userService.getFollowersOrderedByName(userId, order));
     }
+
     //endregion
+
     //endregion
 }

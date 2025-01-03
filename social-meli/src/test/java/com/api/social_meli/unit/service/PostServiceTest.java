@@ -61,19 +61,20 @@ public class PostServiceTest {
 
 
     @BeforeEach
-    public void beforeEach() throws IOException {
+    public void beforeEach() {
         usersMock = MockFactoryUtils.getUsersMock();
         postsMock = MockFactoryUtils.getPostsMock();
     }
 
     //region FOLLOWER POSTS FROM LAST TWO WEEKS
+
     @Test
     @DisplayName("Obtención exclusiva de posts de las últimas dos semanas de los usuarios seguidos por un usuario válido.")
     public void shouldReturnFollowedSellerPostsFromLastTwoWeeksOnly() {
-        // ARRANGE
+        // Arrange
         int userId = 1;
         List<Integer> followedByUser = MockFactoryUtils.getFollowedsByUserId(usersMock, userId);
-        MockFactoryUtils.setPostsAsPostedOneWeekAgo(postsMock, List.of(2, 4)); // Se que los posts 2 y 4 son algunos de los posts de usuarios que el usuario 1 sigue
+        MockFactoryUtils.setPostsAsPostedOneWeekAgo(postsMock, List.of(2, 4));
 
         when(userRepository.findAll()).thenReturn(usersMock);
         when(userRepository.exists(userId)).thenReturn(true);
@@ -81,10 +82,10 @@ public class PostServiceTest {
                 when(postRepository.findByUserId(followedUserId)).thenReturn(MockFactoryUtils.filterPostsByUserId(postsMock, followedUserId))
         );
 
-        // ACT
+        // Act
         FollowedSellerPostsDto result = postService.getFollowedSellersPosts(userId, null);
 
-        // ASSERT
+        // Assert
         assertNotNull(result, "El resultado no puede llegar nulo");
         assertNotNull(result.getPosts(), "La lista de posts tiene que existir");
         assertFalse(result.getPosts().isEmpty(), "Tiene que haber posts");
@@ -96,7 +97,7 @@ public class PostServiceTest {
     @Test
     @DisplayName("Caso en el que no hay posts (de usuarios seguidos por usuario válido) dentro de las últimas dos semanas")
     public void shouldReturnEmptyListWhenFollowedUsersHaveNoRecentPosts() {
-        // ARRANGE
+        // Arrange
         int userId = 1;
         List<Integer> followedByUser = MockFactoryUtils.getFollowedsByUserId(usersMock, userId);
         MockFactoryUtils.setPostsFromFollowedUsersAsPostedThreeWeeksAgo(postsMock, followedByUser);
@@ -107,10 +108,10 @@ public class PostServiceTest {
                 when(postRepository.findByUserId(followedUserId)).thenReturn(MockFactoryUtils.filterPostsByUserId(postsMock, followedUserId))
         );
 
-        // ACT
+        // Act
         FollowedSellerPostsDto result = postService.getFollowedSellersPosts(userId, null);
 
-        // ASSERT
+        // Assert
         assertNotNull(result, "El resultado no puede llegar nulo");
         assertNotNull(result.getPosts(), "La lista de posts tiene que existir");
         assertTrue(result.getPosts().isEmpty(), "Se esperaba que la lista esté vacía");
@@ -119,11 +120,11 @@ public class PostServiceTest {
     @Test
     @DisplayName("Devuelve excepción con mensaje específico cuando el usuario con ese ID no existe.")
     public void shouldThrowExWhenGetFollowedSellersPostsUserNotExists() {
-        // ARRANGE
+        // Arrange
         int userId = 999;
         when(userRepository.exists(userId)).thenReturn(false);
 
-        // ACT & ASSERT
+        // Act & Assert
         NotFoundException thrown = assertThrows(NotFoundException.class, () -> {
             postService.getFollowedSellersPosts(userId, null);
         });
@@ -131,10 +132,11 @@ public class PostServiceTest {
     }
 
     //region VERIFY POST ORDER EXISTING BY DATE
+
     @Test
     @DisplayName("Verificar que el tipo de ordenamiento ascendente por fecha exista")
     void shouldAscOrderExistSuccessfullyWhenSortPostByDate() throws IOException {
-        //ARRANGE
+        // Arrange
         int userId = 1;
         String order = "date_asc";
         List<Integer> followedByUser = MockFactoryUtils.getFollowedsByUserId(usersMock, userId);
@@ -146,14 +148,14 @@ public class PostServiceTest {
                         thenReturn(MockFactoryUtils.filterPostsByUserId(postsMock, followedUserId))
         );
 
-        //ACT & ASSERT
+        // Act & Assert
         assertDoesNotThrow(() -> postService.getFollowedSellersPosts(userId, order),
                 "El método lanzó una excepción inesperada");
     }
     @Test
     @DisplayName("Verificar que el tipo de ordenamiento descendente por fecha exista")
     void shouldDescOrderExistSuccessfullyWhenSortPostByDate() throws IOException {
-        //ARRANGE
+        // Arrange
         int userId = 1;
         String order = "date_desc";
         List<Integer> followedByUser = MockFactoryUtils.getFollowedsByUserId(usersMock, userId);
@@ -165,30 +167,31 @@ public class PostServiceTest {
                         thenReturn(MockFactoryUtils.filterPostsByUserId(postsMock, followedUserId))
         );
 
-        //ACT & ASSERT
+        // Act & Assert
         assertDoesNotThrow(() -> postService.getFollowedSellersPosts(userId, order),
                 "El método lanzó una excepción inesperada");
     }
     @Test
     @DisplayName("Notifica la no existencia mediante una excepción.")
     void shouldNotOrderExistenceWhenSortPostByDate() {
-        //ARRANGE
+        // Arrange
         int userId = 6;
         String order = "incorrect";
-        //ACT & ASSERT
+        // Act & Assert
         assertThrows(BadRequestException.class, () -> postService.getFollowedSellersPosts(userId, order));
     }
+
     //endregion
 
     //region VERIFICAR CORRECTO ORDENAMIENTO ASC Y DESC POR FEECHA
+
     @Test
     @DisplayName("Verificar el correcto ordenamiento ascendente por fecha")
     void shouldAscOrderCorrectWhenSortPostByDate() throws IOException {
-        //ARRANGE
+        // Arrange
         int userId = 1;
         String order = "date_asc";
         MockFactoryUtils.setPostsAsPostedOneWeekAgo(postsMock, List.of(2, 4));
-        // Se que los posts 2 y 4 son algunos de los posts de usuarios que el usuario 1 sigue
 
         when(userRepository.exists(userId)).thenReturn(true);
         when(userRepository.findAll()).thenReturn(usersMock);
@@ -199,10 +202,10 @@ public class PostServiceTest {
                         thenReturn(MockFactoryUtils.filterPostsByUserId(postsMock, followedUserId))
         );
 
-        //ACT
+        // Act
         FollowedSellerPostsDto result = postService.getFollowedSellersPosts(userId, order);
 
-        // ASSERT
+        // Assert
         assertNotNull(result, "El resultado no puede ser nulo");
         assertNotNull(result.getPosts(), "La lista de posteos tiene que existir");
         assertFalse(result.getPosts().isEmpty(), "Tiene que haber posts");
@@ -214,11 +217,10 @@ public class PostServiceTest {
     @Test
     @DisplayName("Verificar el correcto ordenamiento descendente por fecha")
     void shouldDescOrderCorrectWhenSortPostByDate() throws IOException {
-        //ARRANGE
+        // Arrange
         int userId = 1;
         String order = "date_desc";
         MockFactoryUtils.setPostsAsPostedOneWeekAgo(postsMock, List.of(2, 4));
-        // Se que los posts 2 y 4 son algunos de los posts de usuarios que el usuario 1 sigue
 
         when(userRepository.exists(userId)).thenReturn(true);
         when(userRepository.findAll()).thenReturn(usersMock);
@@ -229,10 +231,10 @@ public class PostServiceTest {
                         thenReturn(MockFactoryUtils.filterPostsByUserId(postsMock, followedUserId))
         );
 
-        //ACT
+        // Act
         FollowedSellerPostsDto result = postService.getFollowedSellersPosts(userId, order);
 
-        // ASSERT
+        // Assert
         assertNotNull(result, "El resultado no puede ser nulo");
         assertNotNull(result.getPosts(), "La lista de posteos tiene que existir");
         assertFalse(result.getPosts().isEmpty(), "Tiene que haber posts");
@@ -240,6 +242,8 @@ public class PostServiceTest {
         assertTrue(MockFactoryUtils.arePostsSortedByDate(sortedPosts, false),
                 "La lista no está ordenada descendentemente por fecha");
     }
+
     //endregion
+
     //endregion
 }

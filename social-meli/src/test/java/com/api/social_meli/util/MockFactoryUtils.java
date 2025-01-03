@@ -37,7 +37,7 @@ public class MockFactoryUtils {
         List<User> usersMock = new ArrayList<>();
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            File file = ResourceUtils.getFile("classpath:users.json"); // obtencion de archivo
+            File file = ResourceUtils.getFile("classpath:users.json");
             usersMock = objectMapper.readValue(file, new TypeReference<List<User>>() {});
         } catch (IOException e) {
             System.out.println("Hubo un error con la lectura del archivo");

@@ -9,8 +9,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.util.stream.Collectors;
-
 @ControllerAdvice
 public class ExceptionController {
     @ExceptionHandler(NotFoundException.class)
@@ -41,5 +39,4 @@ public class ExceptionController {
 
         return ResponseEntity.badRequest().body(errorDTO);
     }
-
 }

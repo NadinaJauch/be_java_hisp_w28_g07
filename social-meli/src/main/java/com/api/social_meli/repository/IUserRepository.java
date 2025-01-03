@@ -7,7 +7,5 @@ public interface IUserRepository {
     List<User> findAll();
     User findById(int id);
     boolean exists(int id);
-    List<Integer> getFollowedsByUserId(int userId);
     User create(User user);
-    List<Integer> getFollowersByUserId(int userId);
 }

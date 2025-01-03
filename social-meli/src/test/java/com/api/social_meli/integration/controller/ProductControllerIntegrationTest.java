@@ -107,7 +107,7 @@ public class ProductControllerIntegrationTest {
     @DisplayName("Posteos de vendedores seguidos ordenados de forma ascendente")
     @DirtiesContext
     public void shouldReturnFollowedSellersPostsAscSortedOk() throws Exception {
-        //ARRANGE
+        // Arrange
         Integer userId = 1;
         String order = "date_asc";
 
@@ -120,7 +120,7 @@ public class ProductControllerIntegrationTest {
         ResultMatcher statusExpected = status().isOk();
         ResultMatcher contentTypeExpected = content().contentType("application/json");
 
-        //ACT && ASSERT
+        // Act & Assert
         mockMvc.perform(get("/products/followed/{userId}/list", userId)
                         .param("order", order))
                 .andExpectAll(statusExpected, contentTypeExpected, bodyExpected)
@@ -131,7 +131,7 @@ public class ProductControllerIntegrationTest {
     @DisplayName("Posteos de vendedores seguidos ordenados de forma descendente")
     @DirtiesContext
     public void shouldReturnFollowedSellersPostsDescSortedOk() throws Exception {
-        //ARRANGE
+        // Arrange
         Integer userId = 1;
         String order = "date_desc";
 
@@ -144,7 +144,7 @@ public class ProductControllerIntegrationTest {
         ResultMatcher statusExpected = status().isOk();
         ResultMatcher contentTypeExpected = content().contentType("application/json");
 
-        //ACT && ASSERT
+        // Act & Assert
         mockMvc.perform(get("/products/followed/{userId}/list", userId)
                         .param("order", order))
                 .andExpectAll(statusExpected, contentTypeExpected, bodyExpected)

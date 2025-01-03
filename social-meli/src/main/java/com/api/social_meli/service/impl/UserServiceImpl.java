@@ -28,7 +28,7 @@ public class UserServiceImpl implements IUserService {
     private PostServiceImpl postServiceImpl;
 
     @Autowired
-    ObjectMapper mapper;
+    ObjectMapper objectMapper;
 
     public GetFollowerCountDto getFollowerCount(int userId) {
         User user = userRepository.findById(userId);
@@ -41,17 +41,17 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public FollowerListDto getFollowersOrderedByName(int userId, String order) {
-        //Verifica que el usuario exista
+        // Verifica que el usuario exista
         User searchedUser = userRepository.findById(userId);
         if(!userRepository.exists(userId))
             throw new NotFoundException("No se encontró el usuario.");
 
-        //Verifica si el usuario es un vendedor
+        // Verifica si el usuario es un vendedor
         if(!searchedUser.isSeller())
             throw new BadRequestException("El usuario no es un vendedor y no puede tener seguidores.");
 
         List<FollowDto> followerDtos = searchedUser.getFollowers().stream()
-                .map(followerId -> mapper.convertValue(userRepository.findById(followerId), FollowDto.class))
+                .map(followerId -> objectMapper.convertValue(userRepository.findById(followerId), FollowDto.class))
                 .toList();
 
         if (order != null)
@@ -62,13 +62,13 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public FollowedListDto getFollowedsOrderedByName(int userId, String order){
-        //Verifica que el usuario exista
+        // Verifica que el usuario exista
         User searchedUser = userRepository.findById(userId);
         if(!userRepository.exists(userId))
             throw new NotFoundException("No se encontró el usuario.");
 
         List<FollowDto> followedDtos = searchedUser.getFollowed().stream()
-                .map(followedId -> mapper.convertValue(userRepository.findById(followedId), FollowDto.class))
+                .map(followedId -> objectMapper.convertValue(userRepository.findById(followedId), FollowDto.class))
                 .toList();
 
         if (followedDtos.isEmpty())
@@ -128,13 +128,12 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public List<UserDto> searchAllUsers() {
-        ObjectMapper mapper = new ObjectMapper();
         List<User> userList = userRepository.findAll();
         if(userList.isEmpty())
             throw new NotFoundException("No se encontró ningun usuario en el sistema.");
 
         return userList.stream()
-                .map(v -> mapper.convertValue(v, UserDto.class))
+                .map(v -> objectMapper.convertValue(v, UserDto.class))
                 .toList();
     }
 
