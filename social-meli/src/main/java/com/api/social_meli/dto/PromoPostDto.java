@@ -22,7 +22,7 @@ public class PromoPostDto {
     @NotNull(message = "El id no puede estar vacio")
     @JsonProperty("user_id")
     private Integer seller;
-    @NotBlank(message = "La fecha no puede estar vacía")
+    @NotNull(message = "La fecha no puede estar vacía")
     @JsonProperty("date")
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate publishDate;
