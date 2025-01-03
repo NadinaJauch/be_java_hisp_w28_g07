@@ -138,43 +138,51 @@ public class MockFactoryUtils {
     //endregion
 
 
-    public static GetFavouritePostsResponseDto createGetFavouritePostsResponseDtoForUser(int userId) throws IOException {
-        List<User> users = getUsersMock();
-        List<Post> posts = getPostsMock();
+    public static GetFavouritePostsResponseDto createGetFavouritePostsResponseDtoForUser()  {
+        List<PostDto> favouritePosts = new ArrayList<>();
 
-        Optional<User> optionalUser = users.stream().filter(u -> u.getId() == userId).findFirst();
+        ProductDto product1 = new ProductDto();
+        product1.setProductId(1);
+        product1.setName("Smartphone Galaxy S21");
+        product1.setType("Electronics");
+        product1.setBrand("Samsung");
+        product1.setColour("Phantom Gray");
+        product1.setNotes("Latest model, 128GB storage");
 
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
+        PostDto post1 = new PostDto();
+        post1.setPostId(1);
+        post1.setUserId(2);
+        post1.setPublishDate(LocalDate.parse("15-12-2024", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+        post1.setProduct(product1);
+        post1.setCategoryId(1);
+        post1.setPrice(799.99);
 
-            List<PostDto> favouritePosts = user.getFavourites().stream()
-                    .flatMap(postId -> posts.stream()
-                            .filter(post -> post.getId() == postId)
-                            .findFirst()
-                            .stream()
-                    )
-                    .map(post -> new PostDto(
-                            post.getPostId(),
-                            post.getUserId(),
-                            post.getPublishDate(),
-                            new ProductDto(
-                                    post.getProduct().getProductId(),
-                                    post.getProduct().getName(),
-                                    post.getProduct().getType(),
-                                    post.getProduct().getBrand(),
-                                    post.getProduct().getColour(),
-                                    post.getProduct().getNotes()
-                            ),
-                            post.getCategoryId(),
-                            post.getPrice()
-                    ))
-                    .collect(Collectors.toList());
+        ProductDto product2 = new ProductDto();
+        product2.setProductId(3);
+        product2.setName("Wireless Headphones");
+        product2.setType("Accessories");
+        product2.setBrand("Sony");
+        product2.setColour("Black");
+        product2.setNotes("Noise cancellation, 30-hour battery");
+
+        PostDto post2 = new PostDto();
+        post2.setPostId(2);
+        post2.setUserId(3);
+        post2.setPublishDate(LocalDate.parse("13-12-2024", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+        post2.setProduct(product2);
+        post2.setCategoryId(3);
+        post2.setPrice(199.99);
+
+        favouritePosts.add(post1);
+        favouritePosts.add(post2);
 
 
-            return new GetFavouritePostsResponseDto(userId, favouritePosts);
-        }
+        GetFavouritePostsResponseDto favouritePostsResponse = new GetFavouritePostsResponseDto();
+        favouritePostsResponse.setUserId(1);
+        favouritePostsResponse.setFavouritePosts(favouritePosts);
 
-        throw new IllegalArgumentException("User with ID " + userId + " not found");
+        return favouritePostsResponse;
+
     }
 
 

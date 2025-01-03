@@ -193,7 +193,7 @@ public class UserControllerIntegrationTest {
         //ARRANGE
         Integer userId = 1;
 
-        GetFavouritePostsResponseDto responseExpected = MockFactoryUtils.createGetFavouritePostsResponseDtoForUser(userId);
+        GetFavouritePostsResponseDto responseExpected = MockFactoryUtils.createGetFavouritePostsResponseDtoForUser();
 
         ResultMatcher statusExpected = status().isOk();
         ResultMatcher contentTypeExpected = content().contentType("application/json");
