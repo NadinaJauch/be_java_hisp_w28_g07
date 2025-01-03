@@ -5,9 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -38,6 +36,8 @@ public class PostDto {
     @NotNull(message = "El campo 'category' no puede estar vacio")
     @JsonProperty("category")
     private int categoryId;
+    @DecimalMin(value = "0.0", message = "El campo 'price' no puede estar vacio")
+    @DecimalMax(value = "10000000.0", message = "El precio maximo por producto es de 10.000.000")
     private double price;
 
 }
