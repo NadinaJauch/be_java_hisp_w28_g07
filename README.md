@@ -128,7 +128,7 @@ Se utilizó la clase `BaseRepository` como base para proporcionar métodos comun
 | US         | Descripción                                                                                                       | Asignado                     |
 |------------|-------------------------------------------------------------------------------------------------------------------|------------------------------|
 | US-0001    | Seguir usuario                                                                                                   | Fernanda Castaldo            |
-| US-0002    | Marcar post como favorito                                                                                         | Lisandro Giussani Alo        |
+| US-0002    | Verificar que la cantidad de seguidores de un determinado usuario sea correcta.                                  | Lisandro Giussani Alo        |
 | US-0005    | Crear post sin promo                                                                                              | Lisandro Giussani Alo        |
 | US-0006    | Obtener posts de las últimas dos semanas de los vendedores seguidos por un usuario                                | Nadina Ambar Jauch           |
 | US-0007    | Dejar de seguir usuario                                                                                            | Lisandro Giussani Alo        |
