@@ -1,11 +1,14 @@
 package com.api.social_meli.integration.controller;
 
+import com.api.social_meli.dto.*;
+import com.api.social_meli.util.MockFactoryUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.api.social_meli.dto.ProductDto;
 import com.api.social_meli.dto.PromoPostDto;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 
 import org.junit.jupiter.api.Test;
@@ -14,12 +17,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.hamcrest.Matchers.containsString;
@@ -28,10 +34,19 @@ import static org.hamcrest.Matchers.containsString;
 @SpringBootTest
 @AutoConfigureMockMvc
 public class PostControllerIntegrationTest {
-    @Autowired
-    MockMvc mockMvc;
 
-    ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    private MockMvc mockMvc;
+
+    static ObjectMapper objectMapper;
+
+    @BeforeAll
+    public static void setUp() {
+        objectMapper = new ObjectMapper()
+                .registerModule(new JavaTimeModule());
+    }
+
+    //region CREATE PROMO POST
 
     @Test
     @DisplayName("1.1: CreatePromnoPost OK")
@@ -103,8 +118,6 @@ public class PostControllerIntegrationTest {
 
         String payloadJson = writer.writeValueAsString(toRegister);
 
-        String expectedMessage = "Creado con exito";
-
         //ACT
         mockMvc.perform(MockMvcRequestBuilders.post("/products/promo-post")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -144,8 +157,6 @@ public class PostControllerIntegrationTest {
 
         String payloadJson = writer.writeValueAsString(toRegister);
 
-        String expectedMessage = "Creado con exito";
-
         //ACT
         mockMvc.perform(MockMvcRequestBuilders.post("/products/promo-post")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -166,7 +177,139 @@ public class PostControllerIntegrationTest {
                 .andExpect(jsonPath("$.description").value(containsString("El campo 'notes' no puede poseer caracteres especiales")))
                 .andExpect(jsonPath("$.description").value(containsString("La longitud del campo 'notes' no puede superar los 80 caracteres")))
                 .andExpect(jsonPath("$.description").value(containsString("El campo 'category' debe ser mayor que cero")))
-                .andExpect(jsonPath("$.description").value(containsString("El precio maximo por producto es de 10.000.000")))
-        ;
+                .andExpect(jsonPath("$.description").value(containsString("El precio maximo por producto es de 10.000.000")));
     }
+
+    //endregion
+
+    //region CREATE POST
+
+    @Test
+    public void createPostTestOk() throws Exception {
+        //ARRANGE
+        PostDto expectedDto = MockFactoryUtils.createPostResponseDto();
+        String jsonRequest = objectMapper.writer().writeValueAsString(expectedDto);
+
+        ResultMatcher statusExpected= status().isOk();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(new MessageDto("Post realizado con exito")));
+
+        //ACT & ASSERT
+        mockMvc.perform(post("/products/post").content(jsonRequest).contentType(MediaType.APPLICATION_JSON)).andExpectAll(
+                statusExpected, contentTypeExpected, bodyExpected
+        );
+    }
+
+    @Test
+    public void createPostTestBadRequest() throws Exception {
+        //ARRANGE
+        PostDto expectedDto = MockFactoryUtils.createPostResponseDto();
+        expectedDto.setPostId(1);
+        String jsonRequest = objectMapper.writer().writeValueAsString(expectedDto);
+
+        ResultMatcher statusExpected= status().isBadRequest();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(new MessageDto("El post ya existe")));
+
+        //ACT & ASSERT
+        mockMvc.perform(post("/products/post").content(jsonRequest).contentType(MediaType.APPLICATION_JSON)).andExpectAll(
+                statusExpected, contentTypeExpected, bodyExpected
+        );
+    }
+
+    //endregion
+
+    //region GET BY CATEGORY ID
+
+    @Test
+    public void getPostByCategoryIdTestOk() throws Exception {
+        //ARRANGE
+        int categoryId = 3;
+        int price_min= 100;
+        int price_max= 200;
+
+        GetByCategoryResponseDto expectedDto = MockFactoryUtils.getPostByCategoryResponseDto();
+
+        ResultMatcher statusExpected= status().isOk();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(expectedDto));
+
+        //ACT & ASSERT
+        mockMvc.perform(get("/posts/{categoryId}/category/list/{price_min}/{price_max}", categoryId, price_min, price_max)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpectAll(
+                        statusExpected,
+                        contentTypeExpected,
+                        bodyExpected
+                );
+    }
+
+
+    @Test
+    public void getPostByCategoryIdTestNotFound() throws Exception {
+        //ARRANGE
+        int categoryId = 1;
+        int price_min= 100;
+        int price_max= 200;
+
+        ResultMatcher statusExpected= status().isNotFound();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(new MessageDto("No se encontraron post con ese id o rango de precio")));
+
+        //ACT & ASSERT
+        mockMvc.perform(get("/posts/{categoryId}/category/list/{price_min}/{price_max}", categoryId, price_min, price_max)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpectAll(
+                        statusExpected,
+                        contentTypeExpected,
+                        bodyExpected
+                );
+    }
+
+    //endregion
+
+    //region PROMO PRODUCT COUNT
+
+    @Test
+    public void getPromoProductCountTestOk() throws Exception {
+        //ARRANGE
+        int user_id = 3;
+        PromoPostCountDto expectedDto = new PromoPostCountDto(3,"María López",2);
+
+        ResultMatcher statusExpected= status().isOk();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(expectedDto));
+
+        //ACT & ASSERT
+        mockMvc.perform(get("/products/promo-post/count")
+                        .param("user_id", String.valueOf(user_id))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpectAll(
+                        statusExpected,
+                        contentTypeExpected,
+                        bodyExpected
+                );
+    }
+
+    @Test
+    public void getPromoProductCountTestNotFoundException() throws Exception {
+        //ARRANGE
+        int user_id = 4;
+
+        ResultMatcher statusExpected= status().isNotFound();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(new MessageDto("El usuario no tiene publicaciones con productos promocionados")));
+
+        //ACT & ASSERT
+        mockMvc.perform(get("/products/promo-post/count")
+                        .param("user_id", String.valueOf(user_id))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpectAll(
+                        statusExpected,
+                        contentTypeExpected,
+                        bodyExpected
+                );
+    }
+
+    //endregion
 }

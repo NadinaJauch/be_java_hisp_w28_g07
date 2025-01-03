@@ -42,6 +42,9 @@ public class PostServiceImpl implements IPostService {
         if(!postCategoryRepository.exists(dto.getCategoryId())){
             throw new BadRequestException("Esta categoria no existe");
         }
+        if (postRepository.exists(toRegister.getId())) {
+            throw new BadRequestException("El post ya existe");
+        }
         toRegister.setSeller(userRepository.findById(dto.getUserId()));
         toRegister.setPostId(postRepository.findAll().size()+1);
         validatePost(toRegister);
