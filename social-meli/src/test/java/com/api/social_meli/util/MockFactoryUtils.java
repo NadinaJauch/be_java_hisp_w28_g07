@@ -186,4 +186,41 @@ public class MockFactoryUtils {
     }
 
 
+    public static GetByCategoryResponseDto getPostByCategoryResponseDto(){
+        return new GetByCategoryResponseDto("Accessories",List.of(
+                new PostDto(
+                        2,
+                        3,
+                        LocalDate.parse("13-12-2024", DateTimeFormatter.ofPattern("dd-MM-yyyy")),
+                        new ProductDto(
+                                3,
+                                "Wireless Headphones",
+                                "Accessories",
+                                "Sony",
+                                "Black",
+                                "Noise cancellation, 30-hour battery"
+                        ),
+                        3,
+                        199.99
+                )
+        ));
+    }
+
+    public static PostDto getPostResponseDto(){
+        return new PostDto(6,
+                2,
+                LocalDate.parse("29-04-2021", DateTimeFormatter.ofPattern("dd-MM-yyyy")),
+                new ProductDto(
+                        1,
+                        "Silla Gamer",
+                        "Gamer",
+                        "Racer",
+                        "RedBlack",
+                        "Special Edition"
+                ),
+                2,
+                1500.50);
+    }
+
+
 }

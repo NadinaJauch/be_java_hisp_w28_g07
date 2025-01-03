@@ -1,6 +1,7 @@
 package com.api.social_meli.integration.controller;
 
 import com.api.social_meli.dto.*;
+import com.api.social_meli.util.MockFactoryUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -19,7 +20,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -41,7 +41,6 @@ public class PostControllerIntegrationTest {
         objectMapper = new ObjectMapper()
                 .registerModule(new JavaTimeModule());
     }
-
 
     //region CREATE PROMO POST
     @Test
@@ -186,20 +185,8 @@ public class PostControllerIntegrationTest {
     @Test
     public void createPostTestOk() throws Exception {
         //ARRANGE
-        PostDto postDto = new PostDto(6,
-                2,
-                LocalDate.parse("29-04-2021", DateTimeFormatter.ofPattern("dd-MM-yyyy")),
-                new ProductDto(
-                        1,
-                        "Silla Gamer",
-                        "Gamer",
-                        "Racer",
-                        "RedBlack",
-                        "Special Edition"
-                ),
-                2,
-                1500.50);
-        String jsonRequest = objectMapper.writer().writeValueAsString(postDto);
+        PostDto expectedDto = MockFactoryUtils.getPostResponseDto();
+        String jsonRequest = objectMapper.writer().writeValueAsString(expectedDto);
 
         ResultMatcher statusExpected= status().isOk();
         ResultMatcher contentTypeExpected = content().contentType("application/json");
@@ -209,26 +196,14 @@ public class PostControllerIntegrationTest {
         mockMvc.perform(post("/products/post").content(jsonRequest).contentType(MediaType.APPLICATION_JSON)).andExpectAll(
                 statusExpected, contentTypeExpected, bodyExpected
         );
-
     }
 
     @Test
     public void createPostTestBadRequest() throws Exception {
         //ARRANGE
-        PostDto postDto = new PostDto(2,
-                2,
-                LocalDate.parse("29-04-2021", DateTimeFormatter.ofPattern("dd-MM-yyyy")),
-                new ProductDto(
-                        1,
-                        "Silla Gamer",
-                        "Gamer",
-                        "Racer",
-                        "RedBlack",
-                        "Special Edition"
-                ),
-                2,
-                1500.50);
-        String jsonRequest = objectMapper.writer().writeValueAsString(postDto);
+        PostDto expectedDto = MockFactoryUtils.getPostResponseDto();
+        expectedDto.setPostId(1);
+        String jsonRequest = objectMapper.writer().writeValueAsString(expectedDto);
 
         ResultMatcher statusExpected= status().isBadRequest();
         ResultMatcher contentTypeExpected = content().contentType("application/json");
@@ -238,7 +213,6 @@ public class PostControllerIntegrationTest {
         mockMvc.perform(post("/products/post").content(jsonRequest).contentType(MediaType.APPLICATION_JSON)).andExpectAll(
                 statusExpected, contentTypeExpected, bodyExpected
         );
-
     }
     //endregion
 
@@ -250,28 +224,11 @@ public class PostControllerIntegrationTest {
         int price_min= 100;
         int price_max= 200;
 
-        //ACT & ASSERT
-        GetByCategoryResponseDto responseDto = new GetByCategoryResponseDto("Accessories",List.of(
-                new PostDto(
-                        2,
-                        3,
-                        LocalDate.parse("13-12-2024", DateTimeFormatter.ofPattern("dd-MM-yyyy")),
-                        new ProductDto(
-                                3,
-                                "Wireless Headphones",
-                                "Accessories",
-                                "Sony",
-                                "Black",
-                                "Noise cancellation, 30-hour battery"
-                        ),
-                        3,
-                        199.99
-                )
-        ));
+        GetByCategoryResponseDto expectedDto = MockFactoryUtils.getPostByCategoryResponseDto();
 
         ResultMatcher statusExpected= status().isOk();
         ResultMatcher contentTypeExpected = content().contentType("application/json");
-        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(responseDto));
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(expectedDto));
 
         //ACT & ASSERT
         mockMvc.perform(get("/posts/{categoryId}/category/list/{price_min}/{price_max}", categoryId, price_min, price_max)
@@ -281,7 +238,6 @@ public class PostControllerIntegrationTest {
                         contentTypeExpected,
                         bodyExpected
                 );
-
     }
 
 
@@ -291,7 +247,6 @@ public class PostControllerIntegrationTest {
         int categoryId = 1;
         int price_min= 100;
         int price_max= 200;
-
 
         ResultMatcher statusExpected= status().isNotFound();
         ResultMatcher contentTypeExpected = content().contentType("application/json");
@@ -305,7 +260,6 @@ public class PostControllerIntegrationTest {
                         contentTypeExpected,
                         bodyExpected
                 );
-
     }
     //endregion
 
@@ -314,11 +268,11 @@ public class PostControllerIntegrationTest {
     public void getPromoProductCountTestOk() throws Exception {
         //ARRANGE
         int user_id = 3;
-        PromoPostCountDto promoPostCountDto = new PromoPostCountDto(3,"María López",2);
+        PromoPostCountDto expectedDto = new PromoPostCountDto(3,"María López",2);
 
         ResultMatcher statusExpected= status().isOk();
         ResultMatcher contentTypeExpected = content().contentType("application/json");
-        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(promoPostCountDto));
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(expectedDto));
 
         //ACT & ASSERT
         mockMvc.perform(get("/products/promo-post/count")
@@ -329,9 +283,6 @@ public class PostControllerIntegrationTest {
                         contentTypeExpected,
                         bodyExpected
                 );
-
-
-
     }
 
     @Test
