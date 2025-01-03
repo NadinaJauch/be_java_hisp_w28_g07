@@ -14,6 +14,7 @@ import com.api.social_meli.util.MockFactoryUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,12 +47,17 @@ public class PostServiceTest {
     private IUserRepository userRepository;
 
     @Spy
-    private ObjectMapper objectMapper = new ObjectMapper()
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .registerModule(new JavaTimeModule());
+    static ObjectMapper objectMapper;
 
     @InjectMocks
     private PostServiceImpl postService;
+
+    @BeforeAll
+    public static void setUp() {
+        objectMapper = new ObjectMapper()
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .registerModule(new JavaTimeModule());
+    }
 
 
     @BeforeEach
