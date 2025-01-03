@@ -188,7 +188,7 @@ public class UserControllerIntegrationTest {
     @Test
     public void favouritePostListOk() throws Exception {
         //ARRANGE
-        Integer userId = 1;
+        Integer userId = 2;
         objectMapper.registerModule(new JavaTimeModule());
         GetFavouritePostsResponseDto responseExpected = MockFactoryUtils.createGetFavouritePostsResponseDtoForUser(userId);
 
