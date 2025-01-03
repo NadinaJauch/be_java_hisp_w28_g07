@@ -69,7 +69,7 @@ public class PostServiceTest {
     //region FOLLOWER POSTS FROM LAST TWO WEEKS
 
     @Test
-    @DisplayName("Obtención exclusiva de posts de las últimas dos semanas de los usuarios seguidos por un usuario válido.")
+    @DisplayName("T-0008 - Obtención exclusiva de posts de las últimas dos semanas de los usuarios seguidos por un usuario válido. Ok.")
     public void shouldReturnFollowedSellerPostsFromLastTwoWeeksOnly() {
         // Arrange
         int userId = 1;
@@ -95,7 +95,7 @@ public class PostServiceTest {
     }
 
     @Test
-    @DisplayName("Caso en el que no hay posts (de usuarios seguidos por usuario válido) dentro de las últimas dos semanas")
+    @DisplayName("T-0008 - Caso en el que no hay posts (de usuarios seguidos por usuario válido) dentro de las últimas dos semanas. Ok.")
     public void shouldReturnEmptyListWhenFollowedUsersHaveNoRecentPosts() {
         // Arrange
         int userId = 1;
@@ -118,7 +118,7 @@ public class PostServiceTest {
     }
 
     @Test
-    @DisplayName("Devuelve excepción con mensaje específico cuando el usuario con ese ID no existe.")
+    @DisplayName("T-0008 - Devuelve excepción con mensaje específico cuando el usuario con ese ID no existe. NotFound.")
     public void shouldThrowExWhenGetFollowedSellersPostsUserNotExists() {
         // Arrange
         int userId = 999;
@@ -134,7 +134,7 @@ public class PostServiceTest {
     //region VERIFY POST ORDER EXISTING BY DATE
 
     @Test
-    @DisplayName("Verificar que el tipo de ordenamiento ascendente por fecha exista")
+    @DisplayName("T-0006 - Verificar que el tipo de ordenamiento ascendente por fecha exista. Ok.")
     void shouldAscOrderExistSuccessfullyWhenSortPostByDate() throws IOException {
         // Arrange
         int userId = 1;
@@ -153,7 +153,7 @@ public class PostServiceTest {
                 "El método lanzó una excepción inesperada");
     }
     @Test
-    @DisplayName("Verificar que el tipo de ordenamiento descendente por fecha exista")
+    @DisplayName("T-0005 - Verificar que el tipo de ordenamiento descendente por fecha exista. Ok.")
     void shouldDescOrderExistSuccessfullyWhenSortPostByDate() throws IOException {
         // Arrange
         int userId = 1;
@@ -172,7 +172,7 @@ public class PostServiceTest {
                 "El método lanzó una excepción inesperada");
     }
     @Test
-    @DisplayName("Notifica la no existencia mediante una excepción.")
+    @DisplayName("T0005 - Notifica la no existencia mediante una excepción. BadRequest.")
     void shouldNotOrderExistenceWhenSortPostByDate() {
         // Arrange
         int userId = 6;
@@ -186,7 +186,7 @@ public class PostServiceTest {
     //region VERIFICAR CORRECTO ORDENAMIENTO ASC Y DESC POR FEECHA
 
     @Test
-    @DisplayName("Verificar el correcto ordenamiento ascendente por fecha")
+    @DisplayName("T-0006 - Verificar el correcto ordenamiento ascendente por fecha. Ok.")
     void shouldAscOrderCorrectWhenSortPostByDate() throws IOException {
         // Arrange
         int userId = 1;
@@ -215,7 +215,7 @@ public class PostServiceTest {
     }
 
     @Test
-    @DisplayName("Verificar el correcto ordenamiento descendente por fecha")
+    @DisplayName("T-0006 - Verificar el correcto ordenamiento descendente por fecha. Ok.")
     void shouldDescOrderCorrectWhenSortPostByDate() throws IOException {
         // Arrange
         int userId = 1;
