@@ -141,7 +141,7 @@ public class ProductControllerIntegrationTest {
     }
     @Test
     @DisplayName("Variable order invalida")
-    void shouldNotFollowedSellersPostsAscSortedBadRequest() throws Exception {
+    void shouldThrowInvalidOrderNameWhenGetFollowedSellersPosts() throws Exception {
         //ARRANGE
         Integer userId = 1;
         String order = "invalid";
