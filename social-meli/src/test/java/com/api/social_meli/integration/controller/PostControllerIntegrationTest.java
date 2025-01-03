@@ -42,6 +42,8 @@ public class PostControllerIntegrationTest {
                 .registerModule(new JavaTimeModule());
     }
 
+
+    //region CREATE PROMO POST
     @Test
     @DisplayName("1.1: CreatePromnoPost OK")
     public void createPromoPostOK() throws Exception{
@@ -178,9 +180,9 @@ public class PostControllerIntegrationTest {
                 .andExpect(jsonPath("$.description").value(containsString("El precio maximo por producto es de 10.000.000")))
         ;
     }
+    //endregion
 
-
-
+    //region CREATE POST
     @Test
     public void createPostTestOk() throws Exception {
         //ARRANGE
@@ -207,9 +209,6 @@ public class PostControllerIntegrationTest {
         mockMvc.perform(post("/products/post").content(jsonRequest).contentType(MediaType.APPLICATION_JSON)).andExpectAll(
                 statusExpected, contentTypeExpected, bodyExpected
         );
-
-
-
 
     }
 
@@ -241,9 +240,9 @@ public class PostControllerIntegrationTest {
         );
 
     }
+    //endregion
 
-
-
+    //region GET BY CATEGORY ID
     @Test
     public void getPostByCategoryIdTestOk() throws Exception {
         //ARRANGE
@@ -308,8 +307,9 @@ public class PostControllerIntegrationTest {
                 );
 
     }
+    //endregion
 
-
+    //region PROMO PRODUCT COUNT
     @Test
     public void getPromoProductCountTestOk() throws Exception {
         //ARRANGE
@@ -334,4 +334,24 @@ public class PostControllerIntegrationTest {
 
     }
 
+    @Test
+    public void getPromoProductCountTestNotFoundException() throws Exception {
+        //ARRANGE
+        int user_id = 4;
+
+        ResultMatcher statusExpected= status().isNotFound();
+        ResultMatcher contentTypeExpected = content().contentType("application/json");
+        ResultMatcher bodyExpected = content().json(objectMapper.writeValueAsString(new MessageDto("El usuario no tiene publicaciones con productos promocionados")));
+
+        //ACT & ASSERT
+        mockMvc.perform(get("/products/promo-post/count")
+                        .param("user_id", String.valueOf(user_id))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpectAll(
+                        statusExpected,
+                        contentTypeExpected,
+                        bodyExpected
+                );
+    }
+    //endregion
 }
