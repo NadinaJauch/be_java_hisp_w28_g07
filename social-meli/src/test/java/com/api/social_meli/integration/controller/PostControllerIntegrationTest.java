@@ -18,8 +18,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import static org.hamcrest.Matchers.contains;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.hamcrest.Matchers.containsString;
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -106,8 +109,8 @@ public class PostControllerIntegrationTest {
                         .content(payloadJson))
         //ASSERT
                 .andDo(print()).andExpect(status().isBadRequest())
-                .andExpect(content().contentType("application/json"));
-                //.andExpect(jsonPath("$.message").value("Post con promo realizado con exito"));
+                .andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("$.description").value(containsString("El id debe ser mayor a cero")));
     }
 
 
